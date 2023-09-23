@@ -1,18 +1,25 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>emoji.com hello!!</h1>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Service from '@/utils/request.js'
 
 export default {
   name: 'HomeView',
-  components: {
-    HelloWorld
+  data() {
+
+  },
+  methods: {
+    async fetchcontent() {
+      const res = await Service.get('/user');
+      console.log(res)
+    }
+  },
+  mounted() {
+    //this.fetchcontent();
   }
 }
 </script>
