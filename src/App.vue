@@ -3,11 +3,20 @@
 </template>
 
 <style>
+:root {
+  --sz: 4vmin;
+  --on: #4CAF50;
+  --of: #f50000;
+  --gr: #666666;
+  --tr: all 0.5s ease 0s;
+  --lg: var(--of);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
+  transition: var(--tr);
 }
 
 html,

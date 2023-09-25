@@ -5,6 +5,10 @@ const Service = axios.create({
 })
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
+    if (localStorage.getItem('Authorization')) {
+        config.headers.Authorization = localStorage.getItem('Authorization')
+    }
+    return config;
     // 在发送请求之前做些什么
     return config;
 }, function (error) {

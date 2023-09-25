@@ -183,6 +183,8 @@ const handleregister = () => {
 
 <script>
 import axios from 'axios';
+import Service from '@/utils/request';
+import { mapMutations } from 'vuex';
 export default {
     data() {
         return {
@@ -221,6 +223,7 @@ export default {
         };
     },
     methods: {
+        ...mapMutations(['changeLogin']),
         leftClick() {
             const slidingbtn = this.$refs.slidingbtn;
             slidingbtn.style.left = '0'
@@ -230,6 +233,32 @@ export default {
             const slidingbtn = this.$refs.slidingbtn;
             slidingbtn.style.left = '140px'
             this.showlogin = false
+        },
+        login() {
+            let _this = this;
+            this.$refs.loginFormRef.validate(valid => {
+                if (!valid) {
+                    return
+                }
+                else {
+                    Service.post("/login", {
+                        username: this.loginData.email,
+                        password: this.loginData.password
+                    }).then((response) => {
+                        if (response.data.msg === 'success') {
+                            _this.userToken = 'Bearer ' + response.data.data
+                            _this.changeLogin({ Authorization: _this.userToken });
+                            _this.$router.push('/');
+                            ElMessage.success('Successfully Login')
+                        }
+                        else {
+                            ElMessage.error('Incorrect username or password')
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                }
+            })
         }
     }
 
