@@ -5,7 +5,7 @@
             <p style="font-size:20px;margin-left: 120px;">What's your emotion?</p>
             <div class="form-box">
                 <div class="button-box">
-                    <div id="btn" ref="slidingbtn"></div>
+                    <div v-color="color1" id="btn" ref="slidingbtn"></div>
                     <button type="button" class="toggle-btn" @click="leftClick()">Log in</button>
                     <button type="button" class="toggle-btn btnright" @click="rightClick()"> Sign Up</button>
                 </div>
@@ -220,6 +220,8 @@ export default {
                 password: '',
                 confirmpassword: ''
             }),
+            color1: 'rgb(160, 131, 237)',
+            color2: 'rgb(255, 167, 69)'
         };
     },
     methods: {
@@ -227,11 +229,13 @@ export default {
         leftClick() {
             const slidingbtn = this.$refs.slidingbtn;
             slidingbtn.style.left = '0'
+            this.color1 = 'rgb(160, 131, 237)'
             this.showlogin = true
         },
         rightClick() {
             const slidingbtn = this.$refs.slidingbtn;
             slidingbtn.style.left = '140px'
+            this.color1 = 'rgb(255, 167, 69)'
             this.showlogin = false
         },
         login() {
@@ -259,6 +263,19 @@ export default {
                     });
                 }
             })
+        }
+    },
+    directives: {
+        color: {
+
+            created(el, binding) {
+                console.log(el, binding.value)
+                el.style.backgroundColor = binding.value
+            },
+            updated(el, binding) {
+                el.style.backgroundColor = binding.value
+
+            },
         }
     }
 
@@ -360,11 +377,10 @@ export default {
     border-radius: 30px;
     background: #715050;
     text-align: center;
-
 }
 
 .toggle-btn {
-    padding: 10px 40px;
+
     cursor: pointer;
     background: transparent;
     border: 0;
@@ -374,6 +390,8 @@ export default {
     font-family: 'Martian Mono', monospace;
     font-weight: 800;
     color: white;
+    width: 140px;
+    height: 40px;
 }
 
 
@@ -383,7 +401,6 @@ export default {
     position: absolute;
     width: 140px;
     height: 100%;
-    background-color: rgba(0, 199, 202, 0.9);
     border-radius: 30px;
     transition: 0.5s;
 }
