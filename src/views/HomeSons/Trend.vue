@@ -1,12 +1,26 @@
 <template>
     <div class="trendcontent">
-        <a href=""><img src="../assets/testpic.jpg" alt=""> <span>Author:Lan</span></a>
-        <a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-            href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-            href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-            href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-            href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-            href=""></a><a href=""></a><a href=""></a><a href=""></a>
+        <a href=""><img src="@/assets/testpic.jpg" alt=""> <span>Author:Lan</span></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
+        <a href=""></a>
     </div>
 </template>
 <script>
@@ -24,9 +38,11 @@ export default {
 <style scoped>
 .trendcontent {
     display: flex;
-    height: 150vh;
+    height: 100%;
     justify-content: center;
     flex-wrap: wrap;
+    width: 90%;
+    background-color: white;
 }
 
 .trendcontent a {

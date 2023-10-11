@@ -4,20 +4,22 @@
       <div class="nav">
         <myicon></myicon>
         <div class="labels" v-if="!isFixed">
-          <a>Trends</a>
+          <router-link to="/trend">Trends</router-link>
           <a>Animated</a>
           <a>Static</a>
           <a>New</a>
           <a>More</a>
         </div>
-        <div class="loginbtn">
+        <div class="loginbtn" v-if="!isFixed">
+          <el-button type="primary" class="navbtn" size="large" @click="upload"
+            style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 80px;">Upload</el-button>
           <el-button type="primary" class="navbtn" size="large" @click="login"
-            style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 100px;">Login</el-button>
+            style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 80px;">Login</el-button>
         </div>
       </div>
       <div class="search-container" :class="{ 'fixed': isFixed }">
         <el-input v-model="searchcontent" placeholder="Please input" class="search-input"
-          input-style="font-family: 'Oswald', sans-serif;">
+          input-style="font-family: 'Oswald', sans-serif; ">
           <template #append>
             <el-button type="primary" :icon="Search">
             </el-button>
@@ -28,13 +30,7 @@
     <!-- 此处放置页面内容 -->
     <div class="page-content">
       <!-- 页面内容 -->
-      <a href=""><img src="../assets/testpic.jpg" alt=""> <span>Author:Lan</span></a>
-      <a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-        href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-        href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-        href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-        href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a href=""></a><a
-        href=""></a><a href=""></a><a href=""></a><a href=""></a>
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -78,6 +74,9 @@ export default {
     },
     login() {
       this.$router.push('/login')
+    },
+    upload() {
+      this.$router.push('/upload')
     }
   }
 };
@@ -88,6 +87,11 @@ export default {
 
 .home {
   font-family: 'Oswald', sans-serif;
+  background-image: -moz-linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
+
+  background-image: -webkit-linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
+
+  background-image: linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
 }
 
 .fixed-header {
@@ -98,11 +102,11 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-image: -moz-linear-gradient(0deg, rgb(171, 17, 223), rgb(250, 218, 41));
+  background-image: -moz-linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
 
-  background-image: -webkit-linear-gradient(0deg, rgb(171, 17, 223), rgb(250, 218, 41));
+  background-image: -webkit-linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
 
-  background-image: linear-gradient(0deg, rgb(171, 17, 223), rgb(250, 218, 41));
+  background-image: linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
   padding: 10px 20px;
   padding-left: 200px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -113,11 +117,11 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: left;
-  background-image: -moz-linear-gradient(0deg, rgb(171, 17, 223), rgb(250, 218, 41));
+  background-image: -moz-linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
 
-  background-image: -webkit-linear-gradient(0deg, rgb(171, 17, 223), rgb(250, 218, 41));
+  background-image: -webkit-linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
 
-  background-image: linear-gradient(0deg, rgb(171, 17, 223), rgb(250, 218, 41));
+  background-image: linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
   padding: 10px 20px;
   padding-left: 200px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -155,10 +159,10 @@ export default {
   transition: all .2s;
 }
 
-.nav .loginbtn {
+.nav .nav .loginbtn {
   float: right;
   position: absolute;
-  right: 230px;
+  right: 18.2%;
 }
 
 .search-container {
@@ -170,6 +174,8 @@ export default {
   /* 初始高度 */
 }
 
+
+
 .search-container.fixed {
   padding-top: 0;
   margin-top: 0;
@@ -179,25 +185,32 @@ export default {
   /* 收缩高度 */
 }
 
-.search-input {
+.search-container .search-input {
+  width: 80%;
+  border-radius: 5px;
+  outline: none;
+  height: 60px;
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 19px;
+}
+
+.search-container.fixed .search-input {
   width: 80%;
   border-radius: 5px;
   outline: none;
   height: 40px;
   font-family: 'Oswald', sans-serif !important;
-  font-size: 17px;
+  font-size: 14px;
 }
 
-
 .page-content {
-  margin-top: 80px;
+  margin-top: 0px;
   /* 保证内容不被固定头部遮挡 */
   /* 其他页面内容的样式 */
   display: flex;
-  height: 150vh;
   justify-content: center;
   flex-wrap: wrap;
-
+  height: 100%;
 
 }
 

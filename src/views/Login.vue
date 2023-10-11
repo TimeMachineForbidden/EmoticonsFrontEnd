@@ -13,11 +13,12 @@
             <div class="logininput" v-if="showlogin">
                 <el-form ref="loginFormRef" :model="loginData" :rules="loginFormRules" label-width="60px">
                     <el-form-item prop="email" style="margin-top:20px;margin-bottom: 30px;">
-                        <el-input v-model="loginData.email" placeholder="Email" :suffix-icon="User"></el-input>
+                        <el-input v-model="loginData.email" placeholder="Username" :suffix-icon="User"
+                            input-style="font-family: 'Raleway', sans-serif;"></el-input>
                     </el-form-item>
                     <el-form-item prop="password" style="margin-bottom: 20px;">
-                        <el-input v-model="loginData.password" type="password" placeholder="Password"
-                            :suffix-icon="Lock"></el-input>
+                        <el-input v-model="loginData.password" type="password" placeholder="Password" :suffix-icon="Lock"
+                            input-style="font-family: 'Raleway', sans-serif;"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-row :gutter="70">
@@ -59,7 +60,7 @@
             <div class="registerinput" v-else>
                 <el-form ref="registerFormRef" :model="registerData" :rules="registerFormRules" label-width="60px">
                     <el-form-item prop="email" style="margin-top:20px;margin-bottom: 30px;">
-                        <el-input v-model="registerData.email" placeholder="Email" :suffix-icon="User"></el-input>
+                        <el-input v-model="registerData.email" placeholder="Username" :suffix-icon="User"></el-input>
                     </el-form-item>
                     <el-form-item prop="password" style="margin-bottom: 20px;">
                         <el-input v-model="registerData.password" type="password" placeholder="password"
@@ -153,11 +154,12 @@ const reloadPage = async () => {
 const handleregister = () => {
     registerFormRef.value.validate((valid) => {
         if (valid) {
-            Service.post("/register", {
+            Service.post("/user/register", {
                 username: registerData.email,
                 password: registerData.password
             }).then(res => {
-                if (res.data.msg === 'success') {
+                console.log(res.data)
+                if (res.data.data.msg === '注册成功!') {
                     location.reload();
                     reloadPage()
                     registerData.email = ''
@@ -220,7 +222,7 @@ export default {
                 password: '',
                 confirmpassword: ''
             }),
-            color1: 'rgb(160, 131, 237)',
+            color1: 'linear-gradient(135deg, rgb(11, 72, 239), rgb(17, 197, 149))',
             color2: 'rgb(255, 167, 69)'
         };
     },
@@ -229,13 +231,13 @@ export default {
         leftClick() {
             const slidingbtn = this.$refs.slidingbtn;
             slidingbtn.style.left = '0'
-            this.color1 = 'rgb(160, 131, 237)'
+            this.color1 = 'linear-gradient(135deg, rgb(11, 72, 239), rgb(17, 197, 149))'
             this.showlogin = true
         },
         rightClick() {
             const slidingbtn = this.$refs.slidingbtn;
             slidingbtn.style.left = '140px'
-            this.color1 = 'rgb(255, 167, 69)'
+            this.color1 = 'linear-gradient(180deg, rgb(255, 107, 144), rgb(252, 217, 156))'
             this.showlogin = false
         },
         login() {
@@ -245,12 +247,13 @@ export default {
                     return
                 }
                 else {
-                    Service.post("/login", {
+                    Service.post("/user/login", {
                         username: this.loginData.email,
                         password: this.loginData.password
                     }).then((response) => {
-                        if (response.data.msg === 'success') {
-                            _this.userToken = 'Bearer ' + response.data.data
+                        console.log(response.data)
+                        if (response.data.code === 1) {
+                            _this.userToken = 'Token ' + response.data.data.token
                             _this.changeLogin({ Authorization: _this.userToken });
                             _this.$router.push('/');
                             ElMessage.success('Successfully Login')
@@ -270,10 +273,10 @@ export default {
 
             created(el, binding) {
                 console.log(el, binding.value)
-                el.style.backgroundColor = binding.value
+                el.style.background = binding.value
             },
             updated(el, binding) {
-                el.style.backgroundColor = binding.value
+                el.style.background = binding.value
 
             },
         }
@@ -288,6 +291,14 @@ export default {
 
 
 @import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300&display=swap');
+
+
+@import url('https://fonts.googleapis.com/css2?family=Signika+Negative&display=swap');
+
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,300&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap');
 
 .login {
     width: 100%;
@@ -380,7 +391,6 @@ export default {
 }
 
 .toggle-btn {
-
     cursor: pointer;
     background: transparent;
     border: 0;
@@ -409,6 +419,8 @@ export default {
     font-size: 30px !important;
 }
 
+
+
 .el-form .elres .el-form-item__content {
     margin-left: 0 !important;
 }
@@ -419,14 +431,17 @@ export default {
 
 .logininput {
     width: 80%;
+
 }
 
 .long-button {
     width: 350px;
+
 }
 
 .lww {
     background-color: black;
+
 }
 
 .lwg {
