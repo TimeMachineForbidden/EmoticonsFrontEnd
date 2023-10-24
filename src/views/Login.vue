@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div class="loginmain">
-            <h1>EmoVerse</h1>
+            <h1>EmojiVerse</h1>
             <p style="font-size:20px;margin-left: 120px;">What's your emotion?</p>
             <div class="form-box">
                 <div class="button-box">
