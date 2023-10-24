@@ -1,8 +1,8 @@
 <template>
     <div class="login">
         <div class="loginmain">
-            <h1>EmojiVerse</h1>
-            <p style="font-size:20px;margin-left: 120px;">What's your emotion?</p>
+            <h1>EmoVerse</h1>
+            <p style="font-size:20px;margin-left: 120px;">What's your emoji?</p>
             <div class="form-box">
                 <div class="button-box">
                     <div v-color="color1" id="btn" ref="slidingbtn"></div>

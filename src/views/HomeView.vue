@@ -95,6 +95,7 @@ export default {
 }
 
 .fixed-header {
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -108,12 +109,14 @@ export default {
 
   background-image: linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
   padding: 10px 20px;
-  padding-left: 200px;
+  padding-left: 8%;
+  padding-right: 8%;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
 .initial-header {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -123,7 +126,8 @@ export default {
 
   background-image: linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
   padding: 10px 20px;
-  padding-left: 200px;
+  padding-left: 8%;
+  padding-right: 8%;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -177,6 +181,7 @@ export default {
 
 
 .search-container.fixed {
+  width: 100%;
   padding-top: 0;
   margin-top: 0;
   margin-left: 8px;
@@ -186,7 +191,6 @@ export default {
 }
 
 .search-container .search-input {
-  width: 80%;
   border-radius: 5px;
   outline: none;
   height: 60px;
@@ -195,7 +199,7 @@ export default {
 }
 
 .search-container.fixed .search-input {
-  width: 80%;
+  width: 100%;
   border-radius: 5px;
   outline: none;
   height: 40px;

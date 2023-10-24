@@ -41,7 +41,7 @@ export default {
     height: 100%;
     justify-content: center;
     flex-wrap: wrap;
-    width: 90%;
+    width: 84%;
     background-color: white;
 }
 
