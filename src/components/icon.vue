@@ -1,331 +1,461 @@
 <template>
-    <div class="content">
-        <input type="checkbox" id="btn">
-        <label for="btn">
-            <span class="track">
-                <span class="track-top">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+    <div class="emoji grin">
+        <figure class="face">
+            <span class="eyes">
+                <span class="eye"></span>
+                <span class="eye"></span>
+            </span>
+            <span class="mouth teath tounge">
+            </span>
+        </figure>
+    </div>
+    <!-- <div class="emoji sad">
+            <figure class="face">
+                <span class="eyes">
+                    <span class="eye"></span>
+                    <span class="eye"></span>
                 </span>
-                <span class="track-bot">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <span class="mouth tounge">
+                </span>
+            </figure>
+        </div> -->
+    <!-- <div class="emoji shocked">
+            <figure class="face">
+                <span class="eyes">
+                    <span class="eye"></span>
+                    <span class="eye"></span>
+                </span>
+                <span class="mouth">
+                </span>
+            </figure>
+        </div> -->
+    <!-- <div class="emoji laugh">
+        <figure class="face">
+            <span class="eyes">
+                <span class="eye"></span>
+                <span class="eye"></span>
+            </span>
+            <span class="mouth tounge">
+            </span>
+        </figure>
+    </div>
+    <div class="emoji smile">
+        <figure class="face">
+            <span class="eyes">
+                <span class="eye"></span>
+                <span class="eye"></span>
+            </span>
+            <span class="mouth">
+            </span>
+        </figure>
+    </div> -->
+    <div class="emoji speechless">
+        <figure class="face">
+            <span class="eyes">
+                <span class="eye"></span>
+                <span class="eye"></span>
+            </span>
+            <span class="mouth">
+            </span>
+        </figure>
+    </div>
+    <div class="emoji love">
+        <figure class="face">
+            <span class="eyes">
+                <span class="heart-eye">
+                    <span class="heart"></span>
+                </span>
+                <span class="heart-eye">
+                    <span class="heart"></span>
                 </span>
             </span>
-            <span class="thumb" style="font-size: 1px;">Emoij</span>
-        </label>
+            <span class="mouth tounge">
+            </span>
+        </figure>
+    </div>
+    <div class="emoji angry">
+        <figure class="face">
+            <span class="eyes">
+                <span class="eye"></span>
+                <span class="eye"></span>
+            </span>
+            <span class="mouth">
+            </span>
+        </figure>
     </div>
 </template>
-<script>
-export default {
-
-}
-</script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+/*------ Main Emoji Styling ------*/
 
+.emoji {
+    box-sizing: border-box;
+    float: left;
+    transform: scale(0.9)
+}
 
-.content {
+.face {
+    width: 90px;
+    height: 90px;
     position: relative;
-    width: calc(var(--sz) * 6);
-    height: calc(var(--sz) * 2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    --sz: 4vmin;
-    --on: #4CAF50;
-    --of: #f50000;
-    --gr: #666666;
-    --tr: all 0.5s ease 0s;
-    --lg: var(--of);
-
+    margin: 0 0px 0px 0;
+    border-radius: 50%;
+    background: #F2DD68;
 }
 
-
-label[for=btn] {
-    position: absolute;
-    width: calc(var(--sz) * 6);
-    height: calc(var(--sz) * 2);
-    background: #616774;
-    border-radius: var(--sz);
-    box-shadow:
-        0 0 calc(var(--sz) / 50) calc(var(--sz) / 50) #0006,
-        0 -4px calc(var(--sz) / 10) calc(var(--sz) / 500) #000d,
-        0 0px calc(var(--sz) / 10) calc(var(--sz) / 50) #fff8,
-        0 -4px calc(var(--sz) / 5) calc(var(--sz) / 50) #000c;
-}
-
-.track {
+.face:after {
+    content: '';
+    display: block;
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: var(--sz);
-    overflow: hidden;
-    background: #191e1e;
-    box-shadow: 0 calc(var(--sz) / 3) calc(var(--sz) / 2) 0 #000 inset;
+    top: -8px;
+    left: -8px;
+    border-radius: 50%;
+    box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.07);
 }
 
-#btn:checked+label .track:before {
-    left: 0%;
-}
-
-.thumb {
-    font-style: italic;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: white;
+.eye {
     position: absolute;
-    width: calc(calc(var(--sz) * 2) - calc(var(--sz) / 5));
-    height: calc(calc(var(--sz) * 2) - calc(var(--sz) / 5));
-    top: calc(calc(var(--sz) / 10) + calc(var(--sz) / 200));
-    left: calc(calc(var(--sz) / 10) + calc(var(--sz) / 100));
-    background: linear-gradient(180deg, #3f4447, #262727);
-    border-radius: var(--sz);
-    box-shadow: calc(var(--sz) / -25) calc(var(--sz) / 25) calc(var(--sz) / 30) 0 #fff2 inset, 0 0 calc(var(--sz) / 10) calc(var(--sz) / 50) #000c;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 11px;
+    height: 11px;
+    top: 32px;
+    left: 16px;
     z-index: 1;
+    border-radius: 50%;
+    background: #995710;
+}
+
+.eye:last-child {
+    left: auto;
+    right: 16px;
+}
+
+.emoji:hover .eye {
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+}
+
+@keyframes blink {
+    10% {
+        height: 11px;
+        top: 32px;
+    }
+
+    30% {
+        height: 1px;
+        top: 37px;
+    }
+
+    50% {
+        height: 11px;
+        top: 32px;
+    }
+}
+
+.mouth {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    width: 70px;
+    height: 34px;
+    margin: 0 auto;
+    border-radius: 0 0 70px 70px;
     overflow: hidden;
-    animation: move-thumb 0.5s ease 0s;
+    background: #995710;
 }
 
-@keyframes move-thumb {
-    0% {
-        --lg: var(--of);
-        left: calc(calc(100% - calc(calc(var(--sz) * 2) - calc(var(--sz) / 3))) - calc(calc(var(--sz) / 10) + calc(var(--sz) / 7)));
-    }
-
-    25%,
-    75% {
-        --lg: #999999;
-    }
-
-    100% {
-        --lg: var(--on);
-        left: calc(calc(var(--sz) / 10) + calc(var(--sz) / 100));
-    }
-}
-
-.thumb:before {
-    --cl: #2c3133;
+.mouth:before,
+.mouth:after {
+    content: '';
     position: absolute;
-    background: var(--cl);
-    width: calc(var(--sz) / 12);
-    height: calc(var(--sz) / 1.35);
-    border-radius: var(--sz);
-    box-shadow: calc(var(--sz) /5) 0 0 0 var(--cl), calc(var(--sz) / -5) 0 0 0 var(--cl);
-    filter: drop-shadow(0px 1px 2px #000) drop-shadow(0px -1px 0px #fff4) blur(0.65px);
+    display: block;
 }
 
-.thumb:after {
-    position: absolute;
-    background: radial-gradient(circle at 50% 55%, #fff0 calc(var(--sz) / 1.125), var(--lg) calc(var(--sz) / 0.9));
+.mouth.teath:before {
     width: 100%;
-    height: 100%;
-    border-radius: var(--sz);
-    transition: var(--tr);
-    transition-property: --lg;
-    animation: shine-thumb-off 0.5s ease 0s 1;
-    animation-fill-mode: forwards;
+    height: 10px;
+    z-index: 2;
+    background: #fffae6;
 }
 
-#btn:checked+label .thumb {
-    left: calc(calc(100% - calc(calc(var(--sz) * 2) - calc(var(--sz) / 3))) - calc(calc(var(--sz) / 10) + calc(var(--sz) / 7)));
-
-}
-
-#btn:checked+label .thumb:after {
-    animation: shine-thumb-on 0.5s ease 0s 1;
-    animation-fill-mode: forwards;
-    transition: var(--tr);
-    transition-property: --lg;
-}
-
-@keyframes shine-thumb-on {
-    0% {
-        --lg: var(--of);
-    }
-
-    50% {
-        --lg: var(--gr);
-    }
-
-    100% {
-        --lg: var(--on);
-    }
-}
-
-@keyframes shine-thumb-off {
-    0% {
-        --lg: var(--on);
-    }
-
-    50% {
-        --lg: var(--gr);
-    }
-
-    100% {
-        --lg: var(--of);
-    }
-}
-
-.track-top,
-.track-bot {
+.mouth.tounge:after {
     position: absolute;
-    width: 120%;
-    height: calc(var(--sz) / 2.25);
-    left: -10%;
-    top: calc(var(--sz) / -2.5);
-    transform-origin: 22% 100%;
-    transform: rotate(5deg);
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    opacity: 0.85;
-    animation: t-top-l 0.5s ease 0s 1 reverse;
-    animation-fill-mode: forwards;
+    width: 38px;
+    height: 38px;
+    left: 0;
+    right: 0;
+    top: 15px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: #d8aa2b;
 }
 
-.track span span {
-    background:
-        linear-gradient(0deg, #fff8, #fff0),
-        linear-gradient(180deg, #222, #666);
-    width: calc(var(--sz) / 1.6);
-    height: calc(var(--sz) / 2);
-    display: inline-flex;
-    border-radius: 0 0 calc(var(--sz) / 8) calc(var(--sz) / 8);
-    box-shadow: 0 0 1px 0 #fff;
+
+/*------ Grin Emoji Styling ------*/
+
+.grin .eye {
+    transition: all 0.3s ease-in-out;
 }
 
-.track-bot span {
-    background:
-        linear-gradient(180deg, #fff8, #fff0),
-        linear-gradient(0deg, #222, #666) !important;
-    border-radius: calc(var(--sz) / 8) calc(var(--sz) / 8) 0 0 !important;
+.grin:hover .eye {
+    animation: none;
+    height: 2px;
+    top: 36px;
 }
 
-.track-bot {
-    left: -10%;
-    top: inherit;
-    bottom: calc(var(--sz) / -2.25);
-    transform-origin: 22% 100%;
-    transform: rotate(-5deg);
-    animation: t-bot-l 0.5s ease 0s 1 reverse;
-    animation-fill-mode: forwards;
+.grin:hover .mouth {
+    animation-name: giggle;
+    animation-iteration-count: infinite;
+    animation-duration: 0.2s;
 }
 
-#btn:checked+label .track .track-top {
-    animation: t-top-r 0.5s ease 0s 1;
-    animation-fill-mode: forwards;
-}
-
-@keyframes t-top-r {
+@keyframes giggle {
     0% {
-        transform: rotate(5deg);
-        transform-origin: 22% 100%;
+        transform: translate(0, -1px);
     }
 
     50% {
-        transform: rotate(0deg);
-        transform-origin: 22% 100%;
-    }
-
-    50.01% {
-        transform: rotate(0deg);
-        transform-origin: 78% 100%;
+        transform: translate(0, 2px);
     }
 
     100% {
-        transform: rotate(-5deg);
-        transform-origin: 78% 100%;
+        transform: translate(0, -1px);
     }
 }
 
-@keyframes t-top-l {
-    0% {
-        transform: rotate(5deg);
-        transform-origin: 22% 100%;
+
+/*------ Sad Emoji Styling ------*/
+
+.sad .mouth {
+    top: 44px;
+    border-radius: 70px 70px 0 0;
+}
+
+.sad .mouth:before {
+    display: none;
+}
+
+
+/*------ Shocked Emoji Styling ------*/
+
+.shocked .mouth {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.shocked .eye {
+    transition: all 0.2s ease-in-out;
+}
+
+.shocked:hover .eye {
+    animation: none;
+    transform: scale(1.3, 1.3);
+    transition: all 1.5s ease-out;
+}
+
+.shocked:hover .mouth {
+    animation-name: wow;
+    animation-iteration-count: infinite;
+    animation-duration: 2.5s;
+}
+
+@keyframes wow {
+    70% {
+        transform: scale(0.5, 0.5);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+
+/*------ Smiling Emoji Styling ------*/
+
+.smile .mouth {
+    width: 50px;
+    height: 25px;
+    background: transparent;
+    border-radius: 0 0 50px 50px;
+    border: 4px solid #995710;
+    border-top: 0;
+    -webkit-clip-path: inset(30% 0 0 0);
+    clip-path: inset(30% 0 0 0);
+}
+
+
+/*------ Speechless Emoji Styling ------*/
+
+.speechless .mouth {
+    width: 70px;
+    height: 4px;
+    top: 60px;
+    border-radius: 0;
+}
+
+
+/*------ Love Emoji Styling ------*/
+
+.heart-eye {
+    position: absolute;
+    top: 30px;
+    left: 16px;
+    transform: rotate(-15deg);
+}
+
+.heart-eye:last-child {
+    left: auto;
+    right: 16px;
+    transform: rotate(15deg);
+}
+
+.heart {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: #e25d5d;
+    transform: rotate(-45deg);
+}
+
+.heart:before,
+.heart:after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #e25d5d;
+}
+
+.heart:before {
+    top: -8px;
+    left: 0;
+}
+
+.heart:after {
+    left: 8px;
+    top: 0;
+}
+
+.love .mouth {
+    transform: scale(0.5, 0.5);
+}
+
+.love:hover .heart-eye {
+    animation-name: pulse;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+}
+
+.love:hover .heart-eye:last-child {
+    animation-name: pulse-right;
+}
+
+@keyframes pulse {
+    30% {
+        transform: scale(1.1, 1.1) rotate(-15deg);
+    }
+
+    70% {
+        transform: scale(1, 1) rotate(-15deg);
+    }
+}
+
+@keyframes pulse-right {
+    30% {
+        transform: scale(1.1, 1.1) rotate(15deg);
+    }
+
+    70% {
+        transform: scale(1, 1) rotate(15deg);
+    }
+}
+
+
+/*------ Angry Emoji Styling ------*/
+
+.angry .face {
+    background: #e25d5d;
+    transition: all 500ms ease-in-out;
+}
+
+.angry:hover .face {
+    background: #e84747;
+    animation-name: fuming;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+}
+
+@keyframes fuming {
+    10% {
+        transform: translate(-5px);
+    }
+
+    15% {
+        transform: translate(5px);
+    }
+
+    20% {
+        transform: translate(-5px);
+    }
+
+    25% {
+        transform: translate(5px);
+    }
+
+    30% {
+        transform: translate(-5px);
+    }
+
+    35% {
+        transform: translate(5px);
+    }
+
+    40% {
+        transform: translate(-5px);
+    }
+
+    45% {
+        transform: translate(5px);
     }
 
     50% {
-        transform: rotate(0deg);
-        transform-origin: 22% 100%;
-    }
-
-    50.01% {
-        transform: rotate(0deg);
-        transform-origin: 78% 100%;
-    }
-
-    100% {
-        transform: rotate(-5deg);
-        transform-origin: 78% 100%;
+        transform: translate(0);
     }
 }
 
-#btn:checked+label .track .track-bot {
-    animation: t-bot-r 0.5s ease 0s 1;
-    animation-fill-mode: forwards;
+.angry .eye,
+.angry .eye:before,
+.angry .mouth {
+    background: #7f2626;
 }
 
-@keyframes t-bot-r {
-    0% {
-        transform: rotate(-5deg);
-        transform-origin: 22% 100%;
-    }
-
-    50% {
-        transform: rotate(0deg);
-        transform-origin: 22% 100%;
-    }
-
-    50.01% {
-        transform: rotate(0deg);
-        transform-origin: 78% 100%;
-    }
-
-    100% {
-        transform: rotate(5deg);
-        transform-origin: 78% 100%;
-    }
+.angry .eye:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 5px;
+    top: -1px;
+    left: -4px;
+    transform: rotate(20deg);
 }
 
-@keyframes t-bot-l {
-    0% {
-        transform: rotate(-5deg);
-        transform-origin: 22% 100%;
-    }
+.angry .eye:last-child:before {
+    left: auto;
+    right: -4px;
+    transform: rotate(-20deg);
+}
 
-    50% {
-        transform: rotate(0deg);
-        transform-origin: 22% 100%;
-    }
-
-    50.01% {
-        transform: rotate(0deg);
-        transform-origin: 78% 100%;
-    }
-
-    100% {
-        transform: rotate(5deg);
-        transform-origin: 78% 100%;
-    }
+.angry .mouth {
+    width: 20px;
+    height: 4px;
+    top: 64px;
+    border-radius: 0;
 }
 </style>

@@ -108,7 +108,7 @@ export default {
   background-image: -webkit-linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
 
   background-image: linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
-  padding: 10px 20px;
+  padding: 12px 20px;
   padding-left: 8%;
   padding-right: 8%;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
