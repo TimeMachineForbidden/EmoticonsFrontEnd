@@ -1,5 +1,5 @@
 <template>
-  <div class="home" style="min-height: 200vh;">
+  <div class="home">
     <div :class="fixedHeaderClass">
       <div class="nav">
         <myicon></myicon>
@@ -12,7 +12,7 @@
         </div>
         <div class="loginbtn" v-if="!isFixed">
           <el-button type="primary" class="navbtn" size="large" @click="upload"
-            style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 80px;">Upload</el-button>
+            style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 80px;margin-left: 12px;">Upload</el-button>
           <el-button type="primary" class="navbtn" size="large" @click="login"
             style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 80px;">Login</el-button>
         </div>
@@ -164,9 +164,7 @@ export default {
 }
 
 .nav .nav .loginbtn {
-  float: right;
   position: absolute;
-  right: 18.2%;
 }
 
 .search-container {
@@ -214,43 +212,6 @@ export default {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  height: 100%;
 
-}
-
-.page-content a {
-  width: 270px;
-  height: 190px;
-  background-color: rgb(247, 247, 198);
-  margin: 20px;
-  transition-property: transform, box-shadow;
-  transition-duration: .3s, .3s;
-  text-decoration: none;
-}
-
-.page-content a:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.page-content a img {
-  width: 270px;
-  height: 190px;
-}
-
-.page-content a span {
-  display: none;
-  position: absolute;
-  height: 15%;
-  width: 100%;
-  top: 161.5px;
-  left: 10px;
-  background-color: rbga(0, 0, 0, .4);
-  text-align: left;
-  color: chartreuse;
-}
-
-.page-content a:hover span {
-  display: block;
 }
 </style>

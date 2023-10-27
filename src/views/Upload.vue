@@ -157,8 +157,10 @@ export default {
                     axios.post('http://123.249.110.185:8080/emoji', {
                         name: this.EmoticonData.name,
                         description: this.EmoticonData.description,
-                        url: this.imageUrl
+                        url: this.imageUrl,
                     }).then((response) => {
+                        console.log(response)
+
                         if (response.code === 1) {
                             ElMessage.success('Successfully Upload')
                             this.$router.push('/')
