@@ -87,8 +87,6 @@ import { ArrowLeft } from '@element-plus/icons-vue'
 </script>
 <script>
 import axios from 'axios';
-import Service from '@/utils/request.js';
-import { mapMutations } from 'vuex';
 export default {
     data() {
         return {

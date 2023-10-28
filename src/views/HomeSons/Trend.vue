@@ -6,7 +6,6 @@
 </template>
 <script>
 import axios from 'axios';
-import Service from '@/utils/request.js';
 export default {
     data() {
         return {
@@ -42,7 +41,7 @@ export default {
                 console.error('请求出错：' + error);
             });
         },
-        getemoji() {
+        getnextemoji() {
             // 使用axios获取数据
             axios.get('http://123.249.110.185:8080/emoji', {
                 params: {
@@ -71,7 +70,7 @@ export default {
             if (scrollPercentage >= 99) {
                 this.page++;
                 // 滚动到底部，执行返回操作
-                this.getemoji();
+                this.getnextemoji();
                 window.scrollTo(0, windowHeight * ((this.page - 2) * 10 + 20 / (this.page - 1) * 10 + 20));
             }
         }
@@ -89,13 +88,19 @@ export default {
 }
 
 .trendcontent a {
-    width: 20%;
+    width: 22%;
     height: 20vh;
-    margin: 20px;
+    margin: 15px;
     background-color: rgb(247, 247, 198);
     transition-property: transform, box-shadow;
     transition-duration: .3s, .3s;
     text-decoration: none;
+    position: relative;
+    /* 设置父容器为相对定位，以容纳绝对定位的图像 */
+    display: block;
+    /* 确保锚点元素作为块级元素显示 */
+    overflow: hidden;
+    /* 隐藏超出容器的内容 */
 }
 
 .trendcontent a:hover {
@@ -104,8 +109,16 @@ export default {
 }
 
 .trendcontent a img {
+    position: absolute;
+    /* 图像绝对定位，相对于父容器 */
+    top: 0;
+    left: 0;
     width: 100%;
+    /* 图像宽度填充容器 */
     height: 100%;
+    /* 图像高度填充容器 */
+    object-fit: cover;
+    /* 以覆盖方式截取和填充图像 */
 }
 
 .trendcontent a span {

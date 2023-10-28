@@ -215,6 +215,7 @@ export default {
                 ]
             },
             userToken: '',
+            userID: '',
             showlogin: true,
             registerFormRef: ref(''),
             registerData: reactive({
@@ -253,8 +254,9 @@ export default {
                     }).then((response) => {
                         console.log(response.data)
                         if (response.data.code === 1) {
-                            _this.userToken = 'Token ' + response.data.data.token
-                            _this.changeLogin({ Authorization: _this.userToken });
+                            _this.userToken = 'Token ' + response.data.data.token;
+                            _this.userID = response.data.data.id;
+                            _this.changeLogin({ Authorization: _this.userToken, ID: _this.userID });
                             _this.$router.push('/');
                             ElMessage.success('Successfully Login')
                         }
@@ -270,7 +272,6 @@ export default {
     },
     directives: {
         color: {
-
             created(el, binding) {
                 console.log(el, binding.value)
                 el.style.background = binding.value

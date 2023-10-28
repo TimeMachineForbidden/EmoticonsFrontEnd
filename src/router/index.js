@@ -5,6 +5,7 @@ import Upload from '../views/Upload.vue'
 import Test from '../components/test.vue'
 import icon from '../components/icon.vue'
 import Trend from '../views/HomeSons/Trend.vue'
+import User from '../views/User.vue'
 const routes = [
   {
     path: '/',
@@ -23,6 +24,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path:'/user',
+    name:'user',
+    component:User
   },
   {
     path: "/test",
@@ -45,22 +51,23 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.path === '/login') {
-    next();
-  } else {
-    if (to.path === '/aaa') {
-      let token = localStorage.getItem('Authorization');
-      console.log(token + 'token aaaa')
-      if (token === null || token === '') {
-        next('/login');
-      } else {
-        next();
-      }
-    }
-    else {
-      next();
-    }
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.path === '/login') {
+//     next();
+//   } else {
+//     if (to.path === '/aaa') {
+//       let token = localStorage.getItem('Authorization');
+//       console.log(token + 'token aaaa')
+//       if (token === null || token === '') {
+//         console.log(token)
+//         next('/login');
+//       } else {
+//         next();
+//       }
+//     }
+//     else {
+//       next();
+//     }
+//   }
+// });
 export default router

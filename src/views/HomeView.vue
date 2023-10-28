@@ -14,7 +14,7 @@
           <el-button type="primary" class="navbtn" size="large" @click="upload"
             style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 80px;margin-left: 12px;">Upload</el-button>
           <el-button type="primary" class="navbtn" size="large" @click="login"
-            style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 80px;">Login</el-button>
+            style="font-family: 'Oswald', sans-serif;font-weight: 800;width: 80px;">{{ LoginState }}</el-button>
         </div>
       </div>
       <div class="search-container" :class="{ 'fixed': isFixed }">
@@ -49,7 +49,8 @@ export default {
     return {
       isFixed: false,
       isButtonDown: false, // 用于按钮移动特效
-      searchcontent: ''
+      searchcontent: '',
+      LoginState: 'Login',
     };
   },
   computed: {
@@ -62,6 +63,7 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
+    this.isLogin();
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -73,10 +75,25 @@ export default {
       this.isButtonDown = this.isFixed; // 根据 isFixed 更新按钮特效
     },
     login() {
-      this.$router.push('/login')
+      if (localStorage.getItem('ID') == null) {
+        this.$router.push('/login')
+      }
+      else {
+        this.$router.push('/user')
+      }
     },
     upload() {
-      this.$router.push('/upload')
+      if (localStorage.getItem('ID') == null) {
+        this.$router.push('/login')
+      }
+      else {
+        this.$router.push('/upload')
+      }
+    },
+    isLogin() {
+      if (localStorage.getItem('ID') != null) {
+        this.LoginState = 'User'
+      }
     }
   }
 };
