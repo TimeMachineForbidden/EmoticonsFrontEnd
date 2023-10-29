@@ -2,7 +2,9 @@
   <div class="home">
     <div :class="fixedHeaderClass">
       <div class="nav">
-        <myicon></myicon>
+        <div class="icon">
+          <myicon></myicon>
+        </div>
         <div class="labels" v-if="!isFixed">
           <router-link to="/trend">Trends</router-link>
           <a>Animated</a>
@@ -196,7 +198,6 @@ export default {
 
 
 .search-container.fixed {
-  width: 100%;
   padding-top: 0;
   margin-top: 0;
   margin-left: 8px;

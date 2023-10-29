@@ -17,7 +17,8 @@ export default {
         this.getfirstemoji();
         window.addEventListener('scroll', this.handleScroll);
     },
-    beforeDestroy() {
+    beforeUnmount() {
+        // 在组件销毁之前移除滚动事件监听器
         window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
@@ -63,17 +64,23 @@ export default {
         },
         handleScroll() {
             const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            const scrollPercentage = (scrollY / (documentHeight - windowHeight)) * 100;
+            const windowHeight = window.innerHeight;
 
-            if (scrollPercentage >= 99) {
-                this.page++;
-                // 滚动到底部，执行返回操作
-                this.getnextemoji();
-                window.scrollTo(0, windowHeight * ((this.page - 2) * 10 + 20 / (this.page - 1) * 10 + 20));
+            if (scrollY + windowHeight >= documentHeight) {
+                const currentTime = new Date().getTime();
+                if (!this.lastScrollTime || (currentTime - this.lastScrollTime) > 500) {
+                    this.page++;
+                    // 滚动到底部，执行返回操作
+                    this.getnextemoji();
+
+                    window.scrollTo(0, windowHeight * ((this.page - 2) * 10 + 20 / (this.page - 1) * 10 + 20));
+
+                    this.lastScrollTime = currentTime;
+                }
             }
-        }
+        },
+
 
     },
 }

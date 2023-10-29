@@ -124,6 +124,10 @@ export default {
     },
     mounted() {
     },
+    beforeDestroy() {
+        console.log("niaho")
+        window.removeEventListener('scroll', this.handleScroll);
+    },
     methods: {
         successfn(response, file, fileList) {
             this.imageName = file.name
