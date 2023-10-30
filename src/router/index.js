@@ -6,6 +6,11 @@ import Test from '../components/test.vue'
 import icon from '../components/icon.vue'
 import Trend from '../views/HomeSons/Trend.vue'
 import User from '../views/User.vue'
+import UserLike from '../views/UserSons/UserLike.vue'
+import UserSettings from '../views/UserSons/UserSettings.vue'
+import Author from '../views/Author.vue'
+import AuthorCreate from '../views/AuthorSons/AuthorCreate.vue'
+import AuthorLike from '../views/AuthorSons/AuthorLike.vue'
 const routes = [
   {
     path: '/',
@@ -28,21 +33,53 @@ const routes = [
   {
     path:'/user',
     name:'user',
-    component:User
+    component: User,
+    redirect: '/userlike',
+    children:[
+      {
+        path:"/userlike",
+        name:'userlike',
+        component:UserLike,
+      },
+      {
+        path:"/usersettings",
+        name:'usersettings',
+        component:UserSettings,
+      }
+    ]
   },
   {
     path: "/test",
     name: 'test',
-    component: Test
+    component: Test,
   },
   {
     path: "/icon",
     name: 'icon',
     component: icon
-  }, {
+  }, 
+  {
     path: '/upload',
     name: 'upload',
     component: Upload
+  },
+  {
+    path:"/author",
+    name:'author',
+    component:Author,
+    redirect:'/authorcreate',
+    children:[
+      {
+        path:"/authorlike",
+        name:'authorlike',
+        component:AuthorLike,
+      },
+      {
+        path:"/authorcreate",
+        name:'authorcreate',
+        component:AuthorCreate,
+      }
+    ]
   }
 ]
 

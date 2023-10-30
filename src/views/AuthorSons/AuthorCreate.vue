@@ -1,9 +1,7 @@
 <template>
     <div class="trendcontent">
-        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span
-                @click="navigateToUserProfile(item.createUser)" style="cursor: pointer">
-                Author: {{ item.createUser }}
-            </span></a>
+        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
+            item.createUser }}</span></a>
     </div>
 </template>
 <script>
@@ -83,10 +81,6 @@ export default {
                 }
             }
         },
-        navigateToUserProfile(username) {
-            // 在这里执行路由跳转到用户个人页面，使用你的路由配置和路径
-            this.$router.push('/author');
-        }
 
 
     },
@@ -97,13 +91,14 @@ export default {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    margin-left: 8%;
     width: 84%;
     background-color: white;
 }
 
 .trendcontent a {
     width: 22%;
-    height: 25vh;
+    height: 20vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);
     transition-property: transform, box-shadow;

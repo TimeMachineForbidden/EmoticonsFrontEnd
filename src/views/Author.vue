@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <div class="userheader">
-            <h2>User</h2>
+            <h2>Author</h2>
         </div>
         <div class="main-container">
             <div class="UserInformation">
@@ -19,10 +19,8 @@
                 <a>220 collections</a>
             </div>
             <div class="labels">
-                <router-link to="/userlike">Like</router-link>
-                <a>Collect</a>
-                <a>Create</a>
-                <router-link to="/usersettings">Settings</router-link>
+                <router-link to="/authorcreate">Create</router-link>
+                <router-link to="/authorlike">Like</router-link>
                 <a>More</a>
             </div>
             <div class="page-content">
