@@ -1,11 +1,20 @@
 <template>
     <div class="trendcontent">
-        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span
-                @click="navigateToUserProfile(item.createUser)" style="cursor: pointer">
-                Author: {{ item.createUser }}
-            </span></a>
+        <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata" src="@/assets/testpic.jpg" alt="">
+            <span>
+                <div class="Author" @click="navigateToUserProfile(item.createUser)">Author: {{ item.createUser }}</div>
+                <div class="star"> star </div>
+                <el-icon style="top: 4.6px;" :style="{ 'color': iconColor }" @click="toggleIconColor">
+                    <Star />
+                </el-icon>
+                <div class="download"> download </div>
+            </span>
+        </a>
     </div>
 </template>
+<script setup>
+import { Star } from '@element-plus/icons-vue';
+</script>
 <script>
 import axios from 'axios';
 export default {
@@ -13,7 +22,8 @@ export default {
         return {
             page: 1,
             dataList: [], // 存储返回的数据
-            lastScrollTime: ''
+            lastScrollTime: '',
+            iconColor: 'white'
         };
     },
     mounted() {
@@ -86,8 +96,13 @@ export default {
         navigateToUserProfile(username) {
             // 在这里执行路由跳转到用户个人页面，使用你的路由配置和路径
             this.$router.push('/author');
+        },
+        toggleIconColor() {
+            this.iconColor = this.iconColor === 'white' ? 'red' : 'white';
+        },
+        getemojidata() {
+            this.$router.push('/emoji');
         }
-
 
     },
 }
@@ -124,6 +139,7 @@ export default {
 
 .trendcontent a img {
     position: absolute;
+    cursor: pointer;
     /* 图像绝对定位，相对于父容器 */
     top: 0;
     left: 0;
@@ -145,9 +161,20 @@ export default {
     background-color: rbga(0, 0, 0, .4);
     text-align: left;
     color: chartreuse;
+    cursor: pointer;
+    /* display: flex;
+    padding: 10px; */
 }
 
 .trendcontent a:hover span {
-    display: block;
+    display: flex;
+}
+
+.trendcontent a:hover span .star {
+    margin-left: 10%;
+}
+
+.trendcontent a:hover span .download {
+    margin-left: 10%;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="trendcontent">
+    <div class="userlikecontent">
         <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
             item.createUser }}</span></a>
     </div>
@@ -87,7 +87,7 @@ export default {
 }
 </script>
 <style scoped>
-.trendcontent {
+.userlikecontent {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -96,7 +96,7 @@ export default {
     background-color: white;
 }
 
-.trendcontent a {
+.userlikecontent a {
     width: 22%;
     height: 20vh;
     margin: 15px;
@@ -112,12 +112,12 @@ export default {
     /* 隐藏超出容器的内容 */
 }
 
-.trendcontent a:hover {
+.userlikecontent a:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.trendcontent a img {
+.userlikecontent a img {
     position: absolute;
     /* 图像绝对定位，相对于父容器 */
     top: 0;
@@ -130,7 +130,7 @@ export default {
     /* 以覆盖方式截取和填充图像 */
 }
 
-.trendcontent a span {
+.userlikecontent a span {
     display: none;
     position: absolute;
     height: 15%;
@@ -142,7 +142,7 @@ export default {
     color: chartreuse;
 }
 
-.trendcontent a:hover span {
+.userlikecontent a:hover span {
     display: block;
 }
 </style>

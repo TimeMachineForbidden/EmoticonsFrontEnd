@@ -119,9 +119,7 @@ export default {
     flex-wrap: wrap;
     margin-left: 8%;
 }
-</style>
-  
-<style>
+
 .box-card {
     margin-top: 20px;
     font-family: 'Oswald';

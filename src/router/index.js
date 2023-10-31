@@ -11,6 +11,7 @@ import UserSettings from '../views/UserSons/UserSettings.vue'
 import Author from '../views/Author.vue'
 import AuthorCreate from '../views/AuthorSons/AuthorCreate.vue'
 import AuthorLike from '../views/AuthorSons/AuthorLike.vue'
+import Emoji from '../views/HomeSons/Emoji.vue'
 const routes = [
   {
     path: '/',
@@ -23,6 +24,11 @@ const routes = [
         name: 'trend',
         component: Trend
       },
+      {
+        path:'/emoji',
+        name:'emoji',
+        component:Emoji,
+      }
     ]
   },
   {

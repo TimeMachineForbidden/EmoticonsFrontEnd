@@ -1,31 +1,34 @@
 <template>
     <div class="home">
-        <div class="authorheader">
-            <h2>Author</h2>
-        </div>
         <div class="main-container">
-            <div class="AuthorInformation">
-                <div class="left">
-                    <a><img src="@/assets/testpic.jpg" alt=""></a>
+            <div class="emoji">
+                <div class="image"><img src="@/assets/testpic.jpg" alt=""></div>
+                <div class="AuthorInformation">
+                    <div class="information">
+                        <div class="left">
+                            <a><img src="@/assets/testpic.jpg" alt=""></a>
+                        </div>
+                        <div class="right">
+                            <h2>username:{{ userdata.username }}</h2>
+                            <div>signature:{{ userdata.signature }}</div>
+                        </div>
+                    </div>
+                    <div class="data">
+                        <a>220 follows</a>
+                        <a>220 stars</a>
+                        <a>220 collections</a>
+                    </div>
+                    <div class="operate">
+                        <a>Like</a>
+                        <a>Star</a>
+                        <a>Download</a>
+                        <a>Share</a>
+                    </div>
                 </div>
-                <div class="right">
-                    <h2>username:{{ userdata.username }}</h2>
-                    <div>signature:{{ userdata.signature }}</div>
-                </div>
+                <div></div>
             </div>
-            <div class="data">
-                <a>220 follows</a>
-                <a>220 stars</a>
-                <a>220 collections</a>
-            </div>
-            <div class="labels">
-                <router-link to="/authorcreate">Create</router-link>
-                <router-link to="/authorlike">Like</router-link>
-                <a>More</a>
-            </div>
-            <div class="page-content">
-                <!-- 页面内容 -->
-                <router-view></router-view>
+            <div class="discussion">
+                nihao
             </div>
         </div>
     </div>
@@ -91,58 +94,66 @@ export default {
     background-image: linear-gradient(180deg, rgb(156, 206, 252), rgb(117, 250, 170));
 }
 
-.authorheader {
-    padding: 20px;
-    /* 设置内边距 */
-    text-align: center;
-}
-
 .main-container {
-    width: 80%;
+    display: grid;
+    width: 84%;
     /* 设置宽度为页面宽度的80% */
     margin: 0 auto;
     /* 居中对齐 */
     padding: 10px;
     /* 设置内边距 */
-    min-height: 80vh;
-    /* 设置最小高度为110视窗高度（vh） */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     /* 添加阴影效果 */
     border-radius: 10px;
-    background-image: -moz-linear-gradient(125deg, rgb(0, 255, 255), rgb(240, 155, 253));
+    background-image: -moz-linear-gradient(90deg, rgb(168, 255, 203), rgb(255, 184, 197));
 
-    background-image: -webkit-linear-gradient(125deg, rgb(0, 255, 255), rgb(240, 155, 253));
+    background-image: -webkit-linear-gradient(90deg, rgb(168, 255, 203), rgb(255, 184, 197));
 
-    background-image: linear-gradient(125deg, rgb(0, 255, 255), rgb(240, 155, 253));
+    background-image: linear-gradient(90deg, rgb(168, 255, 203), rgb(255, 184, 197));
 }
 
-.main-container .AuthorInformation {
-    margin-left: 8%;
+.main-container .emoji {
+    height: 90%;
+    display: flex;
+}
+
+.main-container .emoji .image {
+    margin-top: 20px;
+    width: 55vw;
+    height: 55vw;
+    display: block;
+    /* 确保.image容器是块级元素 */
+}
+
+.main-container .emoji .image img {
+    width: 70%;
+    height: 70%;
+    display: block;
+    /* 确保图像是块级元素 */
+    margin: 0 auto;
+    /* 将图像水平居中 */
+}
+
+.main-container .emoji .AuthorInformation .information {
+    margin-top: 20px;
     display: flex;
     height: 10vh;
     justify-content: left;
 }
 
-.main-container .AuthorInformation .left {
+
+.main-container .emoji .AuthorInformation .information .left {
     margin-right: 1.5%;
     width: 10vh;
 }
 
-.main-container .AuthorInformation .right {
+.main-container .emoji .AuthorInformation .information .right {
     display: grid;
     align-content: flex-end;
     font-family: 'Oswald';
 }
 
-.main-container .AuthorInformation .btn {
-    flex-wrap: wrap;
-    display: flex;
-    align-content: flex-end;
-    float: right;
-}
-</style>
-<style scoped>
-.main-container .AuthorInformation .left a {
+.main-container .emoji .AuthorInformation .information .left a {
     width: 10vh;
     height: 10vh;
     transition-property: transform, box-shadow;
@@ -156,7 +167,7 @@ export default {
     /* 隐藏超出容器的内容 */
 }
 
-.main-container .AuthorInformation .left a img {
+.main-container .emoji .AuthorInformation .information .left a img {
     position: absolute;
     border-radius: 50%;
     /* 图像绝对定位，相对于父容器 */
@@ -170,46 +181,20 @@ export default {
     /* 以覆盖方式截取和填充图像 */
 }
 
-.labels {
+.main-container .emoji .AuthorInformation .data {
     margin-top: 10px;
-    margin-left: 8%;
-    font-family: 'Oswald';
 }
 
-.labels a {
-
-    display: inline-block;
-    height: 50px;
-    padding: 0 40px;
-    margin-right: 8px;
-    font-size: 20px;
-    color: black;
-    text-decoration: none;
-    line-height: 40px;
-    border-bottom: 5px solid purple;
-}
-
-.labels a:hover {
-    background-image: -moz-linear-gradient(45deg, rgb(153, 255, 245), rgb(173, 255, 201));
-
-    background-image: -webkit-linear-gradient(45deg, rgb(153, 255, 245), rgb(173, 255, 201));
-
-    background-image: linear-gradient(45deg, rgb(153, 255, 245), rgb(173, 255, 201));
-    transition: all .2s;
-}
-
-.page-content {
-    margin-top: 0px;
-}
-
-.main-container .data {
-    margin-top: 10px;
-    display: flex;
-    font-family: 'Oswald';
-    margin-left: 8%;
-}
-
-.main-container .data a {
+.main-container .emoji .AuthorInformation .data a {
     margin-right: 20px;
+}
+
+.main-container .emoji .AuthorInformation .operate {
+    display: grid;
+    margin-top: 20px;
+}
+
+.main-container .emoji .AuthorInformation .operate a {
+    margin-top: 20px;
 }
 </style>
