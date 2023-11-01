@@ -5,6 +5,12 @@
         </div>
         <div class="main-container">
             <div class="beforeupload" v-if="beforeuploaded">
+                <div class="backhome" @click="backhome">
+                    <el-icon>
+                        <ArrowLeft />
+                    </el-icon>
+                    <span>Back</span>
+                </div>
                 <div class="uploadtips">
                     <h2 style="color: white;">You can Upload here</h2>
                 </div>
@@ -175,6 +181,9 @@ export default {
                     });
                 }
             })
+        },
+        backhome() {
+            this.$router.push('/')
         }
 
     },
@@ -254,6 +263,15 @@ export default {
 }
 
 .backward span {
+    font-size: 20px;
+}
+
+.main-container .backhome {
+    cursor: pointer;
+    top: 10px
+}
+
+.backhome span {
     font-size: 20px;
 }
 

@@ -4,6 +4,12 @@
             <h2>User</h2>
         </div>
         <div class="main-container">
+            <div class="backward" @click="back">
+                <el-icon>
+                    <ArrowLeft />
+                </el-icon>
+                <span>Back</span>
+            </div>
             <div class="UserInformation">
                 <div class="left">
                     <a><img src="@/assets/testpic.jpg" alt=""></a>
@@ -22,6 +28,7 @@
                 <router-link to="/userlike">Like</router-link>
                 <a>Collect</a>
                 <a>Create</a>
+                <a>Messages</a>
                 <router-link to="/usersettings">Settings</router-link>
                 <a>More</a>
             </div>
@@ -33,6 +40,9 @@
     </div>
 </template>
 
+<script setup>
+import { ArrowLeft } from '@element-plus/icons-vue'
+</script >
 <script>
 import axios from 'axios';
 export default {
@@ -72,11 +82,13 @@ export default {
                 console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;
-                    console.log(this.userdata)
                 }
             }).catch(error => {
                 console.log(error);
             });
+        },
+        back() {
+            this.$router.push('/')
         }
     }
 }
@@ -170,6 +182,15 @@ export default {
     /* 图像高度填充容器 */
     object-fit: cover;
     /* 以覆盖方式截取和填充图像 */
+}
+
+.main-container .backward {
+    cursor: pointer;
+    top: 10px
+}
+
+.backward span {
+    font-size: 20px;
 }
 
 .labels {

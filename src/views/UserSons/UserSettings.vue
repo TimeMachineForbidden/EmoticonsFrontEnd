@@ -81,7 +81,9 @@ export default {
                 .then(response => {
                     console.log(response)
                     if (response.code === 1) {
+                        // this.set(this.userdata, { ...this.editedData });
                         this.userdata = { ...this.editedData };
+                        console.log(this.userdata)
                         this.toggleEditMode();
                     }
                 })

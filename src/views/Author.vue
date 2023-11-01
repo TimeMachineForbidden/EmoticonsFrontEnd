@@ -4,6 +4,12 @@
             <h2>Author</h2>
         </div>
         <div class="main-container">
+            <div class="backhome" @click="backhome">
+                <el-icon>
+                    <ArrowLeft />
+                </el-icon>
+                <span>Back</span>
+            </div>
             <div class="AuthorInformation">
                 <div class="left">
                     <a><img src="@/assets/testpic.jpg" alt=""></a>
@@ -30,7 +36,9 @@
         </div>
     </div>
 </template>
-
+<script setup>
+import { ArrowLeft } from '@element-plus/icons-vue'
+</script >
 <script>
 import axios from 'axios';
 export default {
@@ -75,6 +83,9 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
+        },
+        backhome() {
+            this.$router.push('/')
         }
     }
 }
@@ -140,8 +151,7 @@ export default {
     align-content: flex-end;
     float: right;
 }
-</style>
-<style scoped>
+
 .main-container .AuthorInformation .left a {
     width: 10vh;
     height: 10vh;
@@ -211,5 +221,14 @@ export default {
 
 .main-container .data a {
     margin-right: 20px;
+}
+
+.main-container .backhome {
+    cursor: pointer;
+    top: 10px
+}
+
+.backhome span {
+    font-size: 20px;
 }
 </style>
