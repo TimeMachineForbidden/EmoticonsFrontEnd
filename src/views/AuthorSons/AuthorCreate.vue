@@ -96,7 +96,7 @@ export default {
 }
 
 .authorcreate a {
-    width: 22%;
+    width: 300px;
     height: 20vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);

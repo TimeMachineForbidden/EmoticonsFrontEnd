@@ -17,16 +17,18 @@
                 <div class="right">
                     <h2>username:{{ userdata.username }}</h2>
                     <div>signature:{{ userdata.signature }}</div>
+                    <el-button type="primary" class="navbtn" size="large" @click="upload"
+                        style="font-family: 'Oswald', sans-serif;font-weight: 800;height: 20px;width: 120px;">Follow</el-button>
                 </div>
             </div>
             <div class="data">
+                <a>22 uploads</a>
                 <a>220 follows</a>
                 <a>220 stars</a>
-                <a>220 collections</a>
             </div>
             <div class="labels">
-                <router-link to="/authorcreate">Create</router-link>
-                <router-link to="/authorlike">Like</router-link>
+                <router-link to="/authorcreate">Upload</router-link>
+                <router-link to="/authorstar">Star</router-link>
                 <a>More</a>
             </div>
             <div class="page-content">

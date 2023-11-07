@@ -3,17 +3,21 @@
         <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata" src="@/assets/testpic.jpg" alt="">
             <span>
                 <div class="Author" @click="navigateToUserProfile(item.createUser)">Author: {{ item.createUser }}</div>
-                <div class="star"> star </div>
-                <el-icon style="top: 4.6px;" :style="{ 'color': iconColor }" @click="toggleIconColor">
+                <div class="star" @click="toggleIconColor"> star</div>
+                <el-icon style=" top: 4.6px;" :style="{ 'color': iconColor }">
                     <Star />
                 </el-icon>
                 <div class="download"> download </div>
+                <el-icon style="top: 4.6px; color: white;">
+                    <Download />
+                </el-icon>
             </span>
         </a>
     </div>
 </template>
 <script setup>
 import { Star } from '@element-plus/icons-vue';
+import { Download } from '@element-plus/icons-vue';
 </script>
 <script>
 import axios from 'axios';
@@ -117,7 +121,7 @@ export default {
 }
 
 .trendcontent a {
-    width: 22%;
+    width: 300px;
     height: 25vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);

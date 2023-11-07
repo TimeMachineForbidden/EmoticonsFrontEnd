@@ -6,11 +6,11 @@ import Test from '../components/test.vue'
 import icon from '../components/icon.vue'
 import Trend from '../views/HomeSons/Trend.vue'
 import User from '../views/User.vue'
-import UserLike from '../views/UserSons/UserLike.vue'
+import UserStar from '../views/UserSons/UserStar.vue'
 import UserSettings from '../views/UserSons/UserSettings.vue'
 import Author from '../views/Author.vue'
 import AuthorCreate from '../views/AuthorSons/AuthorCreate.vue'
-import AuthorLike from '../views/AuthorSons/AuthorLike.vue'
+import AuthorStar from '../views/AuthorSons/AuthorStar.vue'
 import Emoji from '../views/HomeSons/Emoji.vue'
 const routes = [
   {
@@ -40,12 +40,12 @@ const routes = [
     path:'/user',
     name:'user',
     component: User,
-    redirect: '/userlike',
+    redirect: '/userstar',
     children:[
       {
-        path:"/userlike",
-        name:'userlike',
-        component:UserLike,
+        path:"/userstar",
+        name:'userstar',
+        component:UserStar,
       },
       {
         path:"/usersettings",
@@ -76,9 +76,9 @@ const routes = [
     redirect:'/authorcreate',
     children:[
       {
-        path:"/authorlike",
-        name:'authorlike',
-        component:AuthorLike,
+        path:"/authorstar",
+        name:'authorstar',
+        component:AuthorStar,
       },
       {
         path:"/authorcreate",

@@ -20,14 +20,13 @@
                 </div>
             </div>
             <div class="data">
+                <a>20 uploads</a>
                 <a>220 follows</a>
                 <a>220 stars</a>
-                <a>220 collections</a>
             </div>
             <div class="labels">
-                <router-link to="/userlike">Like</router-link>
-                <a>Collect</a>
-                <a>Create</a>
+                <a>Upload</a>
+                <router-link to="/userstar">Star</router-link>
                 <a>Messages</a>
                 <router-link to="/usersettings">Settings</router-link>
                 <a>More</a>

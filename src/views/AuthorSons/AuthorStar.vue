@@ -1,5 +1,5 @@
 <template>
-    <div class="userlikecontent">
+    <div class="authorlike">
         <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
             item.createUser }}</span></a>
     </div>
@@ -87,7 +87,7 @@ export default {
 }
 </script>
 <style scoped>
-.userlikecontent {
+.authorlike {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -96,8 +96,8 @@ export default {
     background-color: white;
 }
 
-.userlikecontent a {
-    width: 22%;
+.authorlike a {
+    width: 300px;
     height: 20vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);
@@ -112,12 +112,12 @@ export default {
     /* 隐藏超出容器的内容 */
 }
 
-.userlikecontent a:hover {
+.authorlike a:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.userlikecontent a img {
+.authorlike a img {
     position: absolute;
     /* 图像绝对定位，相对于父容器 */
     top: 0;
@@ -130,7 +130,7 @@ export default {
     /* 以覆盖方式截取和填充图像 */
 }
 
-.userlikecontent a span {
+.authorlike a span {
     display: none;
     position: absolute;
     height: 15%;
@@ -142,7 +142,7 @@ export default {
     color: chartreuse;
 }
 
-.userlikecontent a:hover span {
+.authorlike a:hover span {
     display: block;
 }
 </style>
