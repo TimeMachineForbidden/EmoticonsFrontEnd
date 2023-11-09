@@ -77,7 +77,7 @@ export default {
         },
         saveChanges() {
             console.log(this.editedData)
-            axios.put('http://123.249.110.185:8080/user', this.editedData)
+            Service.put('/user', this.editedData)
                 .then(response => {
                     console.log(response)
                     if (response.code === 1) {
@@ -101,7 +101,7 @@ export default {
                 return Promise.reject(error);
             });
             this.ID = localStorage.getItem('ID')
-            axios.get('http://123.249.110.185:8080/user/' + this.ID).then((response) => {
+            Service.get('user/' + this.ID).then((response) => {
                 console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;

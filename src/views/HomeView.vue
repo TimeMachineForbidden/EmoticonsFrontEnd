@@ -42,7 +42,7 @@ import { Search } from '@element-plus/icons-vue'
 
 <script>
 import myicon from '../components/icon.vue'
-
+import Service from '@/utils/request';
 export default {
   components: {
     myicon

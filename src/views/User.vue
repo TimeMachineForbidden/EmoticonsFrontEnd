@@ -44,6 +44,7 @@ import { ArrowLeft } from '@element-plus/icons-vue'
 </script >
 <script>
 import axios from 'axios';
+import Service from '@/utils/request';
 export default {
     data() {
         return {
@@ -77,7 +78,7 @@ export default {
                 return Promise.reject(error);
             });
             this.ID = localStorage.getItem('ID')
-            axios.get('http://123.249.110.185:8080/user/' + this.ID).then((response) => {
+            Service.get('/user/' + this.ID).then((response) => {
                 console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;

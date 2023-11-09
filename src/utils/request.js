@@ -4,7 +4,7 @@ const Service = axios.create({
     timeout: 5000
 })
 // 添加请求拦截器
-axios.interceptors.request.use(function (config) {
+Service.interceptors.request.use(function (config) {
     if (localStorage.getItem('Authorization')) {
         config.headers.Authorization = localStorage.getItem('Authorization')
     }
@@ -17,7 +17,7 @@ axios.interceptors.request.use(function (config) {
 });
 
 // 添加响应拦截器
-axios.interceptors.response.use(function (response) {
+Service.interceptors.response.use(function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     return response.data;

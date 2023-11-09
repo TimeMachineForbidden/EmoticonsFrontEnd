@@ -5,7 +5,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
+import Service from '@/utils/request';
 export default {
     data() {
         return {
@@ -24,7 +24,7 @@ export default {
     methods: {
         getfirstemoji() {
             // 使用axios获取数据
-            axios.get('http://123.249.110.185:8080/emoji', {
+            Service.get("/emoji", {
                 params: {
                     page: 1,
                     pageSize: 20
@@ -44,7 +44,7 @@ export default {
         },
         getnextemoji() {
             // 使用axios获取数据
-            axios.get('http://123.249.110.185:8080/emoji', {
+            Service.get('/emoji', {
                 params: {
                     page: 1,
                     pageSize: 10

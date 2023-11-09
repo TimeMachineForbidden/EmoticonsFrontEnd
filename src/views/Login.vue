@@ -124,14 +124,25 @@ const validateConfirmPassword = (rule, value, callback) => {
         callback();
     }
 };
+const validateUsername = (rule, value, callback) => {
+    // 使用正则表达式校验用户名，不能包含"/"和"\"
+    const pattern = /^[^\/\\]+$/;
+    if (pattern.test(value)) {
+        callback(); // 验证通过
+    } else {
+        callback(new Error('Username cannot contain "/"and"\\"'));
+    }
+};
 const registerFormRules = reactive({
     email: [
         { required: true, message: 'Please input email', trigger: 'blur' },
         { min: 4, max: 100, message: 'Length should be 4 to 100', trigger: 'blur' },
+        { validator: validateUsername, trigger: 'blur' },
     ],
     password: [
         { required: true, message: 'Please input password', trigger: 'blur' },
         { min: 6, max: 100, message: 'Length should be 6 to 100', trigger: 'blur' },
+        { validator: validateUsername, trigger: 'blur' },
     ],
     confirmpassword: [
         { required: true, message: 'Please input confirmpassword', trigger: 'blur' },
@@ -159,7 +170,7 @@ const handleregister = () => {
                 password: registerData.password
             }).then(res => {
                 console.log(res.data)
-                if (res.data.data.msg === '注册成功!') {
+                if (res.data.msg === '注册成功!') {
                     location.reload();
                     reloadPage()
                     registerData.email = ''
@@ -202,7 +213,8 @@ export default {
                     min: 4,
                     max: 100,
                     message: 'email name should be between 4 and 100',
-                }
+                },
+                { validator: this.validateUsername, trigger: 'blur' }
                 ],
                 password: [{
                     required: true, message: "input password", trigger: 'blur'
@@ -211,7 +223,8 @@ export default {
                     min: 6,
                     max: 100,
                     message: 'password name should be between 6 and 100',
-                }
+                },
+                { validator: this.validateUsername, trigger: 'blur' }
                 ]
             },
             userToken: '',
@@ -252,10 +265,10 @@ export default {
                         username: this.loginData.email,
                         password: this.loginData.password
                     }).then((response) => {
-                        console.log(response.data)
-                        if (response.data.code === 1) {
-                            _this.userToken = 'Token ' + response.data.data.token;
-                            _this.userID = response.data.data.id;
+                        console.log(response)
+                        if (response.code === 1) {
+                            _this.userToken = 'Token ' + response.data.token;
+                            _this.userID = response.data.id;
                             _this.changeLogin({ Authorization: _this.userToken, ID: _this.userID });
                             _this.$router.push('/');
                             ElMessage.success('Successfully Login')
@@ -268,6 +281,15 @@ export default {
                     });
                 }
             })
+        },
+        validateUsername(rule, value, callback) {
+            // 使用正则表达式校验用户名，不能包含"/"和"\"
+            const pattern = /^[^\/\\]+$/;
+            if (pattern.test(value)) {
+                callback(); // 验证通过
+            } else {
+                callback(new Error('用户名不能包含"/"和"\''));
+            }
         }
     },
     directives: {

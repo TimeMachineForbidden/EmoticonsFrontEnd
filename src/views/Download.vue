@@ -10,6 +10,7 @@
 
 <script>
 import axios from 'axios';
+import Service from '@/utils/request';
 export default {
     data() {
         return {
