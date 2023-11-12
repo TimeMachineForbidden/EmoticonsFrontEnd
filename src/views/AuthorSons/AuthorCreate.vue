@@ -1,7 +1,8 @@
 <template>
     <div class="authorcreate">
-        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
-            item.createUser }}</span></a>
+        <!-- <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
+            item.createUser }}</span></a> -->
+        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""></a>
     </div>
 </template>
 <script>
@@ -86,7 +87,12 @@ export default {
 }
 </script>
 <style scoped>
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
 .authorcreate {
+    font-family: 'Oswald', sans-serif;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;

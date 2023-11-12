@@ -88,7 +88,12 @@ export default {
 }
 </script>
 <style scoped>
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
 .authorlike {
+    font-family: 'Oswald', sans-serif;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -132,6 +137,7 @@ export default {
 }
 
 .authorlike a span {
+    /* font: */
     display: none;
     position: absolute;
     height: 15%;

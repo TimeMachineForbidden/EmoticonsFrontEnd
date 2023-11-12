@@ -3,8 +3,8 @@
         <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata" src="@/assets/testpic.jpg" alt="">
             <span>
                 <div class="Author" @click="navigateToUserProfile(item.createUser)">Author: {{ item.createUser }}</div>
-                <div class="star" @click="toggleIconColor"> star</div>
-                <el-icon style=" top: 4.6px;" :style="{ 'color': iconColor }">
+                <div class="star" @click="starEmoji(item.id)"> star</div>
+                <el-icon @click="starEmoji(item.id)" style=" top: 4.6px; color: white;">
                     <Star />
                 </el-icon>
                 <div class="download"> download </div>
@@ -17,6 +17,7 @@
 </template>
 <script setup>
 import { Star } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
 import { Download } from '@element-plus/icons-vue';
 import Service from '@/utils/request';
 </script>
@@ -25,13 +26,15 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            // ID: '',
+            // Authorization: '',
             page: 1,
             dataList: [], // 存储返回的数据
             lastScrollTime: '',
-            iconColor: 'white'
         };
     },
     mounted() {
+        // this.getid();
         this.getfirstemoji();
         window.addEventListener('scroll', this.handleScroll);
     },
@@ -40,6 +43,11 @@ export default {
         window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
+        // getid() {
+        //     if (localStorage.getItem('ID')) {
+        //         this.ID = localStorage.getItem('ID')
+        //     }
+        // },
         getfirstemoji() {
             // 使用axios获取数据
             Service.get('/emoji', {
@@ -61,7 +69,15 @@ export default {
             });
         },
         getnextemoji() {
-            // 使用axios获取数据
+            //使用axios获取数据
+            axios.interceptors.request.use((config) => {
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.Authorization = localStorage.getItem('Authorization')
+                }
+                return config;
+            }, (error) => {
+                return Promise.reject(error);
+            });
             Service.get('/emoji', {
                 params: {
                     page: 1,
@@ -69,6 +85,7 @@ export default {
                 }
 
             }).then(response => {
+                console.log(response)
                 if (response.code === 1) {
                     this.dataList = this.dataList.concat(response.data.records);
                     console.log(this.dataList.length)
@@ -99,20 +116,51 @@ export default {
             }
         },
         navigateToUserProfile(username) {
-            // 在这里执行路由跳转到用户个人页面，使用你的路由配置和路径
             this.$router.push('/author');
-        },
-        toggleIconColor() {
-            this.iconColor = this.iconColor === 'white' ? 'red' : 'white';
         },
         getemojidata() {
             this.$router.push('/emoji');
-        }
+        },
+        starEmoji(id) {
+            // console.log(id)
+            //使用axios获取数据
+            axios.interceptors.request.use((config) => {
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.Authorization = localStorage.getItem('Authorization')
+                }
+                return config;
+            }, (error) => {
+                return Promise.reject(error);
+            });
+            Service.post("/favorite",
+                {
+                    "emojiId": 5
+                }
+            ).then((response) => {
+                console.log(response)
+                if (response.code === 1) {
+                    ElMessage.success('Successfully Star')
+                    console.log(response)
+                    this.dataList = response.data.records;
+                } else {
+                    // 处理错误情况
+                    ElMessage.error('Something Went Wrong!Please try again!')
+                    console.error('请求失败：' + response.msg);
+                }
+            }).catch(error => {
+                ElMessage.error('Something Went Wrong!Please try again!')
+                console.error('请求出错：' + error);
+            });
 
+        }
     },
 }
 </script>
 <style scoped>
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
 .trendcontent {
     display: flex;
     justify-content: center;

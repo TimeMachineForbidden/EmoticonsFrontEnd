@@ -41,6 +41,7 @@
 
 <script setup>
 import { ArrowLeft } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus';
 </script >
 <script>
 import axios from 'axios';
@@ -48,10 +49,6 @@ import Service from '@/utils/request';
 export default {
     data() {
         return {
-            ID: '',
-            headers: {
-                Authorization: localStorage.getItem('Authorization')
-            },
             userdata: {
                 createTime: '',
                 email: '',
@@ -95,6 +92,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
 .home {
     min-height: 110vh;
     width: 100%;

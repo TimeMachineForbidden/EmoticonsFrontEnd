@@ -204,7 +204,7 @@ export default {
                     }, (error) => {
                         return Promise.reject(error);
                     });
-                    Service.post('/emoji', {
+                    Service.post('/emoji/', {
                         name: this.EmoticonData.name,
                         description: this.EmoticonData.description,
                         url: this.imageUrl,
@@ -212,7 +212,7 @@ export default {
                     }).then((response) => {
                         console.log(response)
 
-                        if (response.data.code === 1) {
+                        if (response.code === 1) {
                             ElMessage.success('Successfully Upload')
                             this.$router.push('/')
                         }

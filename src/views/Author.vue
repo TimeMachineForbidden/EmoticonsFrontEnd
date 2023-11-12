@@ -48,9 +48,9 @@ export default {
     data() {
         return {
             ID: '',
-            headers: {
-                Authorization: localStorage.getItem('Authorization')
-            },
+            // headers: {
+            //     Authorization: localStorage.getItem('Authorization')
+            // },
             userdata: {
                 createTime: '',
                 email: '',
@@ -95,6 +95,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
 .home {
     min-height: 110vh;
     width: 100%;

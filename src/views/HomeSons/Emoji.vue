@@ -10,7 +10,7 @@
             <div class="emoji">
                 <div class="image"><img src="@/assets/testpic.jpg" alt="">
                     <div class="operate">
-                        <a><el-icon>
+                        <a @click="StarEmoji()"><el-icon>
                                 <Star />
                             </el-icon> 220</a>
                         <a><el-icon>
@@ -53,6 +53,7 @@ import { ArrowLeft } from '@element-plus/icons-vue'
 import { Star } from '@element-plus/icons-vue';
 import { Share } from '@element-plus/icons-vue';
 import { Download } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
 </script >
 <script>
 import axios from 'axios';
@@ -60,10 +61,10 @@ import Service from '@/utils/request';
 export default {
     data() {
         return {
-            ID: '',
-            headers: {
-                Authorization: localStorage.getItem('Authorization')
-            },
+            // ID: '',
+            // headers: {
+            //     Authorization: localStorage.getItem('Authorization')
+            // },
             userdata: {
                 createTime: '',
                 email: '',
@@ -170,11 +171,19 @@ export default {
                 }
             }
         },
+        StarEmoji() {
+            ElMessage.error('Something Went Wrong!Please try again!')
+        }
     }
 }
 </script>
 <style scoped>
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
 .home {
+    font-family: 'Oswald', sans-serif;
     /* min-height: 110vh; */
     width: 100%;
     display: flex;
@@ -288,6 +297,7 @@ export default {
 }
 
 .operate a {
+    cursor: pointer;
     margin-top: 20px;
     margin-right: 4%;
 }

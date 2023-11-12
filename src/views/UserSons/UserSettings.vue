@@ -16,19 +16,19 @@
 
             <div class="text item" v-if="isEditing">
                 <label for="username">Username: </label>
-                <input type="text" id="username" v-model="editedData.username" style="width:60%">
+                <input type="text" id="username" v-model="editedData.username" style="width:60%;border-color:skyblue">
             </div>
             <div class="text item" v-if="isEditing">
                 <label for="signature">Signature: </label>
-                <input type="text" id="signature" v-model="editedData.signature" style="width:60%">
+                <input type="text" id="signature" v-model="editedData.signature" style="width:60%;border-color:skyblue">
             </div>
             <div class="text item" v-if="isEditing">
                 <label for="gender">Gender: </label>
-                <input type="text" id="gender" v-model="editedData.gender" style="width:60%">
+                <input type="text" id="gender" v-model="editedData.gender" style="width:60%;border-color:skyblue">
             </div>
             <div class="text item" v-if="isEditing">
                 <label for="email">Email: </label>
-                <input type="text" id="email" v-model="editedData.email" style="width:60%">
+                <input type="text" id="email" v-model="editedData.email" style="width:60%;border-color:skyblue">
             </div>
 
         </el-card>
@@ -37,7 +37,8 @@
   
 <script>
 import axios from 'axios';
-
+import Service from '@/utils/request';
+import { ElMessage } from 'element-plus';
 export default {
     data() {
         return {
@@ -77,6 +78,14 @@ export default {
         },
         saveChanges() {
             console.log(this.editedData)
+            axios.interceptors.request.use((config) => {
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.Authorization = localStorage.getItem('Authorization')
+                }
+                return config;
+            }, (error) => {
+                return Promise.reject(error);
+            });
             Service.put('/user', this.editedData)
                 .then(response => {
                     console.log(response)
@@ -85,6 +94,9 @@ export default {
                         this.userdata = { ...this.editedData };
                         console.log(this.userdata)
                         this.toggleEditMode();
+                        ElMessage.success('Successfully Edit')
+                        location.reload()
+
                     }
                 })
                 .catch(error => {
@@ -116,6 +128,10 @@ export default {
 </script>
   
 <style scoped>
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
 .set {
     display: flex;
     flex-wrap: wrap;

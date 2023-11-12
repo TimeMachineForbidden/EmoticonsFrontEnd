@@ -13,4 +13,3 @@ window.addEventListener('beforeunload', () => {
 
 
 createApp(App).use(store).use(router).use(ElementPlus).use(Button).mount('#app')
-

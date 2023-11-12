@@ -6,9 +6,13 @@
 </template>
 <script>
 import axios from 'axios';
+import Service from '@/utils/request';
 export default {
     data() {
         return {
+            headers: {
+                Authorization: localStorage.getItem('Authorization')
+            },
             page: 1,
             dataList: [], // 存储返回的数据
             lastScrollTime: ''
@@ -16,7 +20,7 @@ export default {
     },
     mounted() {
         this.getfirstemoji();
-        window.addEventListener('scroll', this.handleScroll);
+        // window.addEventListener('scroll', this.handleScroll);
     },
     beforeUnmount() {
         // 在组件销毁之前移除滚动事件监听器
@@ -24,14 +28,22 @@ export default {
     },
     methods: {
         getfirstemoji() {
+            axios.interceptors.request.use((config) => {
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.Authorization = localStorage.getItem('Authorization')
+                }
+                return config;
+            }, (error) => {
+                return Promise.reject(error);
+            });
             // 使用axios获取数据
             Service.get('/emoji', {
                 params: {
                     page: 1,
                     pageSize: 20
                 }
-
             }).then(response => {
+                console.log(response)
                 if (response.code === 1) {
                     console.log(response)
                     this.dataList = response.data.records;
@@ -43,50 +55,54 @@ export default {
                 console.error('请求出错：' + error);
             });
         },
-        getnextemoji() {
-            // 使用axios获取数据
-            Service.get('/emoji', {
-                params: {
-                    page: 1,
-                    pageSize: 10
-                }
+        // getnextemoji() {
+        //     // 使用axios获取数据
+        //     Service.get('/emoji', {
+        //         params: {
+        //             page: 1,
+        //             pageSize: 10
+        //         }
 
-            }).then(response => {
-                if (response.code === 1) {
-                    this.dataList = this.dataList.concat(response.data.records);
-                    console.log(this.dataList.length)
-                } else {
-                    // 处理错误情况
-                    console.error('请求失败：' + response.msg);
-                }
-            }).catch(error => {
-                console.error('请求出错：' + error);
-            });
-        },
-        handleScroll() {
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            const scrollPercentage = (scrollY / (documentHeight - windowHeight)) * 100;
-            if (scrollPercentage >= 95) {
-                const currentTime = new Date().getTime();
-                if (!this.lastScrollTime || (currentTime - this.lastScrollTime) > 500) {
-                    this.page++;
-                    // 滚动到底部，执行返回操作
-                    this.getnextemoji();
+        //     }).then(response => {
+        //         if (response.code === 1) {
+        //             this.dataList = this.dataList.concat(response.data.records);
+        //             console.log(this.dataList.length)
+        //         } else {
+        //             // 处理错误情况
+        //             console.error('请求失败：' + response.msg);
+        //         }
+        //     }).catch(error => {
+        //         console.error('请求出错：' + error);
+        //     });
+        // },
+        // handleScroll() {
+        //     const scrollY = window.scrollY;
+        //     const windowHeight = window.innerHeight;
+        //     const documentHeight = document.documentElement.scrollHeight;
+        //     const scrollPercentage = (scrollY / (documentHeight - windowHeight)) * 100;
+        //     if (scrollPercentage >= 95) {
+        //         const currentTime = new Date().getTime();
+        //         if (!this.lastScrollTime || (currentTime - this.lastScrollTime) > 500) {
+        //             this.page++;
+        //             // 滚动到底部，执行返回操作
+        //             this.getnextemoji();
 
-                    window.scrollTo(0, windowHeight * ((this.page - 2) * 10 + 20 / (this.page - 1) * 10 + 20));
+        //             window.scrollTo(0, windowHeight * ((this.page - 2) * 10 + 20 / (this.page - 1) * 10 + 20));
 
-                    this.lastScrollTime = currentTime;
-                }
-            }
-        },
+        //             this.lastScrollTime = currentTime;
+        //         }
+        //     }
+        // },
 
 
     },
 }
 </script>
 <style scoped>
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
 .userlikecontent {
     display: flex;
     justify-content: center;
