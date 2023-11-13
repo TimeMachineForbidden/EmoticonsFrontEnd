@@ -1,5 +1,5 @@
 <template>
-    <div class="userlikecontent">
+    <div class="userstarcontent">
         <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
             item.createUser }}</span></a>
     </div>
@@ -37,16 +37,12 @@ export default {
                 return Promise.reject(error);
             });
             // 使用axios获取数据
-            Service.get('/emoji', {
-                params: {
-                    page: 1,
-                    pageSize: 20
-                }
+            Service.get('/favorite', {
             }).then(response => {
                 console.log(response)
                 if (response.code === 1) {
                     console.log(response)
-                    this.dataList = response.data.records;
+                    this.dataList = response.data;
                 } else {
                     // 处理错误情况
                     console.error('请求失败：' + response.msg);
@@ -57,7 +53,7 @@ export default {
         },
         // getnextemoji() {
         //     // 使用axios获取数据
-        //     Service.get('/emoji', {
+        //     Service.get('/favorite', {
         //         params: {
         //             page: 1,
         //             pageSize: 10
@@ -103,7 +99,7 @@ export default {
     font-family: 'Oswald', sans-serif;
 }
 
-.userlikecontent {
+.userstarcontent {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -112,7 +108,7 @@ export default {
     background-color: white;
 }
 
-.userlikecontent a {
+.userstarcontent a {
     width: 300px;
     height: 20vh;
     margin: 15px;
@@ -128,12 +124,12 @@ export default {
     /* 隐藏超出容器的内容 */
 }
 
-.userlikecontent a:hover {
+.userstarcontent a:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.userlikecontent a img {
+.userstarcontent a img {
     position: absolute;
     /* 图像绝对定位，相对于父容器 */
     top: 0;
@@ -146,7 +142,7 @@ export default {
     /* 以覆盖方式截取和填充图像 */
 }
 
-.userlikecontent a span {
+.userstarcontent a span {
     display: none;
     position: absolute;
     height: 15%;
@@ -158,7 +154,7 @@ export default {
     color: chartreuse;
 }
 
-.userlikecontent a:hover span {
+.userstarcontent a:hover span {
     display: block;
 }
 </style>

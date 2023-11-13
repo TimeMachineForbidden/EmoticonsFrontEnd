@@ -21,30 +21,17 @@
                             input-style="font-family: 'Raleway', sans-serif;"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-row :gutter="70">
+                        <el-button class="long-button" type="primary" @click="login">Login </el-button>
 
-                            <el-col :span="24">
-                                <el-button class="long-button" type="primary" @click="login">Login </el-button>
-                            </el-col>
-                        </el-row>
                     </el-form-item>
                     <el-form-item>
-                        <el-row :gutter="70">
+                        <el-button class="long-button lwg" type="info" @click="loginwithgoogle">Login with Google
+                        </el-button>
 
-                            <el-col :span="24">
-                                <el-button class="long-button lwg" type="info" @click="loginwithgoogle">Login with Google
-                                </el-button>
-                            </el-col>
-                        </el-row>
                     </el-form-item>
                     <el-form-item>
-                        <el-row :gutter="70">
-
-                            <el-col :span="24">
-                                <el-button class="long-button lww" type="info" @click="loginwithwechat">Login with Wechat
-                                </el-button>
-                            </el-col>
-                        </el-row>
+                        <el-button class="long-button lww" type="info" @click="loginwithwechat">Login with Wechat
+                        </el-button>
                     </el-form-item>
                     <el-form-item class="elpolicy">
                         <el-row>
@@ -71,37 +58,24 @@
                             :suffix-icon="Lock"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-row :gutter="70">
+                        <el-button class="long-button" type="primary" @click="handleregister">Sign Up </el-button>
 
-                            <el-col :span="24">
-                                <el-button class="long-button" type="primary" @click="handleregister">Sign Up </el-button>
-                            </el-col>
-                        </el-row>
                     </el-form-item>
                     <el-form-item>
-                        <el-row :gutter="70">
+                        <el-button class="long-button lwg" type="info" @click="signupwithgoogle">Sign Up with Google
+                        </el-button>
 
-                            <el-col :span="24">
-                                <el-button class="long-button lwg" type="info" @click="signupwithgoogle">Sign Up with Google
-                                </el-button>
-                            </el-col>
-                        </el-row>
                     </el-form-item>
                     <el-form-item>
-                        <el-row :gutter="70">
-
-                            <el-col :span="24">
-                                <el-button class="long-button lww" type="info" @click="signupwithwechat">Sign Up with Wechat
-                                </el-button>
-                            </el-col>
-                        </el-row>
+                        <el-button class="long-button lww" type="info" @click="signupwithwechat">Sign Up with Wechat
+                        </el-button>
                     </el-form-item>
                 </el-form>
             </div>
         </div>
         <div class="emopic">
 
-        </div>
+        </div>Userlike
     </div>
 </template>
 <script setup>
@@ -128,7 +102,7 @@ const validateUsername = (rule, value, callback) => {
     // 使用正则表达式校验用户名，不能包含"/"和"\"
     const pattern = /^[^\/\\]+$/;
     if (pattern.test(value)) {
-        callback(); // 验证通过
+        callback();
     } else {
         callback(new Error('Username cannot contain "/"and"\\"'));
     }
@@ -172,7 +146,7 @@ const handleregister = () => {
                 console.log(res.data)
                 if (res.data.msg === '注册成功!') {
                     location.reload();
-                    reloadPage()
+                    reloadPage();
                     registerData.email = ''
                     registerData.password = ''
                     registerData.confirmpassword = ''
@@ -286,7 +260,7 @@ export default {
             // 使用正则表达式校验用户名，不能包含"/"和"\"
             const pattern = /^[^\/\\]+$/;
             if (pattern.test(value)) {
-                callback(); // 验证通过
+                callback();
             } else {
                 callback(new Error('用户名不能包含"/"和"\''));
             }
@@ -442,6 +416,9 @@ export default {
     font-size: 30px !important;
 }
 
+.el-input {
+    width: 350px;
+}
 
 
 .el-form .elres .el-form-item__content {

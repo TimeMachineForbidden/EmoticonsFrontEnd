@@ -8,6 +8,7 @@ import Trend from '../views/HomeSons/Trend.vue'
 import User from '../views/User.vue'
 import UserStar from '../views/UserSons/UserStar.vue'
 import UserSettings from '../views/UserSons/UserSettings.vue'
+import UserUpload from '../views/UserSons/UserUpload.vue'
 import Author from '../views/Author.vue'
 import AuthorCreate from '../views/AuthorSons/AuthorCreate.vue'
 import AuthorStar from '../views/AuthorSons/AuthorStar.vue'
@@ -40,12 +41,17 @@ const routes = [
     path:'/user',
     name:'user',
     component: User,
-    redirect: '/userstar',
+    redirect: '/userupload',
     children:[
       {
         path:"/userstar",
         name:'userstar',
         component:UserStar,
+      },
+      {
+        path:"/userupload",
+        name:'userupload',
+        component:UserUpload,
       },
       {
         path:"/usersettings",

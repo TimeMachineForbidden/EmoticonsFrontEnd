@@ -23,12 +23,12 @@
             </div>
             <div class="data">
                 <a>22 uploads</a>
-                <a>220 follows</a>
                 <a>220 stars</a>
+                <a>220 follows</a>
             </div>
             <div class="labels">
-                <router-link to="/authorcreate">Upload</router-link>
-                <router-link to="/authorstar">Star</router-link>
+                <a @click="authorupload(this.userId)" style="cursor: pointer;">Upload</a>
+                <a @click="authorstar(this.userId)" style="cursor: pointer;">Star</a>
                 <a>More</a>
             </div>
             <div class="page-content">
@@ -44,13 +44,11 @@ import { ArrowLeft } from '@element-plus/icons-vue'
 <script>
 import axios from 'axios';
 import Service from '@/utils/request';
+import { useRouter } from 'vue-router';
 export default {
     data() {
         return {
-            ID: '',
-            // headers: {
-            //     Authorization: localStorage.getItem('Authorization')
-            // },
+            userId: '',
             userdata: {
                 createTime: '',
                 email: '',
@@ -65,8 +63,16 @@ export default {
     },
     mounted() {
         this.getuserdata();
+        // console.log(this.userId)
+    },
+    created() {
+        this.getParams()
     },
     methods: {
+        getParams() {
+            const routerParams = this.$route.query.id
+            this.userId = routerParams
+        },
         getuserdata() {
             axios.interceptors.request.use((config) => {
                 if (localStorage.getItem('Authorization')) {
@@ -76,8 +82,7 @@ export default {
             }, (error) => {
                 return Promise.reject(error);
             });
-            this.ID = localStorage.getItem('ID')
-            Service.get('/user/' + this.ID).then((response) => {
+            Service.get('/user/' + this.userId).then((response) => {
                 console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;
@@ -89,6 +94,18 @@ export default {
         },
         backhome() {
             this.$router.push('/')
+        },
+        authorupload(id) {
+            this.$router.push({
+                path: '/authorcreate',
+                query: { id: id }
+            });
+        },
+        authorstar(id) {
+            this.$router.push({
+                path: '/authorstar',
+                query: { id: id }
+            });
         }
     }
 }

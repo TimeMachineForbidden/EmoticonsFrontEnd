@@ -1,32 +1,40 @@
 <template>
-    <div class="authorlike">
-        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
-            item.createUser }}</span></a>
+    <div class="authorstar">
+        <!-- <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
+            item.createUser }}</span></a> -->
+        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""></a>
     </div>
 </template>
 <script>
-import axios from 'axios';
 import Service from '@/utils/request';
 export default {
     data() {
         return {
+            userId: '',
             page: 1,
             dataList: [], // 存储返回的数据
-            lastScrollTime: ''
         };
     },
     mounted() {
         this.getfirstemoji();
         window.addEventListener('scroll', this.handleScroll);
     },
+
     beforeUnmount() {
         // 在组件销毁之前移除滚动事件监听器
         window.removeEventListener('scroll', this.handleScroll);
     },
+    created() {
+        this.getParams()
+    },
     methods: {
+        getParams() {
+            const routerParams = this.$route.query.id
+            this.userId = routerParams
+        },
         getfirstemoji() {
             // 使用axios获取数据
-            Service.get('/emoji', {
+            Service.get("/favorite/list/" + this.userId, {
                 params: {
                     page: 1,
                     pageSize: 20
@@ -46,10 +54,10 @@ export default {
         },
         getnextemoji() {
             // 使用axios获取数据
-            Service.get('/emoji', {
+            Service.get("/favorite/list/" + this.userId, {
                 params: {
                     page: 1,
-                    pageSize: 10
+                    pageSize: 20
                 }
 
             }).then(response => {
@@ -92,7 +100,7 @@ export default {
     font-family: 'Oswald', sans-serif;
 }
 
-.authorlike {
+.authorstar {
     font-family: 'Oswald', sans-serif;
     display: flex;
     justify-content: center;
@@ -102,7 +110,7 @@ export default {
     background-color: white;
 }
 
-.authorlike a {
+.authorstar a {
     width: 300px;
     height: 20vh;
     margin: 15px;
@@ -118,12 +126,12 @@ export default {
     /* 隐藏超出容器的内容 */
 }
 
-.authorlike a:hover {
+.authorstar a:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.authorlike a img {
+.authorstar a img {
     position: absolute;
     /* 图像绝对定位，相对于父容器 */
     top: 0;
@@ -136,8 +144,7 @@ export default {
     /* 以覆盖方式截取和填充图像 */
 }
 
-.authorlike a span {
-    /* font: */
+.authorstar a span {
     display: none;
     position: absolute;
     height: 15%;
@@ -149,7 +156,7 @@ export default {
     color: chartreuse;
 }
 
-.authorlike a:hover span {
+.authorstar a:hover span {
     display: block;
 }
 </style>

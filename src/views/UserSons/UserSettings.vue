@@ -95,7 +95,15 @@ export default {
                         console.log(this.userdata)
                         this.toggleEditMode();
                         ElMessage.success('Successfully Edit')
-                        location.reload()
+                        // axios.interceptors.request.use((config) => {
+                        //     if (localStorage.getItem('Authorization')) {
+                        //         config.headers.Authorization = localStorage.getItem('Authorization')
+                        //     }
+                        //     return config;
+                        // }, (error) => {
+                        //     return Promise.reject(error);
+                        // });
+                        // location.reload()
 
                     }
                 })

@@ -1,65 +1,52 @@
 <template>
-    <div class="trendcontent">
-        <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata" src="@/assets/testpic.jpg" alt="">
-            <span>
-                <div class="Author" @click="navigateToUserProfile(item.id)">Author: {{ item.createUser }}</div>
-                <div class="star" @click="starEmoji(item.id)"> star</div>
-                <el-icon @click="starEmoji(item.id)" style=" top: 4.6px; color: white;">
-                    <Star />
-                </el-icon>
-                <div class="download"> download </div>
-                <el-icon style="top: 4.6px; color: white;">
-                    <Download />
-                </el-icon>
-            </span>
-        </a>
+    <div class="useruploadcontent">
+        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
+            item.createUser }}</span></a>
     </div>
 </template>
-<script setup>
-import { Star } from '@element-plus/icons-vue';
-import { ElMessage } from 'element-plus';
-import { Download } from '@element-plus/icons-vue';
-import Service from '@/utils/request';
-</script>
 <script>
 import axios from 'axios';
+import Service from '@/utils/request';
 export default {
     data() {
         return {
-            // ID: '',
-            // Authorization: '',
+            headers: {
+                Authorization: localStorage.getItem('Authorization')
+            },
             page: 1,
             dataList: [], // 存储返回的数据
-            lastScrollTime: '',
+            lastScrollTime: ''
         };
     },
     mounted() {
-        // this.getid();
         this.getfirstemoji();
-        window.addEventListener('scroll', this.handleScroll);
+        // window.addEventListener('scroll', this.handleScroll);
     },
     beforeUnmount() {
         // 在组件销毁之前移除滚动事件监听器
         window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
-        // getid() {
-        //     if (localStorage.getItem('ID')) {
-        //         this.ID = localStorage.getItem('ID')
-        //     }
-        // },
         getfirstemoji() {
+            axios.interceptors.request.use((config) => {
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.Authorization = localStorage.getItem('Authorization')
+                }
+                return config;
+            }, (error) => {
+                return Promise.reject(error);
+            });
             // 使用axios获取数据
-            Service.get('/emoji', {
+            Service.get('/emoji/uploaded', {
                 params: {
                     page: 1,
-                    pageSize: 20
+                    pageSize: 10
                 }
-
             }).then(response => {
+                console.log(response)
                 if (response.code === 1) {
                     console.log(response)
-                    this.dataList = response.data.records;
+                    this.dataList = response.data;
                 } else {
                     // 处理错误情况
                     console.error('请求失败：' + response.msg);
@@ -69,23 +56,14 @@ export default {
             });
         },
         getnextemoji() {
-            //使用axios获取数据
-            axios.interceptors.request.use((config) => {
-                if (localStorage.getItem('Authorization')) {
-                    config.headers.Authorization = localStorage.getItem('Authorization')
-                }
-                return config;
-            }, (error) => {
-                return Promise.reject(error);
-            });
-            Service.get('/emoji', {
+            // 使用axios获取数据
+            Service.get('/emoji/uploaded', {
                 params: {
                     page: 1,
                     pageSize: 10
                 }
 
             }).then(response => {
-                console.log(response)
                 if (response.code === 1) {
                     this.dataList = this.dataList.concat(response.data.records);
                     console.log(this.dataList.length)
@@ -115,42 +93,8 @@ export default {
                 }
             }
         },
-        navigateToUserProfile(id) {
-            this.$router.push({
-                path: '/author',
-                query: { id: id }
-            });
-            console.log(id)
-        },
-        getemojidata() {
-            this.$router.push('/emoji');
-        },
-        starEmoji(id) {
-            // console.log(id)
-            //使用axios获取数据
-            axios.interceptors.request.use((config) => {
-                if (localStorage.getItem('Authorization')) {
-                    config.headers.Authorization = localStorage.getItem('Authorization')
-                }
-                return config;
-            }, (error) => {
-                return Promise.reject(error);
-            });
-            Service.post(`/favorite?emojiId=${id}`).then((response) => {
-                console.log(response)
-                if (response.code === 1) {
-                    ElMessage.success('Successfully Star')
-                } else {
-                    // 处理错误情况
-                    ElMessage.error('Something Went Wrong!Please try again!')
-                    console.error('请求失败：' + response.msg);
-                }
-            }).catch(error => {
-                ElMessage.error('Something Went Wrong!Please try again!')
-                console.error('请求出错：' + error);
-            });
 
-        }
+
     },
 }
 </script>
@@ -159,17 +103,18 @@ export default {
     font-family: 'Oswald', sans-serif;
 }
 
-.trendcontent {
+.useruploadcontent {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    margin-left: 8%;
     width: 84%;
     background-color: white;
 }
 
-.trendcontent a {
+.useruploadcontent a {
     width: 300px;
-    height: 25vh;
+    height: 20vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);
     transition-property: transform, box-shadow;
@@ -183,14 +128,13 @@ export default {
     /* 隐藏超出容器的内容 */
 }
 
-.trendcontent a:hover {
+.useruploadcontent a:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.trendcontent a img {
+.useruploadcontent a img {
     position: absolute;
-    cursor: pointer;
     /* 图像绝对定位，相对于父容器 */
     top: 0;
     left: 0;
@@ -202,7 +146,7 @@ export default {
     /* 以覆盖方式截取和填充图像 */
 }
 
-.trendcontent a span {
+.useruploadcontent a span {
     display: none;
     position: absolute;
     height: 15%;
@@ -212,20 +156,9 @@ export default {
     background-color: rbga(0, 0, 0, .4);
     text-align: left;
     color: chartreuse;
-    cursor: pointer;
-    /* display: flex;
-    padding: 10px; */
 }
 
-.trendcontent a:hover span {
-    display: flex;
-}
-
-.trendcontent a:hover span .star {
-    margin-left: 10%;
-}
-
-.trendcontent a:hover span .download {
-    margin-left: 10%;
+.useruploadcontent a:hover span {
+    display: block;
 }
 </style>

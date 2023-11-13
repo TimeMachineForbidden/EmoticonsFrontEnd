@@ -10,6 +10,7 @@ import Service from '@/utils/request';
 export default {
     data() {
         return {
+            userId: '',
             page: 1,
             dataList: [], // 存储返回的数据
         };
@@ -18,15 +19,24 @@ export default {
         this.getfirstemoji();
         window.addEventListener('scroll', this.handleScroll);
     },
+
     beforeUnmount() {
         // 在组件销毁之前移除滚动事件监听器
         window.removeEventListener('scroll', this.handleScroll);
     },
+    created() {
+        this.getParams()
+    },
     methods: {
+        getParams() {
+            const routerParams = this.$route.query.id
+            this.userId = routerParams
+        },
         getfirstemoji() {
             // 使用axios获取数据
-            Service.get("/emoji", {
+            Service.get("/emoji/queryByUserId", {
                 params: {
+                    userId: this.userId,
                     page: 1,
                     pageSize: 20
                 }
@@ -45,8 +55,9 @@ export default {
         },
         getnextemoji() {
             // 使用axios获取数据
-            Service.get('/emoji', {
+            Service.get("/emoji/queryByUserId", {
                 params: {
+                    userId: this.userId,
                     page: 1,
                     pageSize: 10
                 }

@@ -110,6 +110,10 @@
                 @change="onChange(true, tag)">
                 {{ tag.name }}
             </el-check-tag>
+            <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small"
+                @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+            </el-input>
+            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="closelabels">Cancel</el-button>
@@ -125,10 +129,10 @@
 import { UploadFilled, Edit } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
 import { ArrowLeft } from '@element-plus/icons-vue'
+import Service from '@/utils/request';
 </script>
 <script>
 import axios from 'axios';
-import Service from '@/utils/request';
 export default {
     data() {
         return {
@@ -168,7 +172,9 @@ export default {
             dynamicTags: [],
             firstchoose: true,
             originallist: [],
-            haschosen: false
+            haschosen: false,
+            inputVisible: false,
+            inputValue: ''
         }
     },
     mounted() {
@@ -204,7 +210,7 @@ export default {
                     }, (error) => {
                         return Promise.reject(error);
                     });
-                    Service.post('/emoji/', {
+                    axios.post('http://123.249.110.185:8080/emoji', {
                         name: this.EmoticonData.name,
                         description: this.EmoticonData.description,
                         url: this.imageUrl,
@@ -212,7 +218,7 @@ export default {
                     }).then((response) => {
                         console.log(response)
 
-                        if (response.code === 1) {
+                        if (response.data.code === 1) {
                             ElMessage.success('Successfully Upload')
                             this.$router.push('/')
                         }
@@ -254,7 +260,34 @@ export default {
             if (this.dynamicTags) {
                 this.haschosen = true
             }
+        },
+        showInput() {
+            this.inputVisible = true;
+            this.$nextTick(_ => {
+                this.$refs.saveTagInput.$refs.input.focus();
+            });
+        },
+
+        handleInputConfirm() {
+            let inputValue = this.inputValue;
+            if (inputValue) {
+                let obj = { "name": inputValue, "groupid": 1 }
+                Service.post("/tag",
+                    {
+                        name: inputValue,
+                        groupid: 1
+                    }).then(response => {
+                        console.log(response)
+                        this.choosetagslist.push(obj);
+                    }).catch(error => {
+                        console.log(error);
+                        ElMessage.error('This operation is not allowed')
+                    });
+            }
+            this.inputVisible = false;
+            this.inputValue = '';
         }
+
 
     },
 }
@@ -380,5 +413,20 @@ export default {
 .long-button {
     width: 80%;
     margin: 0 auto;
+}
+
+
+.button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
 }
 </style>

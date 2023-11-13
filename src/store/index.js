@@ -5,7 +5,9 @@ export default createStore({
     // 存储token
     Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : '',
     // 存储用户的id号码
-    ID: localStorage.getItem('ID') ? localStorage.getItem('ID') : ''
+    ID: localStorage.getItem('ID') ? localStorage.getItem('ID') : '',
+    // 访问作者的id号码
+    // authorID: localStorage.getItem('authorID') ? localStorage.getItem('ID') : '',
   },
   getters: {
   },
