@@ -51,7 +51,7 @@ export default {
         // },
         getfirstemoji() {
             // 使用axios获取数据
-            Service.get('/query/popular', {
+            Service.get('/query/static', {
                 params: {
                     page: 1,
                     pageSize: 20
@@ -79,7 +79,7 @@ export default {
             }, (error) => {
                 return Promise.reject(error);
             });
-            Service.get('/query/popular', {
+            Service.get('/query/static', {
                 params: {
                     page: 1,
                     pageSize: 10

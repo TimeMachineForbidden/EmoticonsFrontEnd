@@ -65,6 +65,10 @@ export default {
             // headers: {
             //     Authorization: localStorage.getItem('Authorization')
             // },
+            emojiID: '',
+            page: 1,
+            dataList: [], // 存储返回的数据
+            lastScrollTime: '',
             userdata: {
                 createTime: '',
                 email: '',
@@ -75,9 +79,6 @@ export default {
                 signature: '',
                 username: '',
             },
-            page: 1,
-            dataList: [], // 存储返回的数据
-            lastScrollTime: ''
         }
     },
     mounted() {
@@ -89,7 +90,15 @@ export default {
         // 在组件销毁之前移除滚动事件监听器
         window.removeEventListener('scroll', this.handleScroll);
     },
+    created() {
+        this.getParams()
+    },
     methods: {
+        getParams() {
+            const routerParams = this.$route.query.id
+            this.emojiID = routerParams
+            console.log(this.emojiID)
+        },
         getuserdata() {
             axios.interceptors.request.use((config) => {
                 if (localStorage.getItem('Authorization')) {
@@ -172,7 +181,6 @@ export default {
             }
         },
         StarEmoji() {
-            
             ElMessage.error('Something Went Wrong!Please try again!')
         }
     }

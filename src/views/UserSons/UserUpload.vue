@@ -1,7 +1,7 @@
 <template>
     <div class="useruploadcontent">
-        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
-            item.createUser }}</span></a>
+        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt="">
+        </a>
     </div>
 </template>
 <script>

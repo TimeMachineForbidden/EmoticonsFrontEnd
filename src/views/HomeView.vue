@@ -6,10 +6,10 @@
           <myicon></myicon>
         </div>
         <div class="labels" v-if="!isFixed">
-          <router-link to="/trend">Trends</router-link>
-          <a>Animated</a>
-          <a>Static</a>
-          <a>New</a>
+          <router-link to="/trend">Trend</router-link>
+          <router-link to="/new">New</router-link>
+          <router-link to="/animated">Animated</router-link>
+          <router-link to="/static">Static</router-link>
           <a>More</a>
         </div>
         <div class="loginbtn" v-if="!isFixed">
@@ -23,7 +23,7 @@
         <el-input v-model="searchcontent" placeholder="Please input" class="search-input"
           input-style="font-family: 'Oswald', sans-serif; ">
           <template #append>
-            <el-button type="primary" :icon="Search">
+            <el-button type="primary" :icon="Search" click="search">
             </el-button>
           </template>
         </el-input>
@@ -50,6 +50,7 @@ export default {
   data() {
     return {
       isFixed: false,
+      kind: 1,
       isButtonDown: false, // 用于按钮移动特效
       searchcontent: '',
       LoginState: 'Login',
@@ -75,6 +76,10 @@ export default {
       // 检查页面滚动位置，然后更新isFixed属性来切换样式
       this.isFixed = window.scrollY > 20;
       this.isButtonDown = this.isFixed; // 根据 isFixed 更新按钮特效
+    },
+    search() {
+      this.push("")
+
     },
     login() {
       if (localStorage.getItem('ID') == null) {

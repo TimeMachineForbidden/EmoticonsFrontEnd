@@ -5,6 +5,9 @@ import Upload from '../views/Upload.vue'
 import Test from '../components/test.vue'
 import icon from '../components/icon.vue'
 import Trend from '../views/HomeSons/Trend.vue'
+import New from '../views/HomeSons/New.vue'
+import Animated from '../views/HomeSons/Animated.vue'
+import Static from '../views/HomeSons/Static.vue'
 import User from '../views/User.vue'
 import UserStar from '../views/UserSons/UserStar.vue'
 import UserSettings from '../views/UserSons/UserSettings.vue'
@@ -24,6 +27,21 @@ const routes = [
         path: '/trend',
         name: 'trend',
         component: Trend
+      },
+      {
+        path: '/new',
+        name: 'new',
+        component: New
+      },
+      {
+        path: '/animated',
+        name: 'animated',
+        component: Animated
+      },
+      {
+        path: '/static',
+        name: 'static',
+        component: Static
       },
       {
         path:'/emoji',

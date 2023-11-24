@@ -75,7 +75,7 @@
         </div>
         <div class="emopic">
 
-        </div>Userlike
+        </div>
     </div>
 </template>
 <script setup>
