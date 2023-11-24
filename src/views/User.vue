@@ -88,6 +88,7 @@ export default {
             this.$router.push('/')
         }
     }
+
 }
 </script>
 
@@ -135,6 +136,7 @@ export default {
     margin-left: 8%;
     display: flex;
     height: 10vh;
+    margin-top: 10px;
     justify-content: left;
 }
 

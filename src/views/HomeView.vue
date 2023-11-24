@@ -23,7 +23,7 @@
         <el-input v-model="searchcontent" placeholder="Please input" class="search-input"
           input-style="font-family: 'Oswald', sans-serif; ">
           <template #append>
-            <el-button type="primary" :icon="Search" click="search">
+            <el-button type="primary" :icon="Search" @click="search">
             </el-button>
           </template>
         </el-input>
@@ -50,9 +50,10 @@ export default {
   data() {
     return {
       isFixed: false,
-      kind: 1,
-      isButtonDown: false, // 用于按钮移动特效
+      currentPath: '',
+      kind: '',
       searchcontent: '',
+      isButtonDown: false, // 用于按钮移动特效
       LoginState: 'Login',
     };
   },
@@ -71,6 +72,29 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
   },
+  created() {
+    // 在组件创建时获取当前路由路径并保存到data中
+    this.currentPath = this.$route.path;
+  },
+  watch: {
+    // 监听路由的变化，更新currentPath
+    $route(to, from) {
+      this.currentPath = to.path;
+      // console.log(this.currentPath)
+      if (this.currentPath == '/trend') {
+        this.kind = 1
+      }
+      else if (this.currentPath == '/new') {
+        this.kind = 2
+      }
+      else if (this.currentPath == '/animated') {
+        this.kind = 3
+      }
+      else if (this.currentPath == '/static') {
+        this.kind = 4
+      }
+    }
+  },
   methods: {
     handleScroll() {
       // 检查页面滚动位置，然后更新isFixed属性来切换样式
@@ -78,8 +102,13 @@ export default {
       this.isButtonDown = this.isFixed; // 根据 isFixed 更新按钮特效
     },
     search() {
-      this.push("")
-
+      this.$router.push({
+        path: '/search',
+        query: {
+          kind: this.kind,
+          searchcontent: this.searchcontent
+        }
+      });
     },
     login() {
       if (localStorage.getItem('ID') == null) {

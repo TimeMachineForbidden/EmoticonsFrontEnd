@@ -7,6 +7,7 @@
                     <el-button class="button" @click="isEditing ? saveChanges() : toggleEditMode()">
                         {{ isEditing ? "Save" : "Edit" }}
                     </el-button>
+                    <el-button class="button2">EXIT</el-button>
                 </div>
             </template>
             <div class="text item" v-if="!isEditing">username: {{ this.userdata.username }}</div>
@@ -154,7 +155,6 @@ export default {
 .card-header {
     font-size: 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
@@ -167,11 +167,24 @@ export default {
 }
 
 .box-card {
-    width: 55%;
+    width: 60%;
 }
 
 .button {
+    margin-left: 10px;
     font-family: 'Oswald';
+}
+
+.button2 {
+    display: flex;
+    justify-content: flex-end;
+    font-family: 'Oswald';
+}
+
+@media (max-width: 800px) {
+    .box-card {
+        width: 90%;
+    }
 }
 </style>
   

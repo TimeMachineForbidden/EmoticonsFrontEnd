@@ -375,4 +375,19 @@ export default {
 .relatedemoji a:hover span {
     display: block;
 }
+
+@media (max-width: 800px) {
+    .AuthorInformation {
+        display: none;
+    }
+
+    .el-divider--vertical {
+        display: none;
+    }
+
+    .image {
+        width: 100vw !important;
+        height: 45vw !important;
+    }
+}
 </style>

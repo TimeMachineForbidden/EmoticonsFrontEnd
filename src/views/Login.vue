@@ -1,17 +1,23 @@
 <template>
     <div class="login">
         <div class="loginmain">
+            <div class="backward" @click="back">
+                <el-icon>
+                    <ArrowLeft />
+                </el-icon>
+                <span>Back</span>
+            </div>
             <h1>EmoVerse</h1>
-            <p style="font-size:20px;margin-left: 120px;">What's your emoji?</p>
+            <p style="font-size:20px">What's your emoji?</p>
             <div class="form-box">
                 <div class="button-box">
-                    <div v-color="color1" id="btn" ref="slidingbtn"></div>
+                    <div v-color="color1" id="btn" ref="slidingbtn" v-width="width"></div>
                     <button type="button" class="toggle-btn" @click="leftClick()">Log in</button>
                     <button type="button" class="toggle-btn btnright" @click="rightClick()"> Sign Up</button>
                 </div>
             </div>
             <div class="logininput" v-if="showlogin">
-                <el-form ref="loginFormRef" :model="loginData" :rules="loginFormRules" label-width="60px">
+                <el-form ref="loginFormRef" :model="loginData" :rules="loginFormRules">
                     <el-form-item prop="email" style="margin-top:20px;margin-bottom: 30px;">
                         <el-input v-model="loginData.email" placeholder="Username" :suffix-icon="User"
                             input-style="font-family: 'Raleway', sans-serif;"></el-input>
@@ -24,7 +30,7 @@
                         <el-button class="long-button" type="primary" @click="login">Login </el-button>
 
                     </el-form-item>
-                    <el-form-item>
+                    <!-- <el-form-item>
                         <el-button class="long-button lwg" type="info" @click="loginwithgoogle">Login with Google
                         </el-button>
 
@@ -32,7 +38,7 @@
                     <el-form-item>
                         <el-button class="long-button lww" type="info" @click="loginwithwechat">Login with Wechat
                         </el-button>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item class="elpolicy">
                         <el-row>
                             <el-col style="text-align: center;">
@@ -45,23 +51,24 @@
                 </el-form>
             </div>
             <div class="registerinput" v-else>
-                <el-form ref="registerFormRef" :model="registerData" :rules="registerFormRules" label-width="60px">
+                <el-form ref="registerFormRef" :model="registerData" :rules="registerFormRules">
                     <el-form-item prop="email" style="margin-top:20px;margin-bottom: 30px;">
-                        <el-input v-model="registerData.email" placeholder="Username" :suffix-icon="User"></el-input>
+                        <el-input v-model="registerData.email" placeholder="Username"
+                            input-style="font-family: 'Raleway', sans-serif;" :suffix-icon="User"></el-input>
                     </el-form-item>
                     <el-form-item prop="password" style="margin-bottom: 20px;">
-                        <el-input v-model="registerData.password" type="password" placeholder="password"
-                            :suffix-icon="Lock"></el-input>
+                        <el-input v-model="registerData.password" type="password" placeholder="Password"
+                            input-style="font-family: 'Raleway', sans-serif;" :suffix-icon="Lock"></el-input>
                     </el-form-item>
                     <el-form-item prop="confirmpassword" style="margin-bottom: 20px;">
                         <el-input v-model="registerData.confirmpassword" type="password" placeholder="Comfirm your password"
-                            :suffix-icon="Lock"></el-input>
+                            input-style="font-family: 'Raleway', sans-serif;" :suffix-icon="Lock"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="long-button" type="primary" @click="handleregister">Sign Up </el-button>
 
                     </el-form-item>
-                    <el-form-item>
+                    <!-- <el-form-item>
                         <el-button class="long-button lwg" type="info" @click="signupwithgoogle">Sign Up with Google
                         </el-button>
 
@@ -69,7 +76,7 @@
                     <el-form-item>
                         <el-button class="long-button lww" type="info" @click="signupwithwechat">Sign Up with Wechat
                         </el-button>
-                    </el-form-item>
+                    </el-form-item> -->
                 </el-form>
             </div>
         </div>
@@ -81,6 +88,7 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import axios from 'axios';
+import { ArrowLeft } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -210,9 +218,24 @@ export default {
                 password: '',
                 confirmpassword: ''
             }),
+            width: '120px',
             color1: 'linear-gradient(135deg, rgb(11, 72, 239), rgb(17, 197, 149))',
             color2: 'rgb(255, 167, 69)'
         };
+    },
+    mounted() {
+        // 添加窗口大小改变事件监听器
+        window.addEventListener("resize", this.updateWidth);
+
+        // 在这里调用一次确保组件已经渲染
+        this.$nextTick(() => {
+            this.updateWidth();
+        });
+
+    },
+    beforeDestroy() {
+        // 在组件销毁前移除事件监听器，以防止内存泄漏
+        window.removeEventListener("resize", this.updateWidth);
     },
     methods: {
         ...mapMutations(['changeLogin']),
@@ -224,9 +247,25 @@ export default {
         },
         rightClick() {
             const slidingbtn = this.$refs.slidingbtn;
-            slidingbtn.style.left = '140px'
+            slidingbtn.style.left = String(this.width) + 'px'
             this.color1 = 'linear-gradient(180deg, rgb(255, 107, 144), rgb(252, 217, 156))'
             this.showlogin = false
+        },
+        updateWidth() {
+            // 检查 $refs.slidingbtn 是否存在
+            const slidingbtn = this.$refs.slidingbtn;
+            if (slidingbtn) {
+                this.leftClick();
+                // 更新宽度
+                if (window.innerWidth >= 800) {
+                    this.width = window.innerWidth * 0.3 * 0.6 * 0.5;
+                }
+                else {
+                    this.width = window.innerWidth * 0.6 * 0.5;
+                }
+                // 更新样式
+                slidingbtn.style.width = `${this.width}px`;
+            }
         },
         login() {
             let _this = this;
@@ -264,7 +303,10 @@ export default {
             } else {
                 callback(new Error('用户名不能包含"/"和"\''));
             }
-        }
+        },
+        back() {
+            this.$router.push('/')
+        },
     },
     directives: {
         color: {
@@ -307,11 +349,20 @@ export default {
     background-image: linear-gradient(45deg, rgb(206, 250, 117), rgb(97, 77, 249));
 }
 
+.backward {
+    padding: 20px;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+}
+
+.backward span {
+    font-size: 20px;
+}
+
 .loginmain {
     position: absolute;
     left: 0;
-    width: 40%;
-    top: 60px;
+    width: 30%;
 
 }
 
@@ -319,11 +370,14 @@ export default {
     font-family: 'Open Sans', sans-serif;
     color: white;
     font-size: 55px;
-    margin-left: 110px;
+    margin-top: 27%;
+    text-align: center;
+    /* 水平居中对齐 */
 }
 
 .loginmain p {
     font-family: 'Croissant One', cursive;
+    text-align: center;
     background-image:
         linear-gradient(90deg,
             #673ab7,
@@ -367,7 +421,7 @@ export default {
 .emopic {
     position: absolute;
     right: 0;
-    width: 60%;
+    width: 70%;
     height: 100%;
     background-image: -moz-linear-gradient(0deg, rgb(238, 17, 72), rgb(15, 134, 189));
 
@@ -378,9 +432,10 @@ export default {
 }
 
 .button-box {
-    width: 280px;
-    margin: 10px auto;
-    margin-left: 90px;
+    width: 60%;
+    /* margin: 10px auto; */
+    margin-left: 20%;
+    margin-top: 10px;
     position: relative;
     border-radius: 30px;
     background: #715050;
@@ -396,9 +451,10 @@ export default {
     text-align: center;
     font-family: 'Martian Mono', monospace;
     font-weight: 800;
+    font-size: 12px;
     color: white;
-    width: 140px;
-    height: 40px;
+    width: 50%;
+    height: 50px;
 }
 
 
@@ -406,7 +462,6 @@ export default {
     left: 0;
     top: 0;
     position: absolute;
-    width: 140px;
     height: 100%;
     border-radius: 30px;
     transition: 0.5s;
@@ -416,9 +471,6 @@ export default {
     font-size: 30px !important;
 }
 
-.el-input {
-    width: 350px;
-}
 
 
 .el-form .elres .el-form-item__content {
@@ -430,12 +482,13 @@ export default {
 }
 
 .logininput {
-    width: 80%;
+    margin-left: 20%;
+    width: 60%;
 
 }
 
 .long-button {
-    width: 350px;
+    width: 100%;
 
 }
 
@@ -449,6 +502,18 @@ export default {
 }
 
 .registerinput {
-    width: 80%;
+    margin-left: 20%;
+    width: 60%;
+}
+
+@media (max-width: 800px) {
+    .emopic {
+        display: none;
+    }
+
+    .loginmain {
+        width: 100%;
+        /* 或者根据需要设置合适的宽度 */
+    }
 }
 </style>

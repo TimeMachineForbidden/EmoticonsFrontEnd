@@ -10,26 +10,26 @@
         </figure>
     </div>
     <!-- <div class="emoji sad">
-            <figure class="face">
-                <span class="eyes">
-                    <span class="eye"></span>
-                    <span class="eye"></span>
-                </span>
-                <span class="mouth tounge">
-                </span>
-            </figure>
-        </div> -->
-    <!-- <div class="emoji shocked">
-            <figure class="face">
-                <span class="eyes">
-                    <span class="eye"></span>
-                    <span class="eye"></span>
-                </span>
-                <span class="mouth">
-                </span>
-            </figure>
-        </div> -->
-    <!-- <div class="emoji laugh">
+        <figure class="face">
+            <span class="eyes">
+                <span class="eye"></span>
+                <span class="eye"></span>
+            </span>
+            <span class="mouth tounge">
+            </span>
+        </figure>
+    </div>
+    <div class="emoji shocked">
+        <figure class="face">
+            <span class="eyes">
+                <span class="eye"></span>
+                <span class="eye"></span>
+            </span>
+            <span class="mouth">
+            </span>
+        </figure>
+    </div>
+    <div class="emoji laugh">
         <figure class="face">
             <span class="eyes">
                 <span class="eye"></span>
@@ -58,7 +58,7 @@
             <span class="mouth">
             </span>
         </figure>
-    </div>
+    </div> -->
     <div class="emoji love">
         <figure class="face">
             <span class="eyes">
@@ -82,7 +82,7 @@
             <span class="mouth">
             </span>
         </figure>
-    </div> -->
+    </div>
 </template>
 <style scoped>
 /*------ Main Emoji Styling ------*/

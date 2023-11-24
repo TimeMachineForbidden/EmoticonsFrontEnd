@@ -16,6 +16,7 @@ import Author from '../views/Author.vue'
 import AuthorCreate from '../views/AuthorSons/AuthorCreate.vue'
 import AuthorStar from '../views/AuthorSons/AuthorStar.vue'
 import Emoji from '../views/HomeSons/Emoji.vue'
+import Search from '../views/HomeSons/Search.vue'
 const routes = [
   {
     path: '/',
@@ -47,6 +48,11 @@ const routes = [
         path:'/emoji',
         name:'emoji',
         component:Emoji,
+      },
+      {
+        path:'/search',
+        name:'search',
+        component:Search
       }
     ]
   },

@@ -5,8 +5,14 @@
         </div>
         <div class="main-container">
             <div class="beforeupload" v-if="beforeuploaded">
+                <div class="backward" @click="back1">
+                    <el-icon>
+                        <ArrowLeft />
+                    </el-icon>
+                    <span>Back</span>
+                </div>
                 <div class="uploadtips">
-                    <h2 style="color: white;">You can Upload here</h2>
+                    <h2 style="color: white;margin-top:10px">You can Upload here</h2>
                 </div>
                 <div class="uploadfield">
                     <el-upload class="upload-demo" drag action="http://123.249.110.185:8080/common/upload"
@@ -189,6 +195,9 @@ export default {
             this.beforeuploaded = false;
             ElMessage.success('Successfully Upload')
         },
+        back1() {
+            this.$router.push('/')
+        },
         back() {
             this.imageName = ''
             this.imageUrl = ''
@@ -319,7 +328,7 @@ export default {
     /* 居中对齐 */
     background-color: white;
     /* 设置中间大盒子背景色为白色 */
-    padding: 20px;
+    padding: 10px;
     /* 设置内边距 */
     min-height: 80vh;
     /* 设置最小高度为110视窗高度（vh） */
@@ -332,6 +341,11 @@ export default {
 
     background-image: linear-gradient(125deg, rgb(0, 255, 255), rgb(240, 155, 253));
 
+}
+
+.main-container .backward {
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
 }
 
 .main-container .uploadtips {
@@ -362,7 +376,6 @@ export default {
 .main-container .afterupload .leftpart .backward {
     position: absolute;
     cursor: pointer;
-    top: 10px
 }
 
 .backward span {
