@@ -43,6 +43,7 @@ import { Search } from '@element-plus/icons-vue'
 <script>
 import myicon from '../components/icon.vue'
 import Service from '@/utils/request';
+import { ElMessage } from 'element-plus';
 export default {
   components: {
     myicon
@@ -120,7 +121,7 @@ export default {
     },
     upload() {
       if (localStorage.getItem('ID') == null) {
-        this.$router.push('/login')
+        ElMessage.error('Please login first!')
       }
       else {
         this.$router.push('/upload')
@@ -136,7 +137,7 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+@import url('https://fonts.font.im/css2?family=Oswald&display=swap');
 
 .home {
   font-family: 'Oswald', sans-serif;

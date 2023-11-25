@@ -193,7 +193,7 @@ export default {
             this.imageName = file.name
             this.imageUrl = response.data
             this.beforeuploaded = false;
-            ElMessage.success('Successfully Upload')
+            ElMessage.success('Successfully upload!')
         },
         back1() {
             this.$router.push('/')
@@ -210,7 +210,7 @@ export default {
                     return
                 }
                 else {
-                    console.log(localStorage.getItem('Authorization'))
+                    // console.log(localStorage.getItem('Authorization'))
                     axios.interceptors.request.use((config) => {
                         if (localStorage.getItem('Authorization')) {
                             config.headers.Authorization = localStorage.getItem('Authorization')
@@ -225,17 +225,17 @@ export default {
                         url: this.imageUrl,
                         tags: this.dynamicTags.map(obj => obj.id)
                     }).then((response) => {
-                        console.log(response)
+                        // console.log(response)
 
                         if (response.data.code === 1) {
-                            ElMessage.success('Successfully Upload')
+                            ElMessage.success('Successfully upload!')
                             this.$router.push('/')
                         }
                         else {
-                            ElMessage.error('Something Went Wrong!Please try again!')
+                            ElMessage.error('Something went wrong!Please try again!')
                         }
                     }).catch(error => {
-                        console.log(error);
+                        // console.log(error);
                     });
                 }
             })
@@ -244,7 +244,7 @@ export default {
             this.tagDialogVisible = true;
             if (this.firstchoose) {
                 Service.get("/tag").then((response) => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     this.choosetagslist = response.data;
                     this.originallist = response.data
                 })
@@ -256,7 +256,7 @@ export default {
             this.tagDialogVisible = false;
         },
         onChange(status, tag) {
-            console.log(tag.id)
+            // console.log(tag.id)
             this.choosetagslist = this.choosetagslist.filter(item => item.id !== tag.id)
             this.dynamicTags.unshift(tag)
         },
@@ -286,11 +286,11 @@ export default {
                         name: inputValue,
                         groupid: 1
                     }).then(response => {
-                        console.log(response)
+                        // console.log(response)
                         this.choosetagslist.push(obj);
                     }).catch(error => {
-                        console.log(error);
-                        ElMessage.error('This operation is not allowed')
+                        // console.log(error);
+                        ElMessage.error('This operation is not allowed!')
                     });
             }
             this.inputVisible = false;

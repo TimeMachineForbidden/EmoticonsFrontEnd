@@ -1,8 +1,6 @@
 <template>
     <div class="authorcreate">
-        <!-- <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
-            item.createUser }}</span></a> -->
-        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""></a>
+        <a v-for="(item, index) in dataList" :key="index"><img :src="item.url" alt=""></a>
     </div>
 </template>
 <script>
@@ -10,7 +8,7 @@ import Service from '@/utils/request';
 export default {
     data() {
         return {
-            userId: '',
+            authorId: '',
             page: 1,
             dataList: [], // 存储返回的数据
         };
@@ -21,7 +19,6 @@ export default {
     },
 
     beforeUnmount() {
-        // 在组件销毁之前移除滚动事件监听器
         window.removeEventListener('scroll', this.handleScroll);
     },
     created() {
@@ -30,34 +27,34 @@ export default {
     methods: {
         getParams() {
             const routerParams = this.$route.query.id
-            this.userId = routerParams
+            this.authorId = routerParams
         },
         getfirstemoji() {
             // 使用axios获取数据
             Service.get("/emoji/queryByUserId", {
                 params: {
-                    userId: this.userId,
+                    userId: this.authorId,
                     page: 1,
                     pageSize: 20
                 }
 
             }).then(response => {
                 if (response.code === 1) {
-                    console.log(response)
+                    // console.log(response)
                     this.dataList = response.data.records;
                 } else {
                     // 处理错误情况
-                    console.error('请求失败：' + response.msg);
+                    // console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                console.error('请求出错：' + error);
+                // console.error('请求出错：' + error);
             });
         },
         getnextemoji() {
             // 使用axios获取数据
             Service.get("/emoji/queryByUserId", {
                 params: {
-                    userId: this.userId,
+                    userId: this.authorId,
                     page: 1,
                     pageSize: 10
                 }
@@ -65,13 +62,13 @@ export default {
             }).then(response => {
                 if (response.code === 1) {
                     this.dataList = this.dataList.concat(response.data.records);
-                    console.log(this.dataList.length)
+                    // console.log(this.dataList.length)
                 } else {
                     // 处理错误情况
-                    console.error('请求失败：' + response.msg);
+                    // console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                console.error('请求出错：' + error);
+                // console.error('请求出错：' + error);
             });
         },
         handleScroll() {

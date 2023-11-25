@@ -49,7 +49,7 @@
             </span>
         </figure>
     </div> -->
-    <!-- <div class="emoji speechless">
+    <div class="emoji speechless">
         <figure class="face">
             <span class="eyes">
                 <span class="eye"></span>
@@ -58,7 +58,7 @@
             <span class="mouth">
             </span>
         </figure>
-    </div> -->
+    </div>
     <div class="emoji love">
         <figure class="face">
             <span class="eyes">

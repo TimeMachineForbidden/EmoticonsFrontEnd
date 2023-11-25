@@ -18,8 +18,8 @@
             </div>
             <div class="logininput" v-if="showlogin">
                 <el-form ref="loginFormRef" :model="loginData" :rules="loginFormRules">
-                    <el-form-item prop="email" style="margin-top:20px;margin-bottom: 30px;">
-                        <el-input v-model="loginData.email" placeholder="Username" :suffix-icon="User"
+                    <el-form-item prop="username" style="margin-top:20px;margin-bottom: 30px;">
+                        <el-input v-model="loginData.username" placeholder="Username" :suffix-icon="User"
                             input-style="font-family: 'Raleway', sans-serif;"></el-input>
                     </el-form-item>
                     <el-form-item prop="password" style="margin-bottom: 20px;">
@@ -52,8 +52,8 @@
             </div>
             <div class="registerinput" v-else>
                 <el-form ref="registerFormRef" :model="registerData" :rules="registerFormRules">
-                    <el-form-item prop="email" style="margin-top:20px;margin-bottom: 30px;">
-                        <el-input v-model="registerData.email" placeholder="Username"
+                    <el-form-item prop="username" style="margin-top:20px;margin-bottom: 30px;">
+                        <el-input v-model="registerData.username" placeholder="Username"
                             input-style="font-family: 'Raleway', sans-serif;" :suffix-icon="User"></el-input>
                     </el-form-item>
                     <el-form-item prop="password" style="margin-bottom: 20px;">
@@ -95,7 +95,7 @@ import { useRouter } from 'vue-router';
 import Service from '@/utils/request';
 const registerFormRef = ref('')
 const registerData = reactive({
-    email: '',
+    username: '',
     password: '',
     confirmpassword: ''
 })
@@ -116,8 +116,8 @@ const validateUsername = (rule, value, callback) => {
     }
 };
 const registerFormRules = reactive({
-    email: [
-        { required: true, message: 'Please input email', trigger: 'blur' },
+    username: [
+        { required: true, message: 'Please input username', trigger: 'blur' },
         { min: 4, max: 100, message: 'Length should be 4 to 100', trigger: 'blur' },
         { validator: validateUsername, trigger: 'blur' },
     ],
@@ -134,7 +134,7 @@ const registerFormRules = reactive({
 });
 const router = useRouter()
 const reloadPage = async () => {
-    ElMessage.success('注册成功！');
+    ElMessage.success('Successfully register!');
 
     // 等待一段时间，例如3秒
     await new Promise(resolve => setTimeout(resolve, 3000));
@@ -148,25 +148,25 @@ const handleregister = () => {
     registerFormRef.value.validate((valid) => {
         if (valid) {
             Service.post("/user/register", {
-                username: registerData.email,
+                username: registerData.username,
                 password: registerData.password
             }).then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 if (res.data.msg === '注册成功!') {
                     location.reload();
                     reloadPage();
-                    registerData.email = ''
+                    registerData.username = ''
                     registerData.password = ''
                     registerData.confirmpassword = ''
                 }
                 else {
-                    registerData.email = ''
+                    registerData.username = ''
                     registerData.password = ''
                     registerData.confirmpassword = ''
-                    ElMessage.error('Username already exists')
+                    ElMessage.error('Username already exists!')
                 }
             }).catch(error => {
-                console.log(error);
+                // console.log(error);
             })
         }
         else {
@@ -184,17 +184,17 @@ export default {
     data() {
         return {
             loginData: {
-                email: '',
+                username: '',
                 password: ''
             },
             loginFormRules: {
-                email: [{
-                    required: true, message: "input email", trigger: 'blur'
+                username: [{
+                    required: true, message: "input username", trigger: 'blur'
                 },
                 {
                     min: 4,
                     max: 100,
-                    message: 'email name should be between 4 and 100',
+                    message: 'username name should be between 4 and 100',
                 },
                 { validator: this.validateUsername, trigger: 'blur' }
                 ],
@@ -214,7 +214,7 @@ export default {
             showlogin: true,
             registerFormRef: ref(''),
             registerData: reactive({
-                email: '',
+                username: '',
                 password: '',
                 confirmpassword: ''
             }),
@@ -275,22 +275,22 @@ export default {
                 }
                 else {
                     Service.post("/user/login", {
-                        username: this.loginData.email,
+                        username: this.loginData.username,
                         password: this.loginData.password
                     }).then((response) => {
-                        console.log(response)
+                        // console.log(response)
                         if (response.code === 1) {
                             _this.userToken = 'Token ' + response.data.token;
                             _this.userID = response.data.id;
                             _this.changeLogin({ Authorization: _this.userToken, ID: _this.userID });
                             _this.$router.push('/');
-                            ElMessage.success('Successfully Login')
+                            ElMessage.success('Successfully login!')
                         }
                         else {
-                            ElMessage.error('Incorrect username or password')
+                            ElMessage.error('Incorrect username or password!')
                         }
                     }).catch(error => {
-                        console.log(error);
+                        // console.log(error);
                     });
                 }
             })
@@ -311,7 +311,7 @@ export default {
     directives: {
         color: {
             created(el, binding) {
-                console.log(el, binding.value)
+                // console.log(el, binding.value)
                 el.style.background = binding.value
             },
             updated(el, binding) {
@@ -324,20 +324,20 @@ export default {
 }
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Serif:ital@1&family=Play:wght@700&family=Satisfy&family=Space+Grotesk&family=Ubuntu:ital@1&display=swap');
+@import url('https://fonts.font.im/css2?family=Open+Sans&family=PT+Serif:ital@1&family=Play:wght@700&family=Satisfy&family=Space+Grotesk&family=Ubuntu:ital@1&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Fuggles&family=Open+Sans&family=PT+Serif:ital@1&family=Play:wght@700&family=Roboto+Mono:ital,wght@0,200;1,100&family=Satisfy&family=Space+Grotesk&family=Ubuntu:ital@1&display=swap');
-
-
-@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300&display=swap');
+@import url('https://fonts.font.im/css2?family=Croissant+One&family=Fuggles&family=Open+Sans&family=PT+Serif:ital@1&family=Play:wght@700&family=Roboto+Mono:ital,wght@0,200;1,100&family=Satisfy&family=Space+Grotesk&family=Ubuntu:ital@1&display=swap');
 
 
-@import url('https://fonts.googleapis.com/css2?family=Signika+Negative&display=swap');
+@import url('https://fonts.font.im/css2?family=Martian+Mono:wght@300&display=swap');
 
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,300&display=swap');
+@import url('https://fonts.font.im/css2?family=Signika+Negative&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap');
+
+@import url('https://fonts.font.im/css2?family=Raleway:ital,wght@1,300&display=swap');
+
+@import url('https://fonts.font.im/css2?family=JetBrains+Mono:wght@600&display=swap');
 
 .login {
     width: 100%;

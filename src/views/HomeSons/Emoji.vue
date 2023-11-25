@@ -8,14 +8,14 @@
                 <span>Back</span>
             </div>
             <div class="emoji">
-                <div class="image"><img src="@/assets/testpic.jpg" alt="">
+                <div class="image"><img :src="this.url" alt="">
                     <div class="operate">
-                        <a @click="StarEmoji()"><el-icon>
+                        <a @click="starEmoji(this.emojiID)"><el-icon>
                                 <Star />
-                            </el-icon> 220</a>
-                        <a><el-icon>
+                            </el-icon> {{ this.favorites }}</a>
+                        <a><el-icon @click="downloadEmoji(this.url)">
                                 <Download />
-                            </el-icon> 220</a>
+                            </el-icon> {{ this.downloads }}</a>
                         <a><el-icon>
                                 <Share />
                             </el-icon> 220</a>
@@ -29,16 +29,16 @@
                 <div class="AuthorInformation">
                     <div class="information">
                         <div class="left">
-                            <a><img src="@/assets/testpic.jpg" alt=""></a>
+                            <a><img :src="authordata.profilePhoto" alt=""></a>
                         </div>
                         <div class="right">
-                            <h style="font-size:1.5vw">username:{{ userdata.username }}</h>
+                            <h style="font-size:1.5vw">name:{{ authordata.username }}</h>
                             <el-button type="primary" class="navbtn" size="large" @click="upload"
                                 style="font-family: 'Oswald', sans-serif;font-weight: 800;height: 20px;width: 10vw;">Follow</el-button>
                         </div>
                         <div class="relatedemoji">
                             <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg"
-                                    alt=""><span>Author:{{
+                                    alt=""><span>author:{{
                                         item.createUser }}</span></a>
                         </div>
                     </div>
@@ -61,15 +61,14 @@ import Service from '@/utils/request';
 export default {
     data() {
         return {
-            // ID: '',
-            // headers: {
-            //     Authorization: localStorage.getItem('Authorization')
-            // },
             emojiID: '',
+            url: '',
+            favorites: '',
+            downloads: '',
             page: 1,
             dataList: [], // 存储返回的数据
             lastScrollTime: '',
-            userdata: {
+            authordata: {
                 createTime: '',
                 email: '',
                 gender: '',
@@ -78,17 +77,15 @@ export default {
                 profilePhoto: '',
                 signature: '',
                 username: '',
+                hits: ''
+                // similar: {}
             },
         }
     },
     mounted() {
         this.getuserdata();
+        this.getemojiInformation();
         this.getfirstemoji();
-        window.addEventListener('scroll', this.handleScroll);
-    },
-    beforeUnmount() {
-        // 在组件销毁之前移除滚动事件监听器
-        window.removeEventListener('scroll', this.handleScroll);
     },
     created() {
         this.getParams()
@@ -97,7 +94,22 @@ export default {
         getParams() {
             const routerParams = this.$route.query.id
             this.emojiID = routerParams
-            console.log(this.emojiID)
+            // console.log(this.emojiID)
+        },
+        getemojiInformation() {
+            Service.get('/emoji/' + this.emojiID, {
+            }).then((response) => {
+                // console.log(response);
+                if (response.code === 1) {
+                    this.url = response.data.url;
+                    this.favorites = response.data.favorite;
+                    this.downloads = response.data.downloads;
+                    this.hits = response.data.hits
+                }
+            }).catch(error => {
+                // console.log(error);
+            });
+
         },
         getuserdata() {
             axios.interceptors.request.use((config) => {
@@ -110,13 +122,13 @@ export default {
             });
             this.ID = localStorage.getItem('ID')
             Service.get('/user/' + this.ID).then((response) => {
-                console.log(response);
+                // console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;
-                    console.log(this.userdata)
+                    // console.log(this.userdata)
                 }
             }).catch(error => {
-                console.log(error);
+                // console.log(error);
             });
         },
         backhome() {
@@ -132,57 +144,52 @@ export default {
 
             }).then(response => {
                 if (response.code === 1) {
-                    console.log(response)
+                    // console.log(response)
                     this.dataList = response.data.records;
                 } else {
                     // 处理错误情况
-                    console.error('请求失败：' + response.msg);
+                    // console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                console.error('请求出错：' + error);
+                // console.error('请求出错：' + error);
             });
         },
-        getnextemoji() {
-            // 使用axios获取数据
-            Service.get('/emoji', {
-                params: {
-                    page: 1,
-                    pageSize: 10
+        starEmoji(id) {
+            axios.interceptors.request.use((config) => {
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.Authorization = localStorage.getItem('Authorization')
                 }
-
-            }).then(response => {
+                return config;
+            }, (error) => {
+                return Promise.reject(error);
+            });
+            Service.post(`/favorite?emojiId=${id}`).then((response) => {
+                // console.log(response)
                 if (response.code === 1) {
-                    this.dataList = this.dataList.concat(response.data.records);
-                    console.log(this.dataList.length)
+                    ElMessage.success('Successfully star!')
                 } else {
                     // 处理错误情况
-                    console.error('请求失败：' + response.msg);
+                    ElMessage.error('You have already stared the emoji!')
                 }
             }).catch(error => {
-                console.error('请求出错：' + error);
+                ElMessage.error('Please login first!')
             });
+
         },
-        handleScroll() {
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            const scrollPercentage = (scrollY / (documentHeight - windowHeight)) * 100;
-            if (scrollPercentage >= 95) {
-                const currentTime = new Date().getTime();
-                if (!this.lastScrollTime || (currentTime - this.lastScrollTime) > 500) {
-                    this.page++;
-                    // 滚动到底部，执行返回操作
-                    this.getnextemoji();
-
-                    window.scrollTo(0, windowHeight * ((this.page - 2) * 10 + 20 / (this.page - 1) * 10 + 20));
-
-                    this.lastScrollTime = currentTime;
-                }
+        downloadEmoji(url) {
+            if (localStorage.getItem('Authorization')) {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'emoji_image'; // 下载文件的默认名称
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             }
-        },
-        StarEmoji() {
-            ElMessage.error('Something Went Wrong!Please try again!')
+            else {
+                ElMessage.error('Please login first!')
+            }
         }
+
     }
 }
 </script>
@@ -226,22 +233,51 @@ export default {
     display: flex;
 }
 
-.main-container .emoji .image {
+/* .main-container .emoji .image {
     margin-top: 20px;
     width: 50vw;
-    height: 30vw;
-    display: block;
-    /* 确保.image容器是块级元素 */
+    height: 40vw;
 }
 
 .main-container .emoji .image img {
     width: 60%;
     height: 100%;
     display: block;
-    /* 确保图像是块级元素 */
     margin: 0 auto;
-    /* 将图像水平居中 */
+} 
+*/
+.main-container .emoji .image {
+    margin-top: 20px;
+    width: 50vw;
+    /* 设置固定宽度 */
+
+    position: relative;
+    /* 让内部元素相对于此容器定位 */
 }
+
+.main-container .emoji .image img {
+    width: 60%;
+    /* 图像宽度占满容器 */
+
+    height: auto;
+    /* 高度自适应 */
+
+    display: block;
+    /* 确保图像是块级元素 */
+
+    /* position: absolute; */
+    /* 绝对定位，相对于父容器 */
+
+    top: 0;
+    left: 0;
+    /* 将图像定位在容器的左上角 */
+
+    bottom: 0;
+    right: 0;
+    /* 将图像的底部和右侧与容器的底部和右侧对齐 */
+    margin: 0 auto;
+}
+
 
 .main-container .emoji .AuthorInformation .information {
     width: 30vw;
@@ -328,7 +364,7 @@ export default {
 
 .relatedemoji a {
     width: 20vw;
-    height: 20vh;
+    height: 24vh;
     margin-top: 15px;
     background-color: rgb(247, 247, 198);
     transition-property: transform, box-shadow;

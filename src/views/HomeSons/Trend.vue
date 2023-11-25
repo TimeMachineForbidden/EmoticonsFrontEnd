@@ -1,14 +1,13 @@
 <template>
     <div class="trendcontent">
-        <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata(item.id)" src="@/assets/testpic.jpg"
-                alt="">
+        <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata(item.id)" :src="item.url" alt="">
             <span>
-                <div class="Author" @click="navigateToUserProfile(item.createUser)">Author: {{ item.createUser }}</div>
+                <div class="author" @click="navigateToAuthorProfile(item.createUser)">author: {{ item.createUser }}</div>
                 <div class="star" @click="starEmoji(item.id)"> star</div>
                 <el-icon @click="starEmoji(item.id)" style=" top: 4.6px; color: white;">
                     <Star />
                 </el-icon>
-                <div class="download"> download </div>
+                <div class="download" @click="downloadEmoji(item.url)"> download </div>
                 <el-icon style="top: 4.6px; color: white;">
                     <Download />
                 </el-icon>
@@ -20,37 +19,27 @@
 import { Star } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { Download } from '@element-plus/icons-vue';
-import Service from '@/utils/request';
 </script>
 <script>
+import Service from '@/utils/request';
 import axios from 'axios';
 export default {
     data() {
         return {
-            // ID: '',
-            // Authorization: '',
             page: 1,
             dataList: [], // 存储返回的数据
             lastScrollTime: '',
         };
     },
     mounted() {
-        // this.getid();
         this.getfirstemoji();
         window.addEventListener('scroll', this.handleScroll);
     },
     beforeUnmount() {
-        // 在组件销毁之前移除滚动事件监听器
         window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
-        // getid() {
-        //     if (localStorage.getItem('ID')) {
-        //         this.ID = localStorage.getItem('ID')
-        //     }
-        // },
         getfirstemoji() {
-            // 使用axios获取数据
             Service.get('/query/popular', {
                 params: {
                     page: 1,
@@ -59,21 +48,19 @@ export default {
 
             }).then(response => {
                 if (response.code === 1) {
-                    console.log(response)
                     this.dataList = response.data.records;
                 } else {
                     // 处理错误情况
-                    console.error('请求失败：' + response.msg);
+                    // console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                console.error('请求出错：' + error);
+                // console.error('请求出错：' + error);
             });
         },
         getnextemoji() {
-            //使用axios获取数据
             axios.interceptors.request.use((config) => {
-                if (localStorage.getItem('Authorization')) {
-                    config.headers.Authorization = localStorage.getItem('Authorization')
+                if (localStorage.getItem('authorization')) {
+                    config.headers.authorization = localStorage.getItem('authorization')
                 }
                 return config;
             }, (error) => {
@@ -86,16 +73,16 @@ export default {
                 }
 
             }).then(response => {
-                console.log(response)
+                // console.log(response)
                 if (response.code === 1) {
                     this.dataList = this.dataList.concat(response.data.records);
-                    console.log(this.dataList.length)
+                    // console.log(this.dataList.length)
                 } else {
                     // 处理错误情况
-                    console.error('请求失败：' + response.msg);
+                    // console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                console.error('请求出错：' + error);
+                // console.error('请求出错：' + error);
             });
         },
         handleScroll() {
@@ -116,7 +103,7 @@ export default {
                 }
             }
         },
-        navigateToUserProfile(id) {
+        navigateToAuthorProfile(id) {
             this.$router.push({
                 path: '/author',
                 query: { id: id }
@@ -131,30 +118,39 @@ export default {
 
         },
         starEmoji(id) {
-            // console.log(id)
-            //使用axios获取数据
             axios.interceptors.request.use((config) => {
-                if (localStorage.getItem('Authorization')) {
-                    config.headers.Authorization = localStorage.getItem('Authorization')
+                if (localStorage.getItem('authorization')) {
+                    config.headers.authorization = localStorage.getItem('authorization')
                 }
                 return config;
             }, (error) => {
                 return Promise.reject(error);
             });
             Service.post(`/favorite?emojiId=${id}`).then((response) => {
-                console.log(response)
+                // console.log(response)
                 if (response.code === 1) {
-                    ElMessage.success('Successfully Star')
+                    ElMessage.success('Successfully star!')
                 } else {
                     // 处理错误情况
-                    ElMessage.error('Something Went Wrong!Please try again!')
-                    console.error('请求失败：' + response.msg);
+                    ElMessage.error('You have already stared the emoji!')
                 }
             }).catch(error => {
-                ElMessage.error('Something Went Wrong!Please try again!')
-                console.error('请求出错：' + error);
+                ElMessage.error('Please login first!')
             });
 
+        },
+        downloadEmoji(url) {
+            if (localStorage.getItem('authorization')) {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'emoji_image'; // 下载文件的默认名称
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            else {
+                ElMessage.error('Please login first!')
+            }
         }
     },
 }
@@ -173,7 +169,7 @@ export default {
 }
 
 .trendcontent a {
-    width: 300px;
+    width: 280px;
     height: 25vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);

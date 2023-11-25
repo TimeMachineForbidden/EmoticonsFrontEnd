@@ -12,12 +12,12 @@
             </div>
             <div class="AuthorInformation">
                 <div class="left">
-                    <a><img src="@/assets/testpic.jpg" alt=""></a>
+                    <a><img :src="authordata.profilePhoto" alt=""></a>
                 </div>
                 <div class="right">
-                    <h2>username:{{ userdata.username }}</h2>
-                    <div>signature:{{ userdata.signature }}</div>
-                    <el-button type="primary" class="navbtn" size="large" @click="upload"
+                    <h2>name:{{ authordata.authorname }}</h2>
+                    <div>signature:{{ authordata.signature }}</div>
+                    <el-button type="primary" class="navbtn" size="large" @click="up"
                         style="font-family: 'Oswald', sans-serif;font-weight: 800;height: 20px;width: 120px;">Follow</el-button>
                 </div>
             </div>
@@ -27,8 +27,8 @@
                 <a>220 follows</a>
             </div>
             <div class="labels">
-                <a @click="authorupload(this.userId)" style="cursor: pointer;">Upload</a>
-                <a @click="authorstar(this.userId)" style="cursor: pointer;">Star</a>
+                <a @click="authorupload(this.authorId)" style="cursor: pointer;">Upload</a>
+                <a @click="authorstar(this.authorId)" style="cursor: pointer;">Star</a>
                 <a>More</a>
             </div>
             <div class="page-content">
@@ -44,12 +44,11 @@ import { ArrowLeft } from '@element-plus/icons-vue'
 <script>
 import axios from 'axios';
 import Service from '@/utils/request';
-import { useRouter } from 'vue-router';
 export default {
     data() {
         return {
-            userId: '',
-            userdata: {
+            authorId: '',
+            authordata: {
                 createTime: '',
                 email: '',
                 gender: '',
@@ -57,13 +56,12 @@ export default {
                 isOfficial: '',
                 profilePhoto: '',
                 signature: '',
-                username: '',
+                authorname: '',
             }
         }
     },
     mounted() {
-        this.getuserdata();
-        // console.log(this.userId)
+        this.getauthordata();
     },
     created() {
         this.getParams()
@@ -71,9 +69,9 @@ export default {
     methods: {
         getParams() {
             const routerParams = this.$route.query.id
-            this.userId = routerParams
+            this.authorId = routerParams
         },
-        getuserdata() {
+        getauthordata() {
             axios.interceptors.request.use((config) => {
                 if (localStorage.getItem('Authorization')) {
                     config.headers.Authorization = localStorage.getItem('Authorization')
@@ -82,11 +80,11 @@ export default {
             }, (error) => {
                 return Promise.reject(error);
             });
-            Service.get('/user/' + this.userId).then((response) => {
+            Service.get('/user/' + this.authorId).then((response) => {
                 console.log(response);
                 if (response.code === 1) {
-                    this.userdata = response.data;
-                    console.log(this.userdata)
+                    this.authordata = response.data;
+                    console.log(this.authordata)
                 }
             }).catch(error => {
                 console.log(error);

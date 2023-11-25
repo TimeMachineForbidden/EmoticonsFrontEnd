@@ -1,6 +1,6 @@
 <template>
     <div class="userstarcontent">
-        <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg" alt=""><span>Author:{{
+        <a v-for="(item, index) in dataList" :key="index"><img :src="item.url" alt=""><span>Author:{{
             item.createUser }}</span></a>
     </div>
 </template>
@@ -10,9 +10,6 @@ import Service from '@/utils/request';
 export default {
     data() {
         return {
-            headers: {
-                Authorization: localStorage.getItem('Authorization')
-            },
             page: 1,
             dataList: [], // 存储返回的数据
             lastScrollTime: ''
@@ -20,7 +17,6 @@ export default {
     },
     mounted() {
         this.getfirstemoji();
-        // window.addEventListener('scroll', this.handleScroll);
     },
     beforeUnmount() {
         // 在组件销毁之前移除滚动事件监听器
@@ -36,19 +32,18 @@ export default {
             }, (error) => {
                 return Promise.reject(error);
             });
-            // 使用axios获取数据
             Service.get('/favorite', {
             }).then(response => {
-                console.log(response)
+                // console.log(response)
                 if (response.code === 1) {
-                    console.log(response)
+                    // console.log(response)
                     this.dataList = response.data;
                 } else {
                     // 处理错误情况
-                    console.error('请求失败：' + response.msg);
+                    // console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                console.error('请求出错：' + error);
+                // console.error('请求出错：' + error);
             });
         },
         // getnextemoji() {
@@ -62,13 +57,13 @@ export default {
         //     }).then(response => {
         //         if (response.code === 1) {
         //             this.dataList = this.dataList.concat(response.data.records);
-        //             console.log(this.dataList.length)
+        //             // console.log(this.dataList.length)
         //         } else {
         //             // 处理错误情况
-        //             console.error('请求失败：' + response.msg);
+        //             // console.error('请求失败：' + response.msg);
         //         }
         //     }).catch(error => {
-        //         console.error('请求出错：' + error);
+        //         // console.error('请求出错：' + error);
         //     });
         // },
         // handleScroll() {

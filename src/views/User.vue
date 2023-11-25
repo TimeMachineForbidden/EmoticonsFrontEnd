@@ -12,10 +12,10 @@
             </div>
             <div class="UserInformation">
                 <div class="left">
-                    <a><img src="@/assets/testpic.jpg" alt=""></a>
+                    <a><img :src="userdata.profilePhoto" alt=""></a>
                 </div>
                 <div class="right">
-                    <h2>username:{{ userdata.username }}</h2>
+                    <h2>name:{{ userdata.username }}</h2>
                     <div>signature:{{ userdata.signature }}</div>
                 </div>
             </div>
@@ -41,7 +41,6 @@
 
 <script setup>
 import { ArrowLeft } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus';
 </script >
 <script>
 import axios from 'axios';
@@ -76,12 +75,12 @@ export default {
             });
             this.ID = localStorage.getItem('ID')
             Service.get('/user/' + this.ID).then((response) => {
-                console.log(response);
+                // console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;
                 }
             }).catch(error => {
-                console.log(error);
+                // console.log(error);
             });
         },
         back() {
