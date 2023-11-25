@@ -68,15 +68,6 @@
                         <el-button class="long-button" type="primary" @click="handleregister">Sign Up </el-button>
 
                     </el-form-item>
-                    <!-- <el-form-item>
-                        <el-button class="long-button lwg" type="info" @click="signupwithgoogle">Sign Up with Google
-                        </el-button>
-
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button class="long-button lww" type="info" @click="signupwithwechat">Sign Up with Wechat
-                        </el-button>
-                    </el-form-item> -->
                 </el-form>
             </div>
         </div>

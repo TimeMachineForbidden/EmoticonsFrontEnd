@@ -16,9 +16,6 @@
                         <a><el-icon @click="downloadEmoji(this.url)">
                                 <Download />
                             </el-icon> {{ this.downloads }}</a>
-                        <a><el-icon>
-                                <Share />
-                            </el-icon> 220</a>
                     </div>
                     <el-divider></el-divider>
                     <div class="discussion">
@@ -33,8 +30,6 @@
                         </div>
                         <div class="right">
                             <h style="font-size:1.5vw">name:{{ authordata.username }}</h>
-                            <el-button type="primary" class="navbtn" size="large" @click="upload"
-                                style="font-family: 'Oswald', sans-serif;font-weight: 800;height: 20px;width: 10vw;">Follow</el-button>
                         </div>
                         <div class="relatedemoji">
                             <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg"

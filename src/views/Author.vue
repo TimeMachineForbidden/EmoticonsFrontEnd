@@ -17,14 +17,11 @@
                 <div class="right">
                     <h2>name:{{ authordata.authorname }}</h2>
                     <div>signature:{{ authordata.signature }}</div>
-                    <el-button type="primary" class="navbtn" size="large" @click="up"
-                        style="font-family: 'Oswald', sans-serif;font-weight: 800;height: 20px;width: 120px;">Follow</el-button>
                 </div>
             </div>
             <div class="data">
                 <a>22 uploads</a>
                 <a>220 stars</a>
-                <a>220 follows</a>
             </div>
             <div class="labels">
                 <a @click="authorupload(this.authorId)" style="cursor: pointer;">Upload</a>
@@ -110,9 +107,7 @@ export default {
 </script>
 
 <style scoped>
-* {
-    font-family: 'Oswald', sans-serif;
-}
+@import url('https://fonts.font.im/css?family=Quattrocento+Sans');
 
 .home {
     min-height: 110vh;
@@ -162,9 +157,9 @@ export default {
 }
 
 .main-container .AuthorInformation .right {
+    font-family: 'Quattrocento Sans', sans-serif;
     display: grid;
     align-content: flex-end;
-    font-family: 'Oswald';
 }
 
 .main-container .AuthorInformation .btn {
@@ -242,10 +237,11 @@ export default {
 }
 
 .main-container .data a {
-    margin-right: 20px;
+    margin-right: 25px;
 }
 
 .main-container .backhome {
+    font-family: 'Oswald';
     cursor: pointer;
     top: 10px
 }

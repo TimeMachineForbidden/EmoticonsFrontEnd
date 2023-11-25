@@ -22,7 +22,6 @@
             <div class="data">
                 <a>20 uploads</a>
                 <a>220 stars</a>
-                <a>220 follows</a>
             </div>
             <div class="labels">
                 <router-link to="/userupload">Upload</router-link>
@@ -92,9 +91,7 @@ export default {
 </script>
 
 <style scoped>
-* {
-    font-family: 'Oswald', sans-serif;
-}
+@import url('https://fonts.font.im/css?family=Quattrocento+Sans');
 
 .home {
     min-height: 110vh;
@@ -145,9 +142,9 @@ export default {
 }
 
 .main-container .UserInformation .right {
+    font-family: 'Quattrocento Sans', sans-serif;
     display: grid;
     align-content: flex-end;
-    font-family: 'Oswald';
 }
 
 .main-container .UserInformation .btn {
@@ -188,7 +185,8 @@ export default {
 
 .main-container .backward {
     cursor: pointer;
-    top: 10px
+    top: 10px;
+    font-family: 'Oswald';
 }
 
 .backward span {
@@ -235,6 +233,6 @@ export default {
 }
 
 .main-container .data a {
-    margin-right: 20px;
+    margin-right: 25px;
 }
 </style>

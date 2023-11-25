@@ -15,29 +15,21 @@
             <div class="text item" v-if="!isEditing">Username: {{ this.userdata.username }}</div>
             <div class="text item" v-if="!isEditing">Password: </div>
             <div class="text item" v-if="!isEditing">Signature: {{ this.userdata.signature }}</div>
-            <div class="text item" v-if="!isEditing">Gender: {{ this.userdata.gender }}</div>
-            <div class="text item" v-if="!isEditing">Email: {{ this.userdata.email }}</div>
 
             <div class="text item" v-if="isEditing">
                 <label for="username">Username: </label>
-                <input type="text" id="username" v-model="editedData.username" style="width:60%;border-color:skyblue">
+                <el-input type="text" id="username" v-model="editedData.username" style="width:60%;">
+                </el-input>
             </div>
             <div class="text item" v-if="isEditing">
                 <label for="username">Password: </label>
-                <input type="text" id="password" v-model="editedData.password" style="width:60%;border-color:skyblue">
+                <el-input type="text" id="password" v-model="editedData.password" style="width:60%;">
+                </el-input>
             </div>
             <div class="text item" v-if="isEditing">
                 <label for="signature">Signature: </label>
-                <input type="text" id="signature" v-model="editedData.signature" style="width:60%;border-color:skyblue">
-            </div>
-            <div class="text item" v-if="isEditing">
-                <label for="gender">Gender: </label>
-                <input type="text" id="gender" v-model="editedData.gender" style="width:60%;border-color:skyblue">
-                (MALE/FEMALE)
-            </div>
-            <div class="text item" v-if="isEditing">
-                <label for="email">Email: </label>
-                <input type="text" id="email" v-model="editedData.email" style="width:60%;border-color:skyblue">
+                <el-input type="text" id="signature" v-model="editedData.signature" style="width:60%;">
+                </el-input>
             </div>
 
         </el-card>
@@ -104,7 +96,7 @@ export default {
                     // // console.log(response)
                     if (response.code === 1) {
                         this.userdata = { ...this.editedData };
-                        // // console.log(this.userdata)
+                        console.log(this.userdata)
                         this.toggleEditMode();
                         ElMessage.success('Successfully edit!');
 

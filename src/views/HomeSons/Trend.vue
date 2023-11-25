@@ -40,7 +40,7 @@ export default {
     },
     methods: {
         getfirstemoji() {
-            Service.get('/query/popular', {
+            Service.get('/emoji', {
                 params: {
                     page: 1,
                     pageSize: 20
