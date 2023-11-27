@@ -51,8 +51,8 @@ export default {
             // 使用axios获取数据
             Service.get("/favorite/list/" + this.authorId, {
                 params: {
-                    page: 1,
-                    pageSize: 20
+                    page: this.page,
+                    pageSize: 10
                 }
 
             }).then(response => {
@@ -106,8 +106,8 @@ export default {
 }
 
 .authorstar a {
-    width: 300px;
-    height: 20vh;
+    width: 260px;
+    height: 24vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);
     transition-property: transform, box-shadow;

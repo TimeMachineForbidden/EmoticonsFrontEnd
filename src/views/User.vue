@@ -92,9 +92,10 @@ export default {
 
 <style scoped>
 @import url('https://fonts.font.im/css?family=Quattrocento+Sans');
+@import url('https://fonts.font.im/css?family=Oswald');
 
 .home {
-    min-height: 110vh;
+    min-height: 120vh;
     width: 100%;
     background-image: -moz-linear-gradient(180deg, rgb(156, 206, 252), rgb(117, 250, 170));
 
@@ -142,7 +143,8 @@ export default {
 }
 
 .main-container .UserInformation .right {
-    font-family: 'Quattrocento Sans', sans-serif;
+    /* font-family: 'Quattrocento Sans', sans-serif; */
+    font-family: 'Oswald', sans-serif;
     display: grid;
     align-content: flex-end;
 }

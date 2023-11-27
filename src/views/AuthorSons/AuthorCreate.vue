@@ -55,7 +55,7 @@ export default {
             Service.get("/emoji/queryByUserId", {
                 params: {
                     userId: this.authorId,
-                    page: 1,
+                    page: this.page,
                     pageSize: 10
                 }
 
@@ -110,8 +110,8 @@ export default {
 }
 
 .authorcreate a {
-    width: 300px;
-    height: 20vh;
+    width: 260px;
+    height: 24vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);
     transition-property: transform, box-shadow;

@@ -2,13 +2,16 @@
     <div class="animatedcontent">
         <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata(item.id)" :src="item.url" alt="">
             <span>
-                <div class="author" @click="navigateToAuthorProfile(item.createUser)">author: {{ item.createUser }}</div>
+                <div class="author" @click="navigateToAuthorProfile(item.createUser)">author</div>
+                <el-icon @click="navigateToAuthorProfile(item.createUser)" style=" top: 4.6px; color: white;">
+                    <User />
+                </el-icon>
                 <div class="star" @click="starEmoji(item.id)"> star</div>
                 <el-icon @click="starEmoji(item.id)" style=" top: 4.6px; color: white;">
                     <Star />
                 </el-icon>
                 <div class="download" @click="downloadEmoji(item.url)"> download </div>
-                <el-icon style="top: 4.6px; color: white;">
+                <el-icon @click="downloadEmoji(item.url)" style="top: 4.6px; color: white;">
                     <Download />
                 </el-icon>
             </span>
@@ -19,6 +22,7 @@
 import { Star } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { Download } from '@element-plus/icons-vue';
+import { User } from '@element-plus/icons-vue';
 </script>
 <script>
 import Service from '@/utils/request';
@@ -58,17 +62,9 @@ export default {
             });
         },
         getnextemoji() {
-            axios.interceptors.request.use((config) => {
-                if (localStorage.getItem('authorization')) {
-                    config.headers.authorization = localStorage.getItem('authorization')
-                }
-                return config;
-            }, (error) => {
-                return Promise.reject(error);
-            });
-            Service.get('/query/dy', {
+            Service.get('/query/dynamic', {
                 params: {
-                    page: 1,
+                    page: this.page,
                     pageSize: 10
                 }
 
@@ -108,7 +104,6 @@ export default {
                 path: '/author',
                 query: { id: id }
             });
-            console.log(id)
         },
         getemojidata(id) {
             this.$router.push({
@@ -119,8 +114,8 @@ export default {
         },
         starEmoji(id) {
             axios.interceptors.request.use((config) => {
-                if (localStorage.getItem('authorization')) {
-                    config.headers.authorization = localStorage.getItem('authorization')
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.authorization = localStorage.getItem('Authorization')
                 }
                 return config;
             }, (error) => {
@@ -135,14 +130,15 @@ export default {
                     ElMessage.error('You have already stared the emoji!')
                 }
             }).catch(error => {
-                ElMessage.error('Please loginin first!')
+                ElMessage.error('Please login first!')
             });
 
         },
         downloadEmoji(url) {
-            if (localStorage.getItem('authorization')) {
+            if (localStorage.getItem('Authorization')) {
                 const link = document.createElement('a');
                 link.href = url;
+                console.log(url);
                 link.download = 'emoji_image'; // 下载文件的默认名称
                 document.body.appendChild(link);
                 link.click();
@@ -169,7 +165,7 @@ export default {
 }
 
 .animatedcontent a {
-    width: 280px;
+    width: 260px;
     height: 25vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);

@@ -1,90 +1,103 @@
 <template>
     <div class="searchcontent">
-        <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata(item.id)" :src="item.url" alt="">
+        <a v-for="(item, index) in dataList" :key="index">
+            <img @click="getemojidata(item.id)" :src="item.url" alt="">
             <span>
-                <div class="author" @click="navigateToAuthorProfile(item.createUser)">author: {{ item.createUser }}</div>
+                <div class="author" @click="navigateToAuthorProfile(item.createUser)">author</div>
+                <el-icon @click="navigateToAuthorProfile(item.createUser)" style="top: 4.6px; color: white;">
+                    <User />
+                </el-icon>
                 <div class="star" @click="starEmoji(item.id)"> star</div>
-                <el-icon @click="starEmoji(item.id)" style=" top: 4.6px; color: white;">
+                <el-icon @click="starEmoji(item.id)" style="top: 4.6px; color: white;">
                     <Star />
                 </el-icon>
                 <div class="download" @click="downloadEmoji(item.url)"> download </div>
-                <el-icon style="top: 4.6px; color: white;">
+                <el-icon @click="downloadEmoji(item.url)" style="top: 4.6px; color: white;">
                     <Download />
                 </el-icon>
             </span>
         </a>
     </div>
 </template>
+
 <script setup>
 import { Star } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { Download } from '@element-plus/icons-vue';
-</script>
-<script>
+import { User } from '@element-plus/icons-vue';
 import Service from '@/utils/request';
+</script>
+
+<script>
 import axios from 'axios';
+
 export default {
     data() {
         return {
             page: 1,
-            dataList: [], // 存储返回的数据
+            kind: 1,
+            searchcontent: '',
+            dataList: [],
             lastScrollTime: '',
         };
     },
+
     mounted() {
-        this.getfirstemoji();
+        this.handleRouteChange();
         window.addEventListener('scroll', this.handleScroll);
     },
+
     beforeUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
     },
+
+    watch: {
+        $route: 'handleRouteChange',
+    },
+
+    created() {
+        this.getParams();
+    },
+
     methods: {
+        handleRouteChange() {
+            this.getParams();
+            this.getfirstemoji();
+        },
+
+        getParams() {
+            const routerParams = this.$route.query;
+            this.kind = routerParams.kind;
+            this.searchcontent = routerParams.searchcontent;
+        },
+
         getfirstemoji() {
-            Service.get('/query/popular', {
-                params: {
-                    page: 1,
-                    pageSize: 20
-                }
-
-            }).then(response => {
-                if (response.code === 1) {
-                    this.dataList = response.data.records;
-                } else {
-                    // 处理错误情况
-                    // console.error('请求失败：' + response.msg);
-                }
-            }).catch(error => {
-                // console.error('请求出错：' + error);
-            });
+            this.getData(this.kind, this.searchcontent, 1, 20);
         },
+
         getnextemoji() {
-            axios.interceptors.request.use((config) => {
-                if (localStorage.getItem('authorization')) {
-                    config.headers.authorization = localStorage.getItem('authorization')
-                }
-                return config;
-            }, (error) => {
-                return Promise.reject(error);
-            });
-            Service.get('/query/popular', {
-                params: {
-                    page: 1,
-                    pageSize: 10
-                }
+            this.getData(this.kind, this.searchcontent, this.page, 10);
+        },
 
+        getData(kind, searchcontent, page, pageSize) {
+            Service.post('/search', {
+                "kind": kind,
+                "key": searchcontent,
+                "page": page,
+                "pageSize": pageSize,
+                "sort": 0
             }).then(response => {
-                // console.log(response)
                 if (response.code === 1) {
-                    this.dataList = this.dataList.concat(response.data.records);
-                    // console.log(this.dataList.length)
+                    console.log(response);
+                    this.dataList = page === 1 ? response.data.records : this.dataList.concat(response.data.records);
                 } else {
-                    // 处理错误情况
-                    // console.error('请求失败：' + response.msg);
+                    console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                // console.error('请求出错：' + error);
+                console.error('请求出错：' + error);
             });
         },
+
         handleScroll() {
             const scrollY = window.scrollY;
             const windowHeight = window.innerHeight;
@@ -94,64 +107,65 @@ export default {
                 const currentTime = new Date().getTime();
                 if (!this.lastScrollTime || (currentTime - this.lastScrollTime) > 500) {
                     this.page++;
-                    // 滚动到底部，执行返回操作
                     this.getnextemoji();
-
                     window.scrollTo(0, windowHeight * ((this.page - 2) * 10 + 20 / (this.page - 1) * 10 + 20));
-
                     this.lastScrollTime = currentTime;
                 }
             }
         },
+
         navigateToAuthorProfile(id) {
             this.$router.push({
                 path: '/author',
                 query: { id: id }
             });
-            console.log(id)
+            console.log(id);
         },
+
         getemojidata(id) {
             this.$router.push({
                 path: '/emoji',
                 query: { id: id }
             });
-
         },
+
         starEmoji(id) {
             axios.interceptors.request.use((config) => {
-                if (localStorage.getItem('authorization')) {
-                    config.headers.authorization = localStorage.getItem('authorization')
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.Authorization = localStorage.getItem('Authorization');
                 }
                 return config;
             }, (error) => {
                 return Promise.reject(error);
             });
+
             Service.post(`/favorite?emojiId=${id}`).then((response) => {
-                // console.log(response)
+                console.log(response);
                 if (response.code === 1) {
-                    ElMessage.success('Successfully star!')
+                    ElMessage.success('Successfully Star');
                 } else {
-                    // 处理错误情况
-                    ElMessage.error('You have already stared the emoji!')
+                    ElMessage.error('Something Went Wrong! Please try again!');
+                    console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                ElMessage.error('Please login first!')
+                ElMessage.error('Something Went Wrong! Please try again!');
+                console.error('请求出错：' + error);
             });
-
         },
+
         downloadEmoji(url) {
-            if (localStorage.getItem('authorization')) {
+            if (localStorage.getItem('Authorization')) {
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'emoji_image'; // 下载文件的默认名称
+                console.log(url);
+                link.download = 'emoji_image';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+            } else {
+                ElMessage.error('Please login first!');
             }
-            else {
-                ElMessage.error('Please login first!')
-            }
-        }
+        },
     },
 }
 </script>
@@ -169,7 +183,7 @@ export default {
 }
 
 .searchcontent a {
-    width: 280px;
+    width: 260px;
     height: 25vh;
     margin: 15px;
     background-color: rgb(247, 247, 198);

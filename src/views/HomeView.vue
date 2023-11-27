@@ -146,6 +146,7 @@ export default {
   background-image: -webkit-linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
 
   background-image: linear-gradient(135deg, rgb(134, 134, 249), rgb(255, 247, 87));
+  min-height: 150vh;
 }
 
 .fixed-header {

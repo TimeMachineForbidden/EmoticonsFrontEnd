@@ -30,7 +30,10 @@
                         </div>
                         <div class="right">
                             <h style="font-size:1.5vw">name:{{ authordata.username }}</h>
+                            <div>signature:{{ authordata.signature }}</div>
                         </div>
+                        <el-divider></el-divider>
+                        <div>You may like:</div>
                         <div class="relatedemoji">
                             <a v-for="(item, index) in dataList" :key="index"><img src="@/assets/testpic.jpg"
                                     alt=""><span>author:{{
@@ -352,6 +355,7 @@ export default {
 }
 
 .relatedemoji {
+    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
