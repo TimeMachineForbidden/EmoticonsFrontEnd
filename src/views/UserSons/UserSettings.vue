@@ -12,24 +12,31 @@
                     <el-button class="button2" @click="exit">EXIT</el-button>
                 </div>
             </template>
-            <div class="text item" v-if="!isEditing">Username: {{ this.userdata.username }}</div>
-            <div class="text item" v-if="!isEditing">Password: </div>
+            <div class="text item" v-if="!isEditing">name: {{ this.userdata.username }}</div>
             <div class="text item" v-if="!isEditing">Signature: {{ this.userdata.signature }}</div>
-
+            <div class="text item" v-if="!isEditing">Profilephoto: click Edit For changing!</div>
             <div class="text item" v-if="isEditing">
                 <label for="username">Username: </label>
-                <el-input type="text" id="username" v-model="editedData.username" style="width:60%;">
-                </el-input>
-            </div>
-            <div class="text item" v-if="isEditing">
-                <label for="username">Password: </label>
-                <el-input type="text" id="password" v-model="editedData.password" style="width:60%;">
+                <el-input type="text" id="username" v-model="editedData.username"
+                    input-style="font-family: 'Raleway', sans-serif;" style="width:60%;">
                 </el-input>
             </div>
             <div class="text item" v-if="isEditing">
                 <label for="signature">Signature: </label>
-                <el-input type="text" id="signature" v-model="editedData.signature" style="width:60%;">
+                <el-input type="text" id="signature" v-model="editedData.signature"
+                    input-style="font-family: 'Raleway', sans-serif;" style="width:60%;">
                 </el-input>
+            </div>
+            <div class="text item" v-if="isEditing">
+                <label for="avatar">Profilephoto: </label>
+                <el-upload class="avatar-uploader" drag action="http://123.249.110.185:8080/common/upload"
+                    :headers="headers" :on-success="handleAvatarSuccess">
+                    <img v-if="editedData.profilePhoto" :src="editedData.profilePhoto" :limit="1" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+                <div style="font-size: 10px;">
+                    jpg/png files with a size less than 500kb
+                </div>
             </div>
 
         </el-card>
@@ -48,6 +55,9 @@ export default {
             ID: '',
             userID: '',
             userToken: '',
+            headers: {
+                Authorization: localStorage.getItem('Authorization')
+            },
             userdata: {
                 createTime: '',
                 email: '',
@@ -57,13 +67,11 @@ export default {
                 profilePhoto: '',
                 signature: '',
                 username: '',
-                password: '',
             },
             isEditing: false,
             editedData: {
                 email: '',
                 username: '',
-                password: '',
                 gender: '',
                 profilePhoto: '',
                 signature: '',
@@ -93,7 +101,7 @@ export default {
             });
             Service.put('/user', this.editedData)
                 .then(response => {
-                    // // console.log(response)
+                    console.log(response)
                     if (response.code === 1) {
                         this.userdata = { ...this.editedData };
                         console.log(this.userdata)
@@ -105,19 +113,22 @@ export default {
                             setTimeout(() => {
                                 resolve(Service.post("/user/login", {
                                     username: this.userdata.username,
-                                    password: this.userdata.password
+                                    password: localStorage.getItem('Password')
                                 }));
                             }, 1000); // 1000毫秒等于1秒
                         });
                     }
+                    else {
+                        ElMessage.success('Username already exists!');
+                    }
                 })
                 .then((response) => {
                     let _this = this;
-                    // // console.log(response)
+                    console.log(response)
                     if (response.code === 1) {
                         _this.userToken = 'Token ' + response.data.token;
                         _this.userID = response.data.id;
-                        _this.changeLogin({ Authorization: _this.userToken, ID: _this.userID });
+                        _this.changeLogin({ Authorization: _this.userToken, ID: _this.userID, Password: localStorage.getItem('Password') });
                         this.$router.push('/')
                     }
                 })
@@ -126,7 +137,14 @@ export default {
                 });
 
         },
-
+        handleAvatarSuccess(response, file) {
+            if (response.code === 1) {
+                this.editedData.profilePhoto = response.data;
+                ElMessage.success('Avatar upload successfully!');
+            } else {
+                ElMessage.error('Avatar upload failed!');
+            }
+        },
         getuserdata() {
             axios.interceptors.request.use((config) => {
                 if (localStorage.getItem('Authorization')) {
@@ -213,6 +231,12 @@ export default {
     font-family: 'Open Sans Condensed', sans-serif;
 }
 
+.avatar {
+    max-width: 100%;
+    /* 图片最大宽度为父容器宽度 */
+    height: auto;
+    /* 高度自适应 */
+}
 
 @media (max-width: 800px) {
     .box-card {

@@ -39,9 +39,10 @@
                         <el-button class="long-button lww" type="info" @click="loginwithwechat">Login with Wechat
                         </el-button>
                     </el-form-item> -->
+                    <div class="forget" @click="forget">Forget password?</div>
                     <el-form-item class="elpolicy">
                         <el-row>
-                            <el-col style="text-align: center;">
+                            <el-col style="text-align: center;margin-top: 6px;">
                                 <span>By logging in you agree to Jianbing's Terms of Service and
                                     Privacy Policy
                                 </span>
@@ -69,6 +70,7 @@
 
                     </el-form-item>
                 </el-form>
+
             </div>
         </div>
         <div class="emopic">
@@ -142,7 +144,7 @@ const handleregister = () => {
                 username: registerData.username,
                 password: registerData.password
             }).then(res => {
-                // console.log(res.data)
+                console.log(res.data)
                 if (res.data.msg === '注册成功!') {
                     location.reload();
                     reloadPage();
@@ -273,7 +275,7 @@ export default {
                         if (response.code === 1) {
                             _this.userToken = 'Token ' + response.data.token;
                             _this.userID = response.data.id;
-                            _this.changeLogin({ Authorization: _this.userToken, ID: _this.userID });
+                            _this.changeLogin({ Authorization: _this.userToken, ID: _this.userID, Password: this.loginData.password });
                             _this.$router.push('/');
                             ElMessage.success('Successfully login!')
                         }
@@ -298,6 +300,9 @@ export default {
         back() {
             this.$router.push('/')
         },
+        forget() {
+            ElMessage.error('Please add WeChat dj15039782515')
+        }
     },
     directives: {
         color: {
@@ -393,6 +398,14 @@ export default {
 
 .loginmain p {
     animation: streamer 2s linear infinite;
+}
+
+.loginmain .forget {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 12px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    cursor: pointer;
 }
 
 @keyframes streamer {

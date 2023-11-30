@@ -1,16 +1,35 @@
 <template>
     <div class="authorcreate">
-        <a v-for="(item, index) in dataList" :key="index"><img :src="item.url" alt=""></a>
+        <a v-for="(item, index) in dataList" :key="index"><img @click="getemojidata(item.id)" :src="item.url" alt="">
+            <span>
+                <div class="star" @click="starEmoji(item.id)"> star</div>
+                <el-icon @click="starEmoji(item.id)" style=" top: 4.6px; color: white;">
+                    <Star />
+                </el-icon>
+                <div class="download" @click="downloadEmoji(item.url)"> download </div>
+                <el-icon @click="downloadEmoji(item.url)" style="top: 4.6px; color: white;">
+                    <Download />
+                </el-icon>
+            </span>
+        </a>
     </div>
 </template>
+<script setup>
+import { Star } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
+import { Download } from '@element-plus/icons-vue';
+import { User } from '@element-plus/icons-vue';
+</script>
 <script>
 import Service from '@/utils/request';
+import axios from 'axios';
 export default {
     data() {
         return {
             authorId: '',
             page: 1,
             dataList: [], // 存储返回的数据
+            lastScrollTime: ''
         };
     },
     mounted() {
@@ -35,7 +54,7 @@ export default {
                 params: {
                     userId: this.authorId,
                     page: 1,
-                    pageSize: 20
+                    pageSize: 20,
                 }
 
             }).then(response => {
@@ -89,6 +108,49 @@ export default {
                 }
             }
         },
+        getemojidata(id) {
+            this.$router.push({
+                path: '/emoji',
+                query: { id: id }
+            });
+
+        },
+        starEmoji(id) {
+            axios.interceptors.request.use((config) => {
+                if (localStorage.getItem('Authorization')) {
+                    config.headers.authorization = localStorage.getItem('Authorization')
+                }
+                return config;
+            }, (error) => {
+                return Promise.reject(error);
+            });
+            Service.post(`/favorite?emojiId=${id}`).then((response) => {
+                // console.log(response)
+                if (response.code === 1) {
+                    ElMessage.success('Successfully star!')
+                } else {
+                    // 处理错误情况
+                    ElMessage.error('You have already stared the emoji!')
+                }
+            }).catch(error => {
+                ElMessage.error('Please login first!')
+            });
+
+        },
+        downloadEmoji(url) {
+            if (localStorage.getItem('Authorization')) {
+                const link = document.createElement('a');
+                link.href = url;
+                console.log(url);
+                link.download = 'emoji_image'; // 下载文件的默认名称
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            else {
+                ElMessage.error('Please login first!')
+            }
+        }
 
 
     },
@@ -132,6 +194,7 @@ export default {
 
 .authorcreate a img {
     position: absolute;
+    cursor: pointer;
     /* 图像绝对定位，相对于父容器 */
     top: 0;
     left: 0;
@@ -153,9 +216,16 @@ export default {
     background-color: rbga(0, 0, 0, .4);
     text-align: left;
     color: chartreuse;
+    cursor: pointer;
+    /* display: flex;
+    padding: 10px; */
 }
 
 .authorcreate a:hover span {
-    display: block;
+    display: flex;
+}
+
+.authorcreate a:hover span .download {
+    margin-left: 10%;
 }
 </style>

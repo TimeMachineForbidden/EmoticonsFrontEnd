@@ -49,7 +49,6 @@
 <script setup>
 import { ArrowLeft } from '@element-plus/icons-vue'
 import { Star } from '@element-plus/icons-vue';
-import { Share } from '@element-plus/icons-vue';
 import { Download } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 </script >
@@ -84,6 +83,7 @@ export default {
         this.getuserdata();
         this.getemojiInformation();
         this.getfirstemoji();
+        window.scrollTo(0, 0);
     },
     created() {
         this.getParams()
@@ -175,7 +175,21 @@ export default {
 
         },
         downloadEmoji(url) {
+
             if (localStorage.getItem('Authorization')) {
+                axios.interceptors.request.use((config) => {
+                    if (localStorage.getItem('Authorization')) {
+                        config.headers.Authorization = localStorage.getItem('Authorization')
+                    }
+                    return config;
+                }, (error) => {
+                    return Promise.reject(error);
+                });
+                Service.put('/emoji/download', {
+                    emojiId: this.emojiID
+                }).then((response) => {
+                    console.log(response);
+                })
                 const link = document.createElement('a');
                 link.href = url;
                 link.download = 'emoji_image'; // 下载文件的默认名称

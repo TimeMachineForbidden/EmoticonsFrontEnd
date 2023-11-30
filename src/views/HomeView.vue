@@ -8,9 +8,8 @@
         <div class="labels" v-if="!isFixed">
           <router-link to="/trend">Trend</router-link>
           <router-link to="/new">New</router-link>
-          <router-link to="/animated">Animated</router-link>
+          <router-link to="/animated">Live</router-link>
           <router-link to="/static">Static</router-link>
-          <a>More</a>
         </div>
         <div class="loginbtn" v-if="!isFixed">
           <el-button type="primary" class="navbtn" size="large" @click="upload"
@@ -267,5 +266,25 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
 
+}
+
+@media (max-width: 800px) {
+
+  /* .icon {
+    display: none;
+  } */
+
+  .nav .labels a {
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    margin-right: 4px;
+    font-size: 20px;
+    color: rgb(251, 238, 238);
+    text-decoration: none;
+    line-height: 30px;
+    border-bottom: 5px solid purple;
+    font-family: 'Oswald', sans-serif;
+  }
 }
 </style>

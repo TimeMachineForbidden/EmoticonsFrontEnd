@@ -20,13 +20,12 @@
                 </div>
             </div>
             <div class="data">
-                <a>22 uploads</a>
-                <a>220 stars</a>
+                <a>{{ authordata.uploadCount }} uploads</a>
+                <a>{{ authordata.favoriteCount }} stars</a>
             </div>
             <div class="labels">
                 <a @click="authorupload(this.authorId)" style="cursor: pointer;">Upload</a>
                 <a @click="authorstar(this.authorId)" style="cursor: pointer;">Star</a>
-                <a>More</a>
             </div>
             <div class="page-content">
                 <!-- 页面内容 -->
@@ -54,6 +53,8 @@ export default {
                 profilePhoto: '',
                 signature: '',
                 authorname: '',
+                uploadCount: '',
+                favoriteCount: ''
             }
         }
     },
@@ -209,7 +210,7 @@ export default {
 
     display: inline-block;
     height: 50px;
-    padding: 0 40px;
+    padding: 0 35px;
     margin-right: 8px;
     font-size: 20px;
     color: black;

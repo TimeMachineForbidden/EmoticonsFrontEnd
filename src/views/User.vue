@@ -20,15 +20,14 @@
                 </div>
             </div>
             <div class="data">
-                <a>20 uploads</a>
-                <a>220 stars</a>
+                <a>{{ userdata.uploadCount }} uploads</a>
+                <a>{{ userdata.favoriteCount }} stars</a>
             </div>
             <div class="labels">
                 <router-link to="/userupload">Upload</router-link>
                 <router-link to="/userstar">Star</router-link>
                 <a>Messages</a>
                 <router-link to="/usersettings">Settings</router-link>
-                <a>More</a>
             </div>
             <div class="page-content">
                 <!-- 页面内容 -->
@@ -56,6 +55,8 @@ export default {
                 profilePhoto: '',
                 signature: '',
                 username: '',
+                uploadCount: '',
+                favoriteCount: ''
             }
         }
     },
@@ -205,7 +206,7 @@ export default {
 
     display: inline-block;
     height: 50px;
-    padding: 0 40px;
+    padding: 0 30px;
     margin-right: 8px;
     font-size: 20px;
     color: black;
@@ -236,5 +237,21 @@ export default {
 
 .main-container .data a {
     margin-right: 25px;
+}
+
+@media (max-width: 800px) {
+
+    .labels a {
+
+        display: inline-block;
+        height: 50px;
+        padding: 0 20px;
+        margin-right: 8px;
+        font-size: 20px;
+        color: black;
+        text-decoration: none;
+        line-height: 40px;
+        border-bottom: 5px solid purple;
+    }
 }
 </style>

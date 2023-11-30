@@ -395,8 +395,7 @@ export default {
 }
 
 .displayimg img {
-    width: 100%;
-    width: 100%;
+    width: 80%;
     display: block;
     margin: 0 auto;
 

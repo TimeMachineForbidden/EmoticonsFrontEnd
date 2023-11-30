@@ -458,4 +458,14 @@
     top: 64px;
     border-radius: 0;
 }
+
+@media (max-width: 800px) {
+
+    .emoji.speechless,
+    .emoji.love,
+    .emoji.angry {
+        display: none;
+    }
+}
 </style>
+
