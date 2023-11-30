@@ -25,9 +25,13 @@
             </div>
             <div class="labels">
                 <router-link to="/userupload">Upload</router-link>
-                <router-link to="/userstar">Star</router-link>
-                <a>Messages</a>
+                <router-link to="/userstar">
+                    Star
+                    <Lock v-if="isLocked" :style="{ height: '15px', cursor: 'pointer' }" @click="toggleLock" />
+                    <Unlock v-else :style="{ height: '15px', cursor: 'pointer' }" @click="toggleLock" />
+                </router-link>
                 <router-link to="/usersettings">Settings</router-link>
+                <a>Messages</a>
             </div>
             <div class="page-content">
                 <!-- 页面内容 -->
@@ -39,6 +43,9 @@
 
 <script setup>
 import { ArrowLeft } from '@element-plus/icons-vue'
+import { Lock } from '@element-plus/icons-vue'
+import { Unlock } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus';
 </script >
 <script>
 import axios from 'axios';
@@ -46,6 +53,7 @@ import Service from '@/utils/request';
 export default {
     data() {
         return {
+            isLocked: '',
             userdata: {
                 createTime: '',
                 email: '',
@@ -75,9 +83,15 @@ export default {
             });
             this.ID = localStorage.getItem('ID')
             Service.get('/user/' + this.ID).then((response) => {
-                // console.log(response);
+                console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;
+                    if (response.data.publicFavorite === 0) {
+                        this.isLocked = true
+                    }
+                    else {
+                        this.isLocked = false
+                    }
                 }
             }).catch(error => {
                 // console.log(error);
@@ -85,7 +99,51 @@ export default {
         },
         back() {
             this.$router.push('/')
-        }
+        },
+        toggleLock() {
+            if (this.isLocked === true) {
+                axios.interceptors.request.use((config) => {
+                    if (localStorage.getItem('Authorization')) {
+                        config.headers.Authorization = localStorage.getItem('Authorization')
+                    }
+                    return config;
+                }, (error) => {
+                    return Promise.reject(error);
+                });
+                Service.put(`/favorite/status?isOpen=1`).then((response) => {
+                    console.log(response)
+                    if (response.code === 1) {
+                        this.isLocked = false;
+                        ElMessage.success('Successfully unlock!')
+                    } else {
+                        // 处理错误情况
+                    }
+                }).catch(error => {
+
+                });
+            }
+            else {
+                axios.interceptors.request.use((config) => {
+                    if (localStorage.getItem('Authorization')) {
+                        config.headers.Authorization = localStorage.getItem('Authorization')
+                    }
+                    return config;
+                }, (error) => {
+                    return Promise.reject(error);
+                });
+                Service.put(`/favorite/status?isOpen=0`).then((response) => {
+                    console.log(response)
+                    if (response.code === 1) {
+                        this.isLocked = true;
+                        ElMessage.success('Successfully lock!')
+                    } else {
+                        // 处理错误情况
+                    }
+                }).catch(error => {
+
+                });
+            }
+        },
     }
 
 }

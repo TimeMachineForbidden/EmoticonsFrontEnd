@@ -15,7 +15,7 @@
                     <a><img :src="authordata.profilePhoto" alt=""></a>
                 </div>
                 <div class="right">
-                    <h2>name:{{ authordata.authorname }}</h2>
+                    <h2>name:{{ authordata.username }}</h2>
                     <div>signature:{{ authordata.signature }}</div>
                 </div>
             </div>

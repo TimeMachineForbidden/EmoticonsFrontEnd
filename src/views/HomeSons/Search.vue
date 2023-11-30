@@ -61,6 +61,7 @@ export default {
 
     methods: {
         handleRouteChange() {
+            window.scrollTo(0, 0);
             this.getParams();
             this.getfirstemoji();
         },

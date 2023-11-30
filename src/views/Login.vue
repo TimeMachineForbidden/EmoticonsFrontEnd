@@ -145,19 +145,25 @@ const handleregister = () => {
                 password: registerData.password
             }).then(res => {
                 console.log(res.data)
-                if (res.data.msg === '注册成功!') {
+                if (res.data === null) {
+                    registerData.username = ''
+                    registerData.password = ''
+                    registerData.confirmpassword = ''
+                    ElMessage.error('Username already exists!')
+                }
+                else if (res.data.msg === '注册成功!') {
                     location.reload();
                     reloadPage();
                     registerData.username = ''
                     registerData.password = ''
                     registerData.confirmpassword = ''
                 }
-                else {
-                    registerData.username = ''
-                    registerData.password = ''
-                    registerData.confirmpassword = ''
-                    ElMessage.error('Username already exists!')
-                }
+                // else {
+                //     registerData.username = ''
+                //     registerData.password = ''
+                //     registerData.confirmpassword = ''
+                //     ElMessage.error('Username already exists!')
+                // }
             }).catch(error => {
                 // console.log(error);
             })

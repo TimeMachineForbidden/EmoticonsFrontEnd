@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="search-container" :class="{ 'fixed': isFixed }">
-        <el-input v-model="searchcontent" placeholder="Please input" class="search-input"
+        <el-input @keyup.enter="search" v-model="searchcontent" placeholder="Please input" class="search-input"
           input-style="font-family: 'Oswald', sans-serif; ">
           <template #append>
             <el-button type="primary" :icon="Search" @click="search">
@@ -51,7 +51,7 @@ export default {
     return {
       isFixed: false,
       currentPath: '',
-      kind: '',
+      kind: 1,
       searchcontent: '',
       isButtonDown: false, // 用于按钮移动特效
       LoginState: 'Login',

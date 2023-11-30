@@ -119,7 +119,7 @@ export default {
                         });
                     }
                     else {
-                        ElMessage.success('Username already exists!');
+                        ElMessage.error('Username already exists!');
                     }
                 })
                 .then((response) => {

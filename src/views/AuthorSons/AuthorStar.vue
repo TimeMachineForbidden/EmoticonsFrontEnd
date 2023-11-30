@@ -66,11 +66,11 @@ export default {
             }).then(response => {
                 console.log(response)
                 if (response.code === 1) {
-                    // console.log(response)
+                    console.log(response)
+
                     this.dataList = response.data.records;
                 } else {
-                    // 处理错误情况
-                    // console.error('请求失败：' + response.msg);
+                    ElMessage.error('The author close!')
                 }
             }).catch(error => {
                 // console.error('请求出错：' + error);
