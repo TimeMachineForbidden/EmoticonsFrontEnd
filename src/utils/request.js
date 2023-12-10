@@ -1,7 +1,7 @@
 import axios from "axios";
 const Service = axios.create({
     baseURL: 'http://123.249.110.185:8080',
-    timeout: 5000
+    timeout: 50000
 })
 // 添加请求拦截器
 Service.interceptors.request.use(function (config) {

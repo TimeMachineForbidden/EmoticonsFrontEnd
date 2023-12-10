@@ -31,7 +31,6 @@
                     <Unlock v-else :style="{ height: '15px', cursor: 'pointer' }" @click="toggleLock" />
                 </router-link>
                 <router-link to="/usersettings">Settings</router-link>
-                <a>Messages</a>
             </div>
             <div class="page-content">
                 <!-- 页面内容 -->
@@ -303,9 +302,9 @@ export default {
 
         display: inline-block;
         height: 50px;
-        padding: 0 20px;
+        padding: 0 15px;
         margin-right: 8px;
-        font-size: 20px;
+        font-size: 16px;
         color: black;
         text-decoration: none;
         line-height: 40px;

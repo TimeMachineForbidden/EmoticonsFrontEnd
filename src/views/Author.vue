@@ -89,7 +89,7 @@ export default {
             });
         },
         backhome() {
-            this.$router.push('/')
+            this.$router.go(-1);
         },
         authorupload(id) {
             this.$router.push({

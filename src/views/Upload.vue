@@ -111,15 +111,19 @@
             </el-tag>
             <el-divider />
             <span>to choose</span>
-            <br />
-            <el-check-tag v-for="tag in choosetagslist" :key="tag.id" class="mx-1" :checked="checked"
-                @change="onChange(true, tag)">
-                {{ tag.name }}
-            </el-check-tag>
-            <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small"
-                @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
-            </el-input>
-            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+            <div class="taggourp" v-for="(taggp, index) in choosetagslist" :key="index">
+                <h2 style="margin-bottom: 3px;">{{ sectionname(index) }}</h2>
+                <el-check-tag v-for="tag in taggp" :key="tag.id" class="mx-1" :checked="checked"
+                    @change="onChange(true, tag, index)">
+                    {{ tag.name }}
+                </el-check-tag>
+                <el-input class="input-new-tag" v-if="inputVisible(index)" v-model="inputValue"
+                    :ref="`saveTagInput${index}`" size="small" @keyup.enter.native="handleInputConfirm(index)"
+                    @blur="handleInputConfirm(index)">
+                </el-input>
+                <el-button v-else class="button-new-tag" size="small" @click="showInput(index)">+ New Tag</el-button>
+                <el-divider />
+            </div>
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="closelabels">Cancel</el-button>
@@ -179,8 +183,8 @@ export default {
             firstchoose: true,
             originallist: [],
             haschosen: false,
-            inputVisible: false,
-            inputValue: ''
+            inputValue: '',
+            inputindex: -1,
         }
     },
     mounted() {
@@ -193,7 +197,7 @@ export default {
             this.imageName = file.name
             this.imageUrl = response.data
             this.beforeuploaded = false;
-            ElMessage.success('Successfully upload!')
+            ElMessage.success('Successfully upload!Now please add some information!')
         },
         back1() {
             this.$router.push('/')
@@ -228,7 +232,7 @@ export default {
                         // console.log(response)
 
                         if (response.data.code === 1) {
-                            ElMessage.success('Successfully upload!')
+                            ElMessage.success('Upload Completely!')
                             this.$router.push('/')
                         }
                         else {
@@ -240,29 +244,53 @@ export default {
                 }
             })
         },
-        addlabels() {
+        async addlabels() {
             this.tagDialogVisible = true;
             if (this.firstchoose) {
-                Service.get("/tag").then((response) => {
-                    // console.log(response.data)
-                    this.choosetagslist = response.data;
-                    this.originallist = response.data
-                })
+                // Service.get("/tag").then((response) => {
+                //     // console.log(response.data)
+                //     this.choosetagslist = response.data;
+                //     this.originallist = response.data
+                // })
+                for (let i = 1; i <= 10; i++) {
+                    await Service.get("/tag/groupList", {
+                        params: {
+                            groupId: i
+                        }
+                    }).then((response) => {
+                        this.choosetagslist.push(response.data)
+                    })
+                }
+                const lastThreeChars = this.imageName.slice(-3)
+                const gifname = "gif"
+                if (lastThreeChars === gifname) {
+                    let giftag = this.choosetagslist[0][0]
+                    this.choosetagslist[0] = this.choosetagslist[0].filter(item => item.id !== 1)
+                    giftag.index = 0
+                    this.dynamicTags.unshift(giftag)
+                }
+                else {
+                    let statag = this.choosetagslist[0][1]
+                    this.choosetagslist[0] = this.choosetagslist[0].filter(item => item.id !== 2)
+                    statag.index = 0
+                    this.dynamicTags.unshift(statag)
+                }
                 this.firstchoose = false
             }
-
         },
         closelabels() {
             this.tagDialogVisible = false;
         },
-        onChange(status, tag) {
-            // console.log(tag.id)
-            this.choosetagslist = this.choosetagslist.filter(item => item.id !== tag.id)
-            this.dynamicTags.unshift(tag)
+        onChange(status, tag, index) {
+            console.log(tag)
+            this.choosetagslist[index] = this.choosetagslist[index].filter(item => item.id !== tag.id)
+            let dyntag = tag
+            dyntag.index = index
+            this.dynamicTags.unshift(dyntag)
         },
         handleClose(tag) {
             this.dynamicTags = this.dynamicTags.filter(item => item.id !== tag.id)
-            this.choosetagslist.unshift(tag)
+            this.choosetagslist[tag.index].unshift(tag)
         },
         handletagshandin() {
             this.tagDialogVisible = false;
@@ -270,31 +298,72 @@ export default {
                 this.haschosen = true
             }
         },
-        showInput() {
-            this.inputVisible = true;
+        inputVisible(index) {
+            return this.inputindex === index
+        },
+        showInput(index) {
+            this.inputindex = index;
+            console.log(index)
             this.$nextTick(_ => {
-                this.$refs.saveTagInput.$refs.input.focus();
+                this.$refs[`saveTagInput${index}`][0].focus();
             });
         },
-
-        handleInputConfirm() {
+        async handleInputConfirm(index) {
             let inputValue = this.inputValue;
+            let realindex = index + 1
             if (inputValue) {
                 let obj = { "name": inputValue, "groupid": 1 }
                 Service.post("/tag",
                     {
                         name: inputValue,
-                        groupid: 1
+                        groupId: realindex
                     }).then(response => {
                         // console.log(response)
-                        this.choosetagslist.push(obj);
                     }).catch(error => {
                         // console.log(error);
                         ElMessage.error('This operation is not allowed!')
                     });
             }
-            this.inputVisible = false;
+            this.inputindex = -1;
             this.inputValue = '';
+            await Service.get("/tag/groupList", {
+                params: {
+                    groupId: realindex
+                }
+            }).then((response) => {
+                console.log(response)
+                this.choosetagslist[index] = response.data
+            })
+        },
+        sectionname(index) {
+            if (index === 0) {
+                return "动静态"
+            }
+            if (index === 1) {
+                return "动物"
+            }
+            if (index === 2) {
+                return "精神状态"
+            }
+            if (index === 3) {
+                return "网络热梗"
+            }
+            if (index === 4) {
+                return "节日"
+            }
+            if (index === 5) {
+                return "动作"
+            }
+            if (index === 6) {
+                return "怼人"
+            }
+            if (index === 7) {
+                return "人物"
+            }
+            if (index == 8) {
+                return "风格"
+            }
+            return "其它"
         }
 
 

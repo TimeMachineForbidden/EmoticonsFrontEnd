@@ -18,8 +18,54 @@
                             </el-icon> {{ this.downloads }}</a>
                     </div>
                     <el-divider></el-divider>
-                    <div class="discussion">
-                        nihao
+                    <div class="discussion" v-infinite-scroll="loadcomment">
+                        <div class="wrapper">
+                            <i class="avatar" v-bind:style="{ backgroundImage: 'url(' + userdata.profilePhoto + ')' }"></i>
+                            <textarea id="tx" ref="tx" placeholder="Send a friendly comment" rows="2" maxlength="50"
+                                @focus="handlefocus" @blur="handleblur" @input="handleinput"
+                                @keyup.enter="handlekeyup()"></textarea>
+                            <button @click="handlekeyup">Send</button>
+                        </div>
+                        <div class="wrapper">
+                            <span class="total" ref="total">0/50字</span>
+                        </div>
+                        <div class="list" v-for="(comment, cindex) in commentlist" :key="comment.id">
+                            <div class="item" ref="item" style="display: block;">
+                                <i class="avatar" v-bind:style="{ backgroundImage: 'url(' + comment.profilePhoto + ')' }"
+                                    style="display: block;float: left;"></i>
+                                <div class="info">
+                                    <p class="name">{{ comment.username }}</p>
+                                    <p class="text" ref="text">{{ comment.content }}</p>
+                                    <span class="time">{{ comment.createTime }}</span>
+                                    <span class="replybutton" @click="handlesubreply(comment.id)">reply</span>
+                                </div>
+                                <div class="sublist" v-for="subreply in comment.subreplylist">
+                                    <div class="item" ref="item" style="display: block;">
+                                        <i class="avatar"
+                                            v-bind:style="{ backgroundImage: 'url(' + subreply.profilePhoto + ')' }"></i>
+                                        <div class="info">
+                                            <p class="name">{{ subreply.username }}</p>
+                                            <p class="text" ref="text">{{ subreply.content }}</p>
+                                            <span class="time">{{ subreply.createTime }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pagination-block">
+                                    <el-pagination v-if="ifsubpig(comment)" layout="prev, pager, next"
+                                        v-model:current-page="defaultsubpage[cindex]" v-model:page-size="defaultsubreplyPS"
+                                        :total="getTotalsubreply(comment)" :background="false" small
+                                        @current-change="(val) => handleSubreplyCurrentChange(cindex, comment, val)"
+                                        class="subreplypagination" />
+                                </div>
+                                <div class="replytext" style="display:block" v-if="comment.replying">
+                                    <i class="avatar" style="display: block;"
+                                        v-bind:style="{ backgroundImage: 'url(' + userdata.profilePhoto + ')' }"></i>
+                                    <textarea ref="subtx" id="subtx" placeholder="Send a friendly comment" rows="2"
+                                        maxlength="50" v-model="subreplytext"></textarea>
+                                    <button @click="submitsubreply(comment.id, comment)">Send</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <el-divider direction="vertical" style="height: auto;"></el-divider>
@@ -77,12 +123,22 @@ export default {
                 username: '',
                 hits: '',
             },
+            userdata: '',
+            commentlist: [],
+            commenttotal: 0,
+            subreplytext: '',
+            defaultsubpage: [],
+            defaultsubreplyPS: 3,
+            commentPageSize: 5,
+            allcomment: []
         }
     },
     mounted() {
+        this.getuserdata()
         this.getemojiInformation()
             .then(() => this.getauthordata())
             .then(() => this.getsimilaremoji());
+        this.getcommentlist();
         window.scrollTo(0, 0);
     },
     watch: {
@@ -90,10 +146,12 @@ export default {
             if (newId !== oldId && newId !== undefined) {
                 // 路由参数变化时的处理逻辑
                 window.scrollTo(0, 0);
+                console.log(1)
                 this.emojiID = newId;
                 this.getemojiInformation()
                     .then(() => this.getauthordata())
                     .then(() => this.getsimilaremoji());
+                this.getcommentlist()
             }
         },
 
@@ -129,6 +187,24 @@ export default {
                     });
             });
         },
+        initsubreplypage() {
+            for (let i = 0; i < this.commentlist.length; i++) {
+                this.defaultsubpage[i] = 1
+            }
+        },
+        async getuserdata() {
+            this.ID = localStorage.getItem('ID')
+            console.log(this.ID)
+            await Service.get('/user/' + this.ID).then((response) => {
+                // console.log(response);
+                if (response.code === 1) {
+                    this.userdata = response.data;
+                    console.log(this.userdata)
+                }
+            }).catch(error => {
+                // console.log(error);
+            });
+        },
         getauthordata() {
             axios.interceptors.request.use((config) => {
                 if (localStorage.getItem('Authorization')) {
@@ -158,9 +234,9 @@ export default {
             });
 
         },
-        getsimilaremoji() {
+        async getsimilaremoji() {
             // 使用axios获取数据
-            Service.get('/emoji/similar', {
+            await Service.get('/emoji/similar', {
                 params: {
                     similarList: this.similarList
                 }
@@ -234,7 +310,185 @@ export default {
                 query: { id: id }
             });
         },
+        handlefocus() {
+            this.$refs.total.style.opacity = 1;
+            for (let i = 0; i < this.commentlist.length; i++) {
+                this.commentlist[i].replying = false
+            }
+        },
+        handleblur() {
+            this.$refs.total.style.opacity = 0;
+        },
+        handleinput() {
+            this.$refs.total.innerHTML = `${this.$refs.tx.value.length}/50字`
+        },
+        handlekeyup() {
+            if (this.$refs.tx.value.trim()) {
+                console.log(this.$refs.tx.value)
+                Service.post('/comment', {
+                    emojiId: this.emojiID,
+                    content: this.$refs.tx.value
+                }).then((response) => {
+                    ElMessage.success('comment successfully')
+                    this.getcommentlist()
+                }).catch(error => {
+                    console.log(error)
+                })
 
+            }
+            // 等按下回车，结束，清空文本域
+            this.$refs.tx.value = ''
+            // 按下回车之后，就要把 字符统计 复原
+            this.$refs.total.innerHTML = '0/50字'
+
+        },
+        async getcommentlist() {
+            await Service.get('/comment/' + this.emojiID, {
+                params: {
+                    page: 1,
+                    pageSize: this.commentPageSize
+                }
+
+            }).then(response => {
+                if (response.code === 1) {
+
+                    this.commentlist = response.data.records
+                    this.commenttotal = response.data.total
+                    for (let i = 0; i < this.commentlist.length; i++) {
+                        this.commentlist[i].replying = false;
+                    }
+                    this.initsubreplypage()
+                    this.getsubreply()
+                } else {
+
+                }
+            }).catch(error => {
+                console.error('请求出错：' + error);
+            });
+        },
+        async getsubreply() {
+            for (let i = 0; i < this.commentlist.length; i++) {
+                const comment = this.commentlist[i]
+                await Service.get('/comment/reply/' + comment.id, {
+                    params: {
+                        page: this.defaultsubpage[i],
+                        pageSize: this.defaultsubreplyPS
+                    }
+                }).then((response) => {
+                    if (response.data.records) {
+                        this.commentlist[i].subreplylist = response.data.records
+                        this.commentlist[i].subreplytotal = response.data.total
+                    }
+                    else {
+                        this.commentlist[i].subreplylist = []
+                        this.commentlist[i].subreplytotal = 0
+                    }
+                })
+            }
+        },
+        async changesubreplypage(index, page_, pageSize_) {
+            console.log(this.commentlist[index])
+            await Service.get('/comment/reply/' + this.commentlist[index].id, {
+                params: {
+                    page: page_,
+                    pageSize: pageSize_
+                }
+            }).then((response) => {
+                if (response.data.records) {
+                    this.commentlist[index].subreplylist = response.data.records
+                    this.commentlist[index].subreplytotal = response.data.total
+                }
+                else {
+                    this.commentlist[index].subreplylist = []
+                    this.commentlist[index].subreplytotal = 0
+                }
+            })
+        },
+        handlesubreply(commentID) {
+            for (let i = 0; i < this.commentlist.length; i++) {
+                this.commentlist[i].replying = commentID === this.commentlist[i].id
+            }
+        },
+        submitsubreply(commentID, comment) {
+            if (this.subreplytext.trim()) {
+                console.log(this.subreplytext)
+                Service.post('/comment/reply', {
+                    emojiId: this.emojiID,
+                    commentId: commentID,
+                    content: this.subreplytext
+                }).then((response) => {
+                    ElMessage.success('comment successfully')
+                }).catch(error => {
+                    console.log(error)
+                })
+
+            }
+            this.subreplytext = ''
+
+            this.getcommentlist()
+        },
+        getTotalsubreply(comment) {
+            return comment.subreplytotal
+        },
+        ifsubpig(comment) {
+            if (comment.subreplytotal === 0) {
+                return false
+            }
+            return true
+        },
+        handleSubreplyCurrentChange(cindex, comment, val) {
+            this.defaultsubpage[cindex] = val
+            this.changesubreplypage(cindex, val, this.defaultsubreplyPS)
+        },
+        async appendcomment() {
+            for (let i = 1; i > 0; i--) {
+                if (this.commentPageSize + i <= this.commenttotal) {
+                    await Service.get('/comment/' + this.emojiID, {
+                        params: {
+                            page: this.commentPageSize + i,
+                            pageSize: 1
+                        }
+
+                    }).then(response => {
+                        if (response.code === 1) {
+                            this.commentlist.push(...response.data.records)
+                            for (let i = 0; i < this.commentlist.length; i++) {
+                                this.commentlist[i].replying = false;
+                            }
+                            this.initsubreplypage()
+                            const currentcommentindex = this.commentlist.length - 1
+                            const currentcomment = this.commentlist[currentcommentindex]
+                            Service.get('/comment/reply/' + currentcomment.id, {
+                                params: {
+                                    page: this.defaultsubpage[currentcommentindex],
+                                    pageSize: this.defaultsubreplyPS
+                                }
+                            }).then((response) => {
+                                if (response.data.records) {
+                                    this.commentlist[currentcommentindex].subreplylist = response.data.records
+                                    this.commentlist[currentcommentindex].subreplytotal = response.data.total
+                                }
+                                else {
+                                    this.commentlist[currentcommentindex].subreplylist = []
+                                    this.commentlist[currentcommentindex].subreplytotal = 0
+                                }
+                            })
+                        } else {
+                        }
+                    }).catch(error => {
+                        console.error('请求出错：' + error);
+                    });
+                }
+            }
+
+        },
+        async loadcomment() {
+            if (this.commentPageSize < this.commenttotal) {
+                this.appendcomment()
+                this.commentPageSize += 1;
+                //this.getcommentlist()
+            }
+        }
     }
 }
 </script>
@@ -454,9 +708,248 @@ export default {
         display: none;
     }
 
+    .discussion {
+        display: none;
+    }
+
     .image {
         width: 100vw !important;
         height: 45vw !important;
     }
+}
+
+.wrapper {
+    min-width: 400px;
+    max-width: 800px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: no-repeat center / cover;
+    margin-right: 20px;
+}
+
+.wrapper textarea {
+    outline: none;
+    border-color: transparent;
+    resize: none;
+    background: #f5f5f5;
+    border-radius: 4px;
+    flex: 1;
+    padding: 10px;
+    transition: all 0.5s;
+    height: 60px;
+}
+
+.wrapper textarea:focus {
+    border-color: #e4e4e4;
+    background: #fff;
+    height: 80px;
+}
+
+.wrapper button {
+    background: #00aeec;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    width: 70px;
+    cursor: pointer;
+}
+
+.wrapper .total {
+    margin-right: 80px;
+    color: #999;
+    margin-top: 5px;
+    opacity: 0;
+    transition: all 0.5s;
+}
+
+.list {
+    min-width: 400px;
+    max-width: 800px;
+    display: flex;
+}
+
+.list .item {
+    width: 100%;
+    display: flex;
+}
+
+.list .item .info {
+    flex: 1;
+    border-bottom: 1px dashed #e4e4e4;
+    padding-bottom: 10px;
+}
+
+.list .item p {
+    margin: 0;
+}
+
+.list .item .name {
+    color: #FB7299;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.list .item .text {
+    color: #333;
+    padding: 10px 0;
+}
+
+.list .item .time {
+    color: #999;
+    font-size: 12px;
+}
+
+.list .item .replybutton {
+    padding-left: 10px;
+    color: #999;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.replytext {
+    padding-left: 70px;
+    min-width: 300px;
+    max-width: 600px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.replytext .avatar {
+    display: block;
+    float: left;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: no-repeat center / cover;
+    margin-right: 20px;
+}
+
+.replytext textarea {
+    outline: none;
+    border-color: transparent;
+    resize: none;
+    background: #f5f5f5;
+    border-radius: 4px;
+    min-width: 400px;
+    max-width: 600px;
+    flex: 1;
+    padding: 10px;
+    transition: all 0.5s;
+    height: 50px;
+}
+
+.replytext textarea:focus {
+    border-color: #e4e4e4;
+    background: #fff;
+}
+
+.replytext button {
+    background: #00aeec;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    min-height: 40px;
+    max-height: 60px;
+    float: right;
+    margin-top: 5px;
+    width: 60px;
+    cursor: pointer;
+}
+
+.replytext .total {
+    margin-right: 80px;
+    color: #999;
+    margin-top: 5px;
+    opacity: 0;
+    transition: all 0.5s;
+}
+
+.sublist {
+    min-width: 300px;
+    max-width: 400px;
+    padding-left: 70px;
+    display: flex;
+}
+
+.sublist .avatar {
+    display: block;
+    float: left;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: url(../../assets/avatar.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-right: 20px;
+}
+
+.sublist .item {
+    width: 100%;
+    display: flex;
+    margin-top: 5px;
+}
+
+.sublist .item .info {
+    flex: 1;
+    border-bottom: 1px dashed #e4e4e4;
+    padding-bottom: 10px;
+}
+
+.sublist .item p {
+    margin: 0;
+}
+
+.sublist .item .name {
+    color: #FB7299;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.sublist .item .text {
+    color: #333;
+    padding: 10px 0;
+}
+
+.sublist .item .time {
+    color: #999;
+    font-size: 12px;
+}
+
+.subreplypagination {
+    padding-left: 70px;
+}
+
+::v-deep .el-select-dropdown__item li {
+    background-color: transparent !important;
+}
+
+::v-deep .el-pagination .btn-next,
+::v-deep .el-pagination .btn-prev {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+::v-deep .el-pagination button:disabled {
+    background-color: transparent !important;
+}
+
+::v-deep .el-pager li {
+    background-color: transparent !important;
+}
+
+::v-deep .el-pager li.active {
+    color: #267aff !important;
 }
 </style>
