@@ -85,13 +85,13 @@ export default {
         this.kind = 1
       }
       else if (this.currentPath == '/new') {
-        this.kind = 2
+        this.kind = 4
       }
       else if (this.currentPath == '/animated') {
-        this.kind = 3
+        this.kind = 2
       }
       else if (this.currentPath == '/static') {
-        this.kind = 4
+        this.kind = 3
       }
     }
   },

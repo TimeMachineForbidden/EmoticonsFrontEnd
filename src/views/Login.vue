@@ -40,15 +40,16 @@
                         </el-button>
                     </el-form-item> -->
                     <div class="forget" @click="forget">Forget password?</div>
+                    <div class="forget" @click="forget">Contact us!</div>
                     <el-form-item class="elpolicy">
                         <el-row>
                             <el-col style="text-align: center;margin-top: 6px;">
-                                <span>By logging in you agree to Jianbing's Terms of Service and
-                                    Privacy Policy
+                                <span>Resources come from the internet, please contact us if there is any infringement.
                                 </span>
                             </el-col>
                         </el-row>
                     </el-form-item>
+
                 </el-form>
             </div>
             <div class="registerinput" v-else>
@@ -73,8 +74,10 @@
 
             </div>
         </div>
-        <div class="emopic">
-
+        <div class="emopic" ref="emopicContainer">
+            <video ref="myVideo" style="width:100%" :controls="false">
+                <source :src="videoSource" type="video/mp4">
+            </video>
         </div>
     </div>
 </template>
@@ -182,6 +185,7 @@ import { mapMutations } from 'vuex';
 export default {
     data() {
         return {
+            videoSource: require('@/assets/1.mp4'),
             loginData: {
                 username: '',
                 password: ''
@@ -231,11 +235,32 @@ export default {
             this.updateWidth();
         });
 
+        this.adjustVideoPosition();
+        // 监听窗口大小变化，以便在窗口大小变化时重新调整视频位置
+        window.addEventListener('resize', this.adjustVideoPosition);
+
+        const video = this.$refs.myVideo;
+
+        // 监听视频播放结束事件
+        video.addEventListener('ended', () => {
+            // 当视频结束时，将当前播放时间设置为0，以实现循环播放
+            video.currentTime = 0;
+            video.play();
+        });
+
+        setTimeout(() => {
+            video.play();
+        }, 1000); // 这里的延迟时间可以根据实际情况调整
+
     },
-    beforeDestroy() {
-        // 在组件销毁前移除事件监听器，以防止内存泄漏
-        window.removeEventListener("resize", this.updateWidth);
-    },
+    // destroyed() {
+    //     // 组件销毁时移除窗口大小变化的监听器
+    //     window.removeEventListener('resize', this.adjustVideoPosition);
+    // },
+    // beforeDestroy() {
+    //     // 在组件销毁前移除事件监听器，以防止内存泄漏
+    //     window.removeEventListener("resize", this.updateWidth);
+    // },
     methods: {
         ...mapMutations(['changeLogin']),
         leftClick() {
@@ -265,6 +290,16 @@ export default {
                 // 更新样式
                 slidingbtn.style.width = `${this.width}px`;
             }
+        },
+        adjustVideoPosition() {
+            const emopicContainer = this.$refs.emopicContainer;
+            const myVideo = this.$refs.myVideo;
+
+            const heightDifference = emopicContainer.clientHeight - myVideo.clientHeight;
+            console.log(emopicContainer.clientHeight)
+            console.log(myVideo.clientHeight)
+            // 设置视频的上边距为高度差，使其最底端对齐容器的最底端
+            myVideo.style.marginTop = heightDifference + 'px';
         },
         login() {
             let _this = this;
@@ -355,6 +390,7 @@ export default {
     padding: 20px;
     font-family: 'Oswald', sans-serif;
     cursor: pointer;
+
 }
 
 .backward span {
@@ -365,7 +401,6 @@ export default {
     position: absolute;
     left: 0;
     width: 30%;
-
 }
 
 .loginmain h1 {
@@ -432,13 +467,22 @@ export default {
     position: absolute;
     right: 0;
     width: 70%;
-    height: 100%;
+    height: 100vh;
     background-image: -moz-linear-gradient(0deg, rgb(238, 17, 72), rgb(15, 134, 189));
 
     background-image: -webkit-linear-gradient(0deg, rgb(238, 17, 72), rgb(15, 134, 189));
 
     background-image: linear-gradient(0deg, rgb(238, 17, 72), rgb(15, 134, 189));
+}
 
+.emopic video {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* 设置视频的最小高度，可以根据需要调整 */
+    min-height: 100%;
+    object-fit: cover;
+    /* 保持视频比例并填充容器 */
 }
 
 .button-box {

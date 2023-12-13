@@ -225,7 +225,7 @@ export default {
             });
         },
         backhome() {
-            this.$router.push('/trend')
+            this.$router.go(-1);
         },
         getemojidata(id) {
             this.$router.push({
