@@ -24,8 +24,8 @@
                 <a>{{ authordata.favoriteCount }} stars</a>
             </div>
             <div class="labels">
-                <a @click="authorupload(this.authorId)" style="cursor: pointer;">Upload</a>
-                <a @click="authorstar(this.authorId)" style="cursor: pointer;">Star</a>
+                <a @click="authorupload(authorId)" style="cursor: pointer;">Upload</a>
+                <a @click="authorstar(authorId)" style="cursor: pointer;">Star</a>
             </div>
             <div class="page-content">
                 <!-- 页面内容 -->
