@@ -11,5 +11,19 @@ import { Button } from 'vant';
 //     localStorage.removeItem('ID');
 // });
 
+// 在需要检查退出时
+const lastLoginTimestamp = localStorage.getItem('loginTimestamp');
 
+if (lastLoginTimestamp) {
+  const currentTime = new Date().getTime();
+  const timeSinceLastLogin = currentTime - parseInt(lastLoginTimestamp, 10);
+
+//检查时间为5分钟
+if (timeSinceLastLogin > 5 * 60 * 1000) {
+    // 在用户退出时清理 localStorage
+    localStorage.removeItem('Authorization');
+    localStorage.removeItem('ID');
+    localStorage.removeItem('Password');
+}
+}
 createApp(App).use(store).use(router).use(ElementPlus).use(Button).mount('#app')

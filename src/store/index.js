@@ -7,6 +7,7 @@ export default createStore({
     // 存储用户的id号码
     ID: localStorage.getItem('ID') ? localStorage.getItem('ID') : '',
     Password: localStorage.getItem('Password') ? localStorage.getItem('Password') : '',
+    loginTimestamp:localStorage.getItem('loginTimestamp') ? localStorage.getItem('loginTimestamp') : '',
   },
   getters: {
   },
@@ -18,7 +19,8 @@ export default createStore({
       state.Password = user.Password
       localStorage.setItem('Authorization', user.Authorization);
       localStorage.setItem('ID', user.ID);
-      localStorage.setItem('Password',user.Password)
+      localStorage.setItem('Password',user.Password);
+      localStorage.setItem('loginTimestamp', new Date().getTime());
     }
   },
   actions: {
