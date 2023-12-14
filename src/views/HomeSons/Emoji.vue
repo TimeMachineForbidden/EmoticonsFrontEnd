@@ -323,23 +323,28 @@ export default {
             this.$refs.total.innerHTML = `${this.$refs.tx.value.length}/50字`
         },
         handlekeyup() {
-            if (this.$refs.tx.value.trim()) {
-                // console.log(this.$refs.tx.value)
-                Service.post('/comment', {
-                    emojiId: this.emojiID,
-                    content: this.$refs.tx.value
-                }).then((response) => {
-                    ElMessage.success('comment successfully')
-                    this.getcommentlist()
-                }).catch(error => {
-                    // console.log(error)
-                })
-
+            if (localStorage.getItem('Authorization') == null) {
+                ElMessage.error('Please login first!')
             }
-            // 等按下回车，结束，清空文本域
-            this.$refs.tx.value = ''
-            // 按下回车之后，就要把 字符统计 复原
-            this.$refs.total.innerHTML = '0/50字'
+            else {
+                if (this.$refs.tx.value.trim()) {
+                    // console.log(this.$refs.tx.value)
+                    Service.post('/comment', {
+                        emojiId: this.emojiID,
+                        content: this.$refs.tx.value
+                    }).then((response) => {
+                        ElMessage.success('comment successfully')
+                        this.getcommentlist()
+                    }).catch(error => {
+                        // console.log(error)
+                    })
+
+                }
+                // 等按下回车，结束，清空文本域
+                this.$refs.tx.value = ''
+                // 按下回车之后，就要把 字符统计 复原
+                this.$refs.total.innerHTML = '0/50字'
+            }
 
         },
         async getcommentlist() {
@@ -410,22 +415,27 @@ export default {
             }
         },
         submitsubreply(commentID, comment) {
-            if (this.subreplytext.trim()) {
-                // console.log(this.subreplytext)
-                Service.post('/comment/reply', {
-                    emojiId: this.emojiID,
-                    commentId: commentID,
-                    content: this.subreplytext
-                }).then((response) => {
-                    ElMessage.success('comment successfully')
-                }).catch(error => {
-                    // console.log(error)
-                })
-
+            if (localStorage.getItem('Authorization') == null) {
+                ElMessage.error('Please login first!')
             }
-            this.subreplytext = ''
+            else {
+                if (this.subreplytext.trim()) {
+                    // console.log(this.subreplytext)
+                    Service.post('/comment/reply', {
+                        emojiId: this.emojiID,
+                        commentId: commentID,
+                        content: this.subreplytext
+                    }).then((response) => {
+                        ElMessage.success('comment successfully')
+                    }).catch(error => {
+                        // console.log(error)
+                    })
 
-            this.getcommentlist()
+                }
+                this.subreplytext = ''
+
+                this.getcommentlist()
+            }
         },
         getTotalsubreply(comment) {
             return comment.subreplytotal
