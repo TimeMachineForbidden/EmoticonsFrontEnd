@@ -89,13 +89,13 @@ export default {
                 "sort": 0
             }).then(response => {
                 if (response.code === 1) {
-                    console.log(response);
+                    // console.log(response);
                     this.dataList = page === 1 ? response.data.records : this.dataList.concat(response.data.records);
                 } else {
-                    console.error('请求失败：' + response.msg);
+                    // console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
-                console.error('请求出错：' + error);
+                // console.error('请求出错：' + error);
             });
         },
 
@@ -120,7 +120,7 @@ export default {
                 path: '/author',
                 query: { id: id }
             });
-            console.log(id);
+            // console.log(id);
         },
 
         getemojidata(id) {
@@ -141,16 +141,16 @@ export default {
             });
 
             Service.post(`/favorite?emojiId=${id}`).then((response) => {
-                console.log(response);
+                // console.log(response);
                 if (response.code === 1) {
                     ElMessage.success('Successfully Star');
                 } else {
                     ElMessage.error('Something Went Wrong! Please try again!');
-                    console.error('请求失败：' + response.msg);
+                    // console.error('请求失败：' + response.msg);
                 }
             }).catch(error => {
                 ElMessage.error('Something Went Wrong! Please try again!');
-                console.error('请求出错：' + error);
+                // console.error('请求出错：' + error);
             });
         },
 
@@ -158,7 +158,7 @@ export default {
             if (localStorage.getItem('Authorization')) {
                 const link = document.createElement('a');
                 link.href = url;
-                console.log(url);
+                // console.log(url);
                 link.download = 'emoji_image';
                 document.body.appendChild(link);
                 link.click();

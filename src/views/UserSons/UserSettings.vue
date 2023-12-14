@@ -90,7 +90,7 @@ export default {
             }
         },
         saveChanges() {
-            // // console.log(this.editedData)
+            // console.log(this.editedData)
             axios.interceptors.request.use((config) => {
                 if (localStorage.getItem('Authorization')) {
                     config.headers.Authorization = localStorage.getItem('Authorization')
@@ -101,10 +101,10 @@ export default {
             });
             Service.put('/user', this.editedData)
                 .then(response => {
-                    console.log(response)
+                    // console.log(response)
                     if (response.code === 1) {
                         this.userdata = { ...this.editedData };
-                        console.log(this.userdata)
+                        // console.log(this.userdata)
                         this.toggleEditMode();
                         ElMessage.success('Successfully edit!');
 
@@ -124,7 +124,7 @@ export default {
                 })
                 .then((response) => {
                     let _this = this;
-                    console.log(response)
+                    // console.log(response)
                     if (response.code === 1) {
                         _this.userToken = 'Token ' + response.data.token;
                         _this.userID = response.data.id;
@@ -133,7 +133,7 @@ export default {
                     }
                 })
                 .catch(error => {
-                    // // console.log(error);
+                    // console.log(error);
                 });
 
         },

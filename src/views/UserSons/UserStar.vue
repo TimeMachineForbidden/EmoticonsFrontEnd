@@ -60,7 +60,7 @@ export default {
                     pageSize: 20
                 }
             }).then(response => {
-                console.log(response)
+                // console.log(response)
                 if (response.code === 1) {
                     // console.log(response)
                     this.dataList = response.data.records;
@@ -149,7 +149,7 @@ export default {
             if (localStorage.getItem('Authorization')) {
                 const link = document.createElement('a');
                 link.href = url;
-                console.log(url);
+                // console.log(url);
                 link.download = 'emoji_image'; // 下载文件的默认名称
                 document.body.appendChild(link);
                 link.click();

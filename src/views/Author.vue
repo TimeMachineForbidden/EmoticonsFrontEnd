@@ -79,13 +79,13 @@ export default {
                 return Promise.reject(error);
             });
             Service.get('/user/' + this.authorId).then((response) => {
-                console.log(response);
+                // console.log(response);
                 if (response.code === 1) {
                     this.authordata = response.data;
-                    console.log(this.authordata)
+                    // console.log(this.authordata)
                 }
             }).catch(error => {
-                console.log(error);
+                // console.log(error);
             });
         },
         backhome() {

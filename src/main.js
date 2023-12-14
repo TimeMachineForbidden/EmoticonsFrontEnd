@@ -5,6 +5,7 @@ import store from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { Button } from 'vant';
+
 // window.addEventListener('beforeunload', () => {
 //     // 清除名为 'Authorization' 的 localStorage 项
 //     localStorage.removeItem('Authorization');

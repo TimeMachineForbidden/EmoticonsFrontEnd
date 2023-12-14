@@ -82,7 +82,7 @@ export default {
             });
             this.ID = localStorage.getItem('ID')
             Service.get('/user/' + this.ID).then((response) => {
-                console.log(response);
+                // console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;
                     if (response.data.publicFavorite === 0) {
@@ -110,7 +110,7 @@ export default {
                     return Promise.reject(error);
                 });
                 Service.put(`/favorite/status?isOpen=1`).then((response) => {
-                    console.log(response)
+                    // console.log(response)
                     if (response.code === 1) {
                         this.isLocked = false;
                         ElMessage.success('Successfully unlock!')
@@ -131,7 +131,7 @@ export default {
                     return Promise.reject(error);
                 });
                 Service.put(`/favorite/status?isOpen=0`).then((response) => {
-                    console.log(response)
+                    // console.log(response)
                     if (response.code === 1) {
                         this.isLocked = true;
                         ElMessage.success('Successfully lock!')

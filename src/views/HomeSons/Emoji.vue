@@ -146,7 +146,6 @@ export default {
             if (newId !== oldId && newId !== undefined) {
                 // 路由参数变化时的处理逻辑
                 window.scrollTo(0, 0);
-                console.log(1)
                 this.emojiID = newId;
                 this.getemojiInformation()
                     .then(() => this.getauthordata())
@@ -169,10 +168,10 @@ export default {
             return new Promise((resolve, reject) => {
                 Service.get('/emoji/' + this.emojiID)
                     .then((response) => {
-                        console.log(response);
+                        // console.log(response);
                         if (response.code === 1) {
                             this.url = response.data.url;
-                            console.log(this.url)
+                            // console.log(this.url)
                             this.favorites = response.data.favorite;
                             this.downloads = response.data.downloads;
                             this.hits = response.data.hits;
@@ -195,12 +194,12 @@ export default {
         },
         async getuserdata() {
             this.ID = localStorage.getItem('ID')
-            console.log(this.ID)
+            // console.log(this.ID)
             await Service.get('/user/' + this.ID).then((response) => {
                 // console.log(response);
                 if (response.code === 1) {
                     this.userdata = response.data;
-                    console.log(this.userdata)
+                    // console.log(this.userdata)
                 }
             }).catch(error => {
                 // console.log(error);
@@ -216,7 +215,7 @@ export default {
                 return Promise.reject(error);
             });
             Service.get('/user/' + this.createUser).then((response) => {
-                console.log(response);
+                // console.log(response);
                 if (response.code === 1) {
                     this.authordata = response.data;
                     // console.log(this.userdata)
@@ -242,7 +241,7 @@ export default {
                     similarList: this.similarList
                 }
             }).then(response => {
-                console.log(response)
+                // console.log(response)
                 if (response.code === 1) {
                     this.dataList = response.data;
                 } else {
@@ -266,7 +265,7 @@ export default {
                 // console.log(response)
                 if (response.code === 1) {
                     this.favorites += 1;
-                    console.log(this.favorites);
+                    // console.log(this.favorites);
                     ElMessage.success('Successfully star!')
                 } else {
                     // 处理错误情况
@@ -289,7 +288,7 @@ export default {
                 });
                 Service.put(`/emoji/download?emojiId=${id}`
                 ).then((response) => {
-                    console.log(response)
+                    // console.log(response)
                     if (response.code == 1) {
                         this.downloads += 1;
                     }
@@ -325,7 +324,7 @@ export default {
         },
         handlekeyup() {
             if (this.$refs.tx.value.trim()) {
-                console.log(this.$refs.tx.value)
+                // console.log(this.$refs.tx.value)
                 Service.post('/comment', {
                     emojiId: this.emojiID,
                     content: this.$refs.tx.value
@@ -333,7 +332,7 @@ export default {
                     ElMessage.success('comment successfully')
                     this.getcommentlist()
                 }).catch(error => {
-                    console.log(error)
+                    // console.log(error)
                 })
 
             }
@@ -363,8 +362,8 @@ export default {
                 } else {
 
                 }
-            }).catch(error => {
-                console.error('请求出错：' + error);
+                // }).catch(error => {
+                //     console.error('请求出错：' + error);
             });
         },
         async getsubreply() {
@@ -388,7 +387,7 @@ export default {
             }
         },
         async changesubreplypage(index, page_, pageSize_) {
-            console.log(this.commentlist[index])
+            // console.log(this.commentlist[index])
             await Service.get('/comment/reply/' + this.commentlist[index].id, {
                 params: {
                     page: page_,
@@ -412,7 +411,7 @@ export default {
         },
         submitsubreply(commentID, comment) {
             if (this.subreplytext.trim()) {
-                console.log(this.subreplytext)
+                // console.log(this.subreplytext)
                 Service.post('/comment/reply', {
                     emojiId: this.emojiID,
                     commentId: commentID,
@@ -420,7 +419,7 @@ export default {
                 }).then((response) => {
                     ElMessage.success('comment successfully')
                 }).catch(error => {
-                    console.log(error)
+                    // console.log(error)
                 })
 
             }
@@ -477,7 +476,7 @@ export default {
                         } else {
                         }
                     }).catch(error => {
-                        console.error('请求出错：' + error);
+                        // console.error('请求出错：' + error);
                     });
                 }
             }
@@ -889,7 +888,6 @@ export default {
     height: 36px;
     border-radius: 50%;
     overflow: hidden;
-    background: url(../../assets/avatar.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

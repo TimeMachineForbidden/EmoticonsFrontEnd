@@ -248,7 +248,7 @@ export default {
             this.tagDialogVisible = true;
             if (this.firstchoose) {
                 // Service.get("/tag").then((response) => {
-                //     // console.log(response.data)
+                //     console.log(response.data)
                 //     this.choosetagslist = response.data;
                 //     this.originallist = response.data
                 // })
@@ -282,7 +282,7 @@ export default {
             this.tagDialogVisible = false;
         },
         onChange(status, tag, index) {
-            console.log(tag)
+            // console.log(tag)
             this.choosetagslist[index] = this.choosetagslist[index].filter(item => item.id !== tag.id)
             let dyntag = tag
             dyntag.index = index
@@ -303,7 +303,7 @@ export default {
         },
         showInput(index) {
             this.inputindex = index;
-            console.log(index)
+            // console.log(index)
             this.$nextTick(_ => {
                 this.$refs[`saveTagInput${index}`][0].focus();
             });
@@ -331,7 +331,7 @@ export default {
                     groupId: realindex
                 }
             }).then((response) => {
-                console.log(response)
+                // console.log(response)
                 this.choosetagslist[index] = response.data
             })
         },

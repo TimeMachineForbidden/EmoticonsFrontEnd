@@ -147,7 +147,7 @@ const handleregister = () => {
                 username: registerData.username,
                 password: registerData.password
             }).then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 if (res.data === null) {
                     registerData.username = ''
                     registerData.password = ''

@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
 import Upload from '../views/Upload.vue'
-import Test from '../components/test.vue'
 import icon from '../components/icon.vue'
 import Trend from '../views/HomeSons/Trend.vue'
 import New from '../views/HomeSons/New.vue'
@@ -83,11 +82,6 @@ const routes = [
         component:UserSettings,
       }
     ]
-  },
-  {
-    path: "/test",
-    name: 'test',
-    component: Test,
   },
   {
     path: "/icon",

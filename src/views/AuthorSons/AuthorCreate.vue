@@ -141,7 +141,7 @@ export default {
             if (localStorage.getItem('Authorization')) {
                 const link = document.createElement('a');
                 link.href = url;
-                console.log(url);
+                // console.log(url);
                 link.download = 'emoji_image'; // 下载文件的默认名称
                 document.body.appendChild(link);
                 link.click();
