@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="emopic" ref="emopicContainer">
-            <video ref="myVideo" style="width:100%" :controls="false">
+            <video ref="myVideo" style="width:100%" :controls="false" :muted="true">
                 <source :src="videoSource" type="video/mp4">
             </video>
         </div>
@@ -253,14 +253,14 @@ export default {
         }, 1000); // 这里的延迟时间可以根据实际情况调整
 
     },
-    // destroyed() {
-    //     // 组件销毁时移除窗口大小变化的监听器
-    //     window.removeEventListener('resize', this.adjustVideoPosition);
-    // },
-    // beforeDestroy() {
-    //     // 在组件销毁前移除事件监听器，以防止内存泄漏
-    //     window.removeEventListener("resize", this.updateWidth);
-    // },
+    destroyed() {
+        // 组件销毁时移除窗口大小变化的监听器
+        window.removeEventListener('resize', this.adjustVideoPosition);
+    },
+    beforeDestroy() {
+        // 在组件销毁前移除事件监听器，以防止内存泄漏
+        window.removeEventListener("resize", this.updateWidth);
+    },
     methods: {
         ...mapMutations(['changeLogin']),
         leftClick() {
@@ -279,7 +279,7 @@ export default {
             // 检查 $refs.slidingbtn 是否存在
             const slidingbtn = this.$refs.slidingbtn;
             if (slidingbtn) {
-                this.leftClick();
+                // this.leftClick();
                 // 更新宽度
                 if (window.innerWidth >= 800) {
                     this.width = window.innerWidth * 0.3 * 0.6 * 0.5;
@@ -289,17 +289,18 @@ export default {
                 }
                 // 更新样式
                 slidingbtn.style.width = `${this.width}px`;
+                this.rightClick()
             }
         },
         adjustVideoPosition() {
             const emopicContainer = this.$refs.emopicContainer;
             const myVideo = this.$refs.myVideo;
 
-            const heightDifference = emopicContainer.clientHeight - myVideo.clientHeight;
-            console.log(emopicContainer.clientHeight)
-            console.log(myVideo.clientHeight)
-            // 设置视频的上边距为高度差，使其最底端对齐容器的最底端
-            myVideo.style.marginTop = heightDifference + 'px';
+            if (emopicContainer && myVideo) {
+                const heightDifference = emopicContainer.clientHeight - myVideo.clientHeight;
+                // 设置视频的上边距为高度差，使其最底端对齐容器的最底端
+                myVideo.style.marginTop = heightDifference + 'px';
+            }
         },
         login() {
             let _this = this;
@@ -407,7 +408,7 @@ export default {
     font-family: 'Open Sans', sans-serif;
     color: white;
     font-size: 55px;
-    margin-top: 27%;
+    margin-top: 16vh;
     text-align: center;
     /* 水平居中对齐 */
 }
@@ -563,6 +564,10 @@ export default {
 @media (max-width: 800px) {
     .emopic {
         display: none;
+    }
+
+    .login {
+        height: 150%;
     }
 
     .loginmain {

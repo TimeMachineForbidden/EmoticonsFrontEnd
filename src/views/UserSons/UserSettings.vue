@@ -12,7 +12,7 @@
                     <el-button class="button2" @click="exit">EXIT</el-button>
                 </div>
             </template>
-            <div class="text item" v-if="!isEditing">name: {{ this.userdata.username }}</div>
+            <div class="text item" v-if="!isEditing">Name: {{ this.userdata.username }}</div>
             <div class="text item" v-if="!isEditing">Signature: {{ this.userdata.signature }}</div>
             <div class="text item" v-if="!isEditing">Profilephoto: click Edit For changing!</div>
             <div class="text item" v-if="isEditing">

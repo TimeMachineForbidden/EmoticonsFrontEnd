@@ -276,10 +276,10 @@ export default {
 
   .nav .labels a {
     display: inline-block;
-    height: 40px;
-    padding: 0 10px;
+    height: 35px;
+    padding: 0 8px;
     margin-right: 4px;
-    font-size: 20px;
+    font-size: 16px;
     color: rgb(251, 238, 238);
     text-decoration: none;
     line-height: 30px;

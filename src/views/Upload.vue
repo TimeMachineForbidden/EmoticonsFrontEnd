@@ -99,7 +99,7 @@
         </div>
     </div>
     <client-only>
-        <el-dialog v-model="tagDialogVisible" title="Add tags" width="50%" v-if="tagDialogVisible" destroy-on-close
+        <el-dialog v-model="tagDialogVisible" title="Add tags" width="65%" v-if="tagDialogVisible" destroy-on-close
             :show-close="false">
             <span>choose the tags you wanna add</span>
             <br />
@@ -510,4 +510,6 @@ export default {
     margin-left: 10px;
     vertical-align: bottom;
 }
+
+@media (max-width: 800px) {}
 </style>
