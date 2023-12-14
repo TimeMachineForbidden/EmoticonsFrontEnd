@@ -223,7 +223,8 @@ export default {
             }),
             width: '120px',
             color1: 'linear-gradient(135deg, rgb(11, 72, 239), rgb(17, 197, 149))',
-            color2: 'rgb(255, 167, 69)'
+            color2: 'rgb(255, 167, 69)',
+            state: 'left'
         };
     },
     mounted() {
@@ -264,12 +265,14 @@ export default {
     methods: {
         ...mapMutations(['changeLogin']),
         leftClick() {
+            this.state = 'left'
             const slidingbtn = this.$refs.slidingbtn;
             slidingbtn.style.left = '0'
             this.color1 = 'linear-gradient(135deg, rgb(11, 72, 239), rgb(17, 197, 149))'
             this.showlogin = true
         },
         rightClick() {
+            this.state = 'right'
             const slidingbtn = this.$refs.slidingbtn;
             slidingbtn.style.left = String(this.width) + 'px'
             this.color1 = 'linear-gradient(180deg, rgb(255, 107, 144), rgb(252, 217, 156))'
@@ -279,7 +282,7 @@ export default {
             // 检查 $refs.slidingbtn 是否存在
             const slidingbtn = this.$refs.slidingbtn;
             if (slidingbtn) {
-                // this.leftClick();
+
                 // 更新宽度
                 if (window.innerWidth >= 800) {
                     this.width = window.innerWidth * 0.3 * 0.6 * 0.5;
@@ -289,7 +292,12 @@ export default {
                 }
                 // 更新样式
                 slidingbtn.style.width = `${this.width}px`;
-                this.rightClick()
+                if (this.state == 'left') {
+                    this.leftClick()
+                }
+                else {
+                    this.rightClick()
+                }
             }
         },
         adjustVideoPosition() {
@@ -378,13 +386,23 @@ export default {
 @import url('https://fonts.font.im/css2?family=JetBrains+Mono:wght@600&display=swap');
 
 .login {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    /* 或设置为固定的值，以适应子容器 */
+    overflow: auto;
     background-image: -moz-linear-gradient(45deg, rgb(206, 250, 117), rgb(97, 77, 249));
 
     background-image: -webkit-linear-gradient(45deg, rgb(206, 250, 117), rgb(97, 77, 249));
 
     background-image: linear-gradient(45deg, rgb(206, 250, 117), rgb(97, 77, 249));
+}
+
+.loginmain {
+    min-height: 100vh;
+    position: static;
+    left: 0;
+    width: 30%;
 }
 
 .backward {
@@ -398,17 +416,11 @@ export default {
     font-size: 20px;
 }
 
-.loginmain {
-    position: absolute;
-    left: 0;
-    width: 30%;
-}
-
 .loginmain h1 {
     font-family: 'Open Sans', sans-serif;
     color: white;
     font-size: 55px;
-    margin-top: 16vh;
+    margin-top: 27%;
     text-align: center;
     /* 水平居中对齐 */
 }
