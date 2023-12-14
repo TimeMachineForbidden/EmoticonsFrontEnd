@@ -8,14 +8,14 @@
                 <span>Back</span>
             </div>
             <div class="emoji">
-                <div class="image"><img :src="this.url" alt="">
+                <div class="image"><img :src="url" alt="">
                     <div class="operate">
-                        <a @click="starEmoji(this.emojiID)"><el-icon>
+                        <a @click="starEmoji(emojiID)"><el-icon>
                                 <Star />
-                            </el-icon> {{ this.favorites }}</a>
-                        <a @click="downloadEmoji(this.url, this.emojiID)"><el-icon>
+                            </el-icon> {{ favorites }}</a>
+                        <a @click="downloadEmoji(url, emojiID)"><el-icon>
                                 <Download />
-                            </el-icon> {{ this.downloads }}</a>
+                            </el-icon> {{ downloads }}</a>
                     </div>
                     <el-divider></el-divider>
                     <div class="discussion" v-infinite-scroll="loadcomment">
@@ -172,6 +172,7 @@ export default {
                         console.log(response);
                         if (response.code === 1) {
                             this.url = response.data.url;
+                            console.log(this.url)
                             this.favorites = response.data.favorite;
                             this.downloads = response.data.downloads;
                             this.hits = response.data.hits;
